@@ -19,12 +19,16 @@ export default function Home(){
             }
         })
         setInfo(rs.data.data); 
+        console.log(rs.data.data);
     }
+
+
 
     useEffect(()=>{
         if (limit <= 100) {
             getData();
         }
+
     }, [limit])
 
     useEffect(()=>{
@@ -101,12 +105,56 @@ export default function Home(){
             ))}
           </div>
           <div className="m-3 ml-7 mt-10 pl-2">
-            <nav className="pb-3">POPULAR COMMUNITIES</nav>
-            <div className="flex item-center justify-center">
-              <div className="flex item-center justify-around gap-7">
+            <nav className="pb-3 text-sm text-gray-600">POPULAR COMMUNITIES</nav>
+            <div className="flex item-center justify-center flex-col">
+              <div className="flex item-center justify-around gap-4 pb-4">
                 <img
                   className="rounded-full w-8 h-8"
-                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/366.jpg"
+                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
+                  alt="Profile Image"
+                ></img>
+                <div>
+                  <nav className="text-xs">u/Carmen Shanahan</nav>
+                  <nav className="text-xs">5,680,600 members</nav>
+                </div>
+              </div>
+              <div className="flex item-center justify-around gap-4">
+                <img
+                  className="rounded-full w-8 h-8"
+                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
+                  alt="Profile Image"
+                ></img>
+                <div>
+                  <nav className="text-xs">u/Carmen Shanahan</nav>
+                  <nav className="text-xs">5,680,600 members</nav>
+                </div>
+              </div>
+              <div className="flex item-center justify-around gap-4">
+                <img
+                  className="rounded-full w-8 h-8"
+                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
+                  alt="Profile Image"
+                ></img>
+                <div>
+                  <nav className="text-xs">u/Carmen Shanahan</nav>
+                  <nav className="text-xs">5,680,600 members</nav>
+                </div>
+              </div>
+              <div className="flex item-center justify-around gap-4">
+                <img
+                  className="rounded-full w-8 h-8"
+                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
+                  alt="Profile Image"
+                ></img>
+                <div>
+                  <nav className="text-xs">u/Carmen Shanahan</nav>
+                  <nav className="text-xs">5,680,600 members</nav>
+                </div>
+              </div>
+              <div className="flex item-center justify-around gap-4">
+                <img
+                  className="rounded-full w-8 h-8"
+                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
                   alt="Profile Image"
                 ></img>
                 <div>

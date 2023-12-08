@@ -36,3 +36,42 @@
     transform: rotate(360deg);
   }
 } */
+
+/* #style-1::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#style-1::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#style-1::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+} */
+.side_bar{
+  min-height: 50px;
+  overflow-y: auto;
+  max-height: 32rem;
+}
+
+.side_bar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.side_bar::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+}
+
+.side_bar::-webkit-scrollbar-track {
+  background-color: initial;
+}

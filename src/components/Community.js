@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import "../styles/App.css";
 
 export default function Community(){
     const [seemore, setSeeMore] = useState(false);
@@ -15,13 +16,13 @@ export default function Community(){
         }
 
     }
-
+ 
     return (
         <>
-          <div className={`m-3 ml-7 mt-10 pl-2 ${seemore ? 'overflow-y-auto max-h-[32rem] box-border' : 'overflow-hidden'}`}>
+          <div className="side_bar m-3 ml-7 mt-10 pl-2 w-80 max-h-96 bg-gray-50">
             <nav className="pb-5 pt-2 text-xs text-gray-600 font-semibold">POPULAR COMMUNITIES</nav>
             <div className="flex item-center justify-center flex-col gap-2 pl-2 pr-2">
-              <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+              <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -32,7 +33,7 @@ export default function Community(){
                   <nav className="text-xs text-gray-600">5,680,600 members</nav>
                 </div>
               </div>
-              <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+              <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -43,7 +44,7 @@ export default function Community(){
                   <nav className="text-xs text-gray-600">5,680,600 members</nav>
                 </div>
               </div>
-              <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+              <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -54,7 +55,7 @@ export default function Community(){
                   <nav className="text-xs text-gray-600">5,680,600 members</nav>
                 </div>
               </div>
-              <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+              <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -65,7 +66,7 @@ export default function Community(){
                   <nav className="text-xs text-gray-600">5,680,600 members</nav>
                 </div>
               </div>
-              <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+              <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -78,7 +79,7 @@ export default function Community(){
               </div>
               {seemore && 
               <>
-            <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+            <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -90,7 +91,7 @@ export default function Community(){
                 </div>
               </div>
 
-            <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+            <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -102,7 +103,7 @@ export default function Community(){
                 </div>
               </div>
 
-                            <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+                            <div className="flex item-center  gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -113,7 +114,7 @@ export default function Community(){
                   <nav className="text-xs text-gray-600">5,680,600 members</nav>
                 </div>
               </div>
-              <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+              <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -124,7 +125,7 @@ export default function Community(){
                   <nav className="text-xs text-gray-600">5,680,600 members</nav>
                 </div>
               </div>
-              <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+              <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -135,7 +136,7 @@ export default function Community(){
                   <nav className="text-xs text-gray-600">5,680,600 members</nav>
                 </div>
               </div>
-              <div className="flex item-center justify-around gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
+              <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">
                 <img
                   className="rounded-full w-8 h-8"
                   src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
@@ -149,7 +150,7 @@ export default function Community(){
               </>
               }
             </div>
-            <button onClick={handleSeeMore} className="text-xs rounded-full pt-2 p-2 hover:bg-gray-300">{text}</button>
+            <button onClick={handleSeeMore} className="text-xs font-medium rounded-full pt-2 p-2 hover:bg-gray-300">{text}</button>
           </div>
         </>
     )

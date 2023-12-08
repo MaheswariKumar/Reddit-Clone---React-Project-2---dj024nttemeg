@@ -50,6 +50,17 @@ export default function Home(){
     return (
       <>
         <div className="p-1 mt-12 flex justify-center w-full max-w-full">
+        {/* <div className="z-8 absolute right-40">
+                <nav>View</nav>
+                <div>
+                  <div>
+                    <nav>Card</nav>
+                  </div>
+                  <div>
+                    <nav>Classic</nav>
+                  </div>
+                </div>
+              </div> */}
           <div className="flex justify-center w-full max-w-2xl flex-col m-2">
             <div className="flex items-center pt-4 pb-4 justify-between gap-15 pb-7">
               <button className="border p-2 pr-3 pl-3 rounded-full border-black text-sm font-semibold cursor-pointer">

@@ -7,6 +7,7 @@ import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
 import DownvoteOutlineIcon from "./icons/DownvoteOutlineIcon";
 import CommentOutlineIcon from "./icons/CommentOutlineIcon";
 import ShareIOSOutlineIcon from "./icons/ShareIOSOutlineIcon";
+import Community from "./Community";
 
 export default function Home(){
     const [info, setInfo] = useState([]);
@@ -104,66 +105,7 @@ export default function Home(){
               </div>
             ))}
           </div>
-          <div className="m-3 ml-7 mt-10 pl-2">
-            <nav className="pb-3 text-sm text-gray-600">POPULAR COMMUNITIES</nav>
-            <div className="flex item-center justify-center flex-col">
-              <div className="flex item-center justify-around gap-4 pb-4">
-                <img
-                  className="rounded-full w-8 h-8"
-                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
-                  alt="Profile Image"
-                ></img>
-                <div>
-                  <nav className="text-xs">u/Carmen Shanahan</nav>
-                  <nav className="text-xs">5,680,600 members</nav>
-                </div>
-              </div>
-              <div className="flex item-center justify-around gap-4">
-                <img
-                  className="rounded-full w-8 h-8"
-                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
-                  alt="Profile Image"
-                ></img>
-                <div>
-                  <nav className="text-xs">u/Carmen Shanahan</nav>
-                  <nav className="text-xs">5,680,600 members</nav>
-                </div>
-              </div>
-              <div className="flex item-center justify-around gap-4">
-                <img
-                  className="rounded-full w-8 h-8"
-                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
-                  alt="Profile Image"
-                ></img>
-                <div>
-                  <nav className="text-xs">u/Carmen Shanahan</nav>
-                  <nav className="text-xs">5,680,600 members</nav>
-                </div>
-              </div>
-              <div className="flex item-center justify-around gap-4">
-                <img
-                  className="rounded-full w-8 h-8"
-                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
-                  alt="Profile Image"
-                ></img>
-                <div>
-                  <nav className="text-xs">u/Carmen Shanahan</nav>
-                  <nav className="text-xs">5,680,600 members</nav>
-                </div>
-              </div>
-              <div className="flex item-center justify-around gap-4">
-                <img
-                  className="rounded-full w-8 h-8"
-                  src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/422.jpg"
-                  alt="Profile Image"
-                ></img>
-                <div>
-                  <nav className="text-xs">u/Carmen Shanahan</nav>
-                  <nav className="text-xs">5,680,600 members</nav>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Community />
         </div>
       </>
     );

@@ -8,6 +8,9 @@ module.exports = {
       backgroundColor: {
         'D93A00': '#D93A00',
       },
+      maxHeight: {
+        '128': '32rem',
+      },
     },
   },
   plugins: [],

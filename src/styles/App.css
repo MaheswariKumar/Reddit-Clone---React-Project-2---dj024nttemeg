@@ -75,3 +75,7 @@
 .side_bar::-webkit-scrollbar-track {
   background-color: initial;
 }
+
+.shadow {
+  box-shadow: 0 0 5px 0.2px rgba(0, 0, 0, 0.5);
+}

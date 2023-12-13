@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect, useReducer } from "react";
+import { useSelector } from "react-redux";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import CaretDownOutlineIcon from "./icons/CaretDownOutlineIcon";
 import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
@@ -15,6 +16,17 @@ import ViewClassicOutlineIcon from "./icons/ViewClassicOutlineIcon";
 export default function Home(){
     const [info, setInfo] = useState([]);
     const [limit, setLimit] = useState(10);
+    const isMobile = useSelector((state) => state.isMobile);
+    const [dropdownPosition, setDropdownPosition] = useState({ top: '110px', left: '700px' });
+
+    const handleResize = () => {
+      const rect = document.getElementById('dropdown-button')?.getBoundingClientRect();
+      console.log(rect)
+      if (rect) {
+        setDropdownPosition({ top: `${rect.bottom}px`, left: `${rect.left}px` });
+      }
+      console.log(dropdownPosition)
+    };
 
     const IntialState = {
       showDropDown : false,
@@ -70,6 +82,14 @@ export default function Home(){
         }
     }, [limit])
 
+    useEffect(() => {
+      handleResize();
+      window.addEventListener('resize', handleResize);
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+
     useEffect(()=>{
         const handleScroll = () => {
             if ((window.innerHeight + Math.round(window.scrollY)) >= document.body.offsetHeight) {
@@ -89,17 +109,17 @@ export default function Home(){
       <>
         <div className="p-1 mt-12 flex justify-center w-full max-w-full">
           <div className={`flex justify-center w-full flex-col m-2 ${state.showMax ? "max-w-5xl" : "max-w-2xl"}`}>
-            <div className="flex items-center pt-4 pb-4 justify-between gap-15 pb-7">
+            <div className="flex items-center pt-4 justify-between gap-15 pb-7 pl-6 pr-6">
               <button className="border p-2 pr-3 pl-3 rounded-full border-black text-sm font-semibold cursor-pointer">
                 Create a Post
               </button>
-              <div onClick={()=> StateDisptch({type:"showoption"})} className={`flex items-center gap-1 max-w-2xl rounded-full p-2 cursor-pointer ${state.showDropDown ? "bg-gray-300" : "hover:bg-gray-200"}`}>
+              <div onClick={()=> StateDisptch({type:"showoption"})} id="dropdown-button" className={`flex items-center gap-1 max-w-2xl rounded-full p-2 cursor-pointer ${state.showDropDown ? "bg-gray-300" : "hover:bg-gray-200"}`}>
                 {state.showMin ? <ViewCardOutlineIcon /> : <ViewClassicOutlineIcon /> }
                 <CaretDownOutlineIcon />
               </div>
             </div>
             {state.showDropDown && <>
-            <div className={`z-10 fixed top-[7.5rem] shadow bg-white w-1/12 rounded-sm ${state.showMin ? "right-[35.5rem]" : "right-[25rem]"}`}>
+            <div style={dropdownPosition} className={`z-10 fixed shadow bg-white w-32 rounded-sm`}>
                 <nav className="p-3 pl-4 pb-2">View</nav>
                 <div>
                   <div onClick={()=> StateDisptch({type:"showminoption"})} className={`flex items-center gap-2 p-2 pl-6 h-12 cursor-pointer ${state.showMin ? "bg-gray-200" : "hover:bg-gray-100"}`}>
@@ -158,7 +178,7 @@ export default function Home(){
               </div>
             ))}
           </div>
-          <Community />
+          {isMobile && <Community /> }
         </div>
       </>
     );

@@ -1,5 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setIsMobile } from "./Action";
 import CustomLogo from "./icons/CustomLogo";
 import MenuIcon from "./icons/MenuIcon";
 import SearchIcon from "./icons/SearchIcon";
@@ -8,11 +10,12 @@ import OverflowHorizontalOutlineIcon from "./icons/OverflowHorizontalOutlineIcon
 
 
 export default function NavBar(){
-    const [isMobile, setIsMobile] = useState(window.innerWidth>=1024);
+    const isMobile = useSelector((state) => state.isMobile);
+    const dispatch = useDispatch();
 
     useEffect(()=>{
         const handleReSize = () => {
-            setIsMobile(window.innerWidth>=1024);
+            dispatch(setIsMobile(window.innerWidth>=1024));
         }
 
         window.addEventListener("resize", handleReSize);

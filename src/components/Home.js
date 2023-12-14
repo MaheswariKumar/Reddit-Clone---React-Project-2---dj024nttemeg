@@ -19,11 +19,13 @@ export default function Home(){
     const isMobile = useSelector((state) => state.isMobile);
     const isTab = useSelector((state) => state.isTab);
     const [dropdownPosition, setDropdownPosition] = useState({ top: '120px', left: '800px' });
+    const [dropdownMaxPosition, setDropdownMaxPosition] = useState({ top: '120px', left: '975px' });
 
     const handleResize = () => {
       const rect = document.getElementById('dropdown-button')?.getBoundingClientRect();
       if (rect) {
         setDropdownPosition({ top: `${rect.bottom+7}px`, left: `${rect.left-35}px` });
+        setDropdownMaxPosition({ top: `${rect.bottom+7}px`, left: `${rect.left-35}px` });
       }
     };
 
@@ -31,6 +33,7 @@ export default function Home(){
       showDropDown : false,
       showMin : true,
       showMax : false,
+      isLoading : true,
     }
 
     function StateReducer(state, action){
@@ -57,6 +60,13 @@ export default function Home(){
               showDropDown : false
             }
 
+          case "loaded" :
+            return {
+             ...state,
+             isLoading : false,
+            }
+
+
         default:
           return state
       }
@@ -71,22 +81,29 @@ export default function Home(){
                'projectID': 'dj024nttemeg'
             }
         })
-        setInfo(rs.data.data); 
+        setInfo(rs.data.data);
         console.log(rs.data.data);
     }
 
     useEffect(()=>{
         if (limit <= 100) {
             getData();
+            // StateDisptch({type: "loaded"}) 
         }
     }, [limit])
 
+    useEffect(()=>{
+      console.log(state.isLoading)
+    }, [])
+
     useEffect(() => {
+      handleResize();
       window.addEventListener('resize', handleResize);
       return () => {
         window.removeEventListener('resize', handleResize);
       };
-    }, []);
+      // https://reddit-clone-jishnu.vercel.app/static/media/Reddit_logo_full_lmg.ef9dd8508176069f1425.png
+    }, [state.showMax, state.showMin]);
 
     useEffect(()=>{
         const handleScroll = () => {
@@ -105,6 +122,12 @@ export default function Home(){
 
     return (
       <>
+      {/* {state.isLoading ? (<div className="flex items-center justify-center h-screen bg-blue-200"><img
+  src="https://www.svgrepo.com/show/452094/reddit.svg"
+  alt="Reddit Logo"
+  className="w-24 h-24 transform-transition duration-300 ease-in-out "
+/>
+</div>) : */}
         <div className="p-1 mt-12 flex justify-center w-full max-w-full">
           <div className={`flex justify-center w-full flex-col m-2 ${state.showMax ? "max-w-5xl" : "max-w-2xl"}`}>
             <div className="flex items-center pt-4 justify-between gap-15 pb-7 pl-7 pr-7">
@@ -116,7 +139,7 @@ export default function Home(){
                 <CaretDownOutlineIcon />
               </div>}
               {isTab && state.showDropDown && <>
-            <div style={dropdownPosition} className={`z-10 fixed shadow bg-white w-32 rounded-sm`}>
+            <div style={state.showMax ? dropdownMaxPosition : dropdownPosition} className={`z-10 fixed shadow bg-white w-32 rounded-sm`}>
                 <nav className="p-3 pl-4 pb-2">View</nav>
                 <div>
                   <div onClick={()=> StateDisptch({type:"showminoption"})} className={`flex items-center gap-2 p-2 pl-6 h-12 cursor-pointer ${state.showMin ? "bg-gray-200" : "hover:bg-gray-100"}`}>
@@ -178,6 +201,7 @@ export default function Home(){
           </div>
           {isMobile && <Community /> }
         </div>
+        {/* } */}
       </>
     );
 }

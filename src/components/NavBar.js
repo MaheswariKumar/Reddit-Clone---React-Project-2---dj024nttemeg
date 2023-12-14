@@ -27,7 +27,7 @@ export default function NavBar(){
 
     return (
       <>
-        <div className="p-1 pb-2 pl-4 pr-7 flex items-center justify-between gap-4 border-b mr-4 ml-4 w-full bg-white fixed top-0 z-0">
+        <div className="p-1 pb-2 pl-4 pr-7 flex items-center justify-between gap-4 border-b w-full bg-white fixed top-0 z-0">
           <div className="flex items-center gap-2 pr-4">
             <div>
               <MenuIcon />

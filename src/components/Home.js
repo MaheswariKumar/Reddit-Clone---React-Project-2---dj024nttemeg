@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect, useReducer } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import CaretDownOutlineIcon from "./icons/CaretDownOutlineIcon";
 import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
@@ -17,15 +17,14 @@ export default function Home(){
     const [info, setInfo] = useState([]);
     const [limit, setLimit] = useState(10);
     const isMobile = useSelector((state) => state.isMobile);
-    const [dropdownPosition, setDropdownPosition] = useState({ top: '110px', left: '700px' });
+    const isTab = useSelector((state) => state.isTab);
+    const [dropdownPosition, setDropdownPosition] = useState({ top: '120px', left: '800px' });
 
     const handleResize = () => {
       const rect = document.getElementById('dropdown-button')?.getBoundingClientRect();
-      console.log(rect)
       if (rect) {
-        setDropdownPosition({ top: `${rect.bottom}px`, left: `${rect.left}px` });
+        setDropdownPosition({ top: `${rect.bottom+7}px`, left: `${rect.left-35}px` });
       }
-      console.log(dropdownPosition)
     };
 
     const IntialState = {
@@ -83,7 +82,6 @@ export default function Home(){
     }, [limit])
 
     useEffect(() => {
-      handleResize();
       window.addEventListener('resize', handleResize);
       return () => {
         window.removeEventListener('resize', handleResize);
@@ -109,16 +107,15 @@ export default function Home(){
       <>
         <div className="p-1 mt-12 flex justify-center w-full max-w-full">
           <div className={`flex justify-center w-full flex-col m-2 ${state.showMax ? "max-w-5xl" : "max-w-2xl"}`}>
-            <div className="flex items-center pt-4 justify-between gap-15 pb-7 pl-6 pr-6">
+            <div className="flex items-center pt-4 justify-between gap-15 pb-7 pl-7 pr-7">
               <button className="border p-2 pr-3 pl-3 rounded-full border-black text-sm font-semibold cursor-pointer">
                 Create a Post
               </button>
-              <div onClick={()=> StateDisptch({type:"showoption"})} id="dropdown-button" className={`flex items-center gap-1 max-w-2xl rounded-full p-2 cursor-pointer ${state.showDropDown ? "bg-gray-300" : "hover:bg-gray-200"}`}>
+              {isTab && <div onClick={()=> StateDisptch({type:"showoption"})} id="dropdown-button" className={`flex items-center gap-1 max-w-2xl rounded-full p-2 cursor-pointer ${state.showDropDown ? "bg-gray-300" : "hover:bg-gray-200"}`}>
                 {state.showMin ? <ViewCardOutlineIcon /> : <ViewClassicOutlineIcon /> }
                 <CaretDownOutlineIcon />
-              </div>
-            </div>
-            {state.showDropDown && <>
+              </div>}
+              {isTab && state.showDropDown && <>
             <div style={dropdownPosition} className={`z-10 fixed shadow bg-white w-32 rounded-sm`}>
                 <nav className="p-3 pl-4 pb-2">View</nav>
                 <div>
@@ -133,6 +130,7 @@ export default function Home(){
                 </div>
               </div>
           </>}
+            </div>
             {info.map((data, idx) => (
               <div
                 className="cursor-pointer m-2 border-b border-gray-300 pt-2 hover:bg-gray-200 p-2 rounded-lg"

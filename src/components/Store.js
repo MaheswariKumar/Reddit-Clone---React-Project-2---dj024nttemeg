@@ -2,6 +2,7 @@ import { createStore } from "redux";
 
 const initialState = {
   isMobile: window.innerWidth >= 1024,
+  isTab: window.innerWidth >= 768,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -10,6 +11,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isMobile: action.isMobile,
+        isTab : action.isTab
       };
     default:
       return state;

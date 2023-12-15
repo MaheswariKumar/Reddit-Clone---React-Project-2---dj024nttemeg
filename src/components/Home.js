@@ -12,147 +12,205 @@ import Community from "./Community";
 import ViewClassicFillIcon from "./icons/ViewClassicFillIcon";
 import ViewCardFillIcon from "./icons/ViewCardFillIcon";
 import ViewClassicOutlineIcon from "./icons/ViewClassicOutlineIcon";
+import SideBar from "./SideBar";
 
-export default function Home(){
-    const [info, setInfo] = useState([]);
-    const [limit, setLimit] = useState(10);
-    const isMobile = useSelector((state) => state.isMobile);
-    const isTab = useSelector((state) => state.isTab);
-    const [dropdownPosition, setDropdownPosition] = useState({ top: '120px', left: '800px' });
-    const [dropdownMaxPosition, setDropdownMaxPosition] = useState({ top: '120px', left: '975px' });
+export default function Home() {
+  const [info, setInfo] = useState([]);
+  const [limit, setLimit] = useState(10);
+  const isMobile = useSelector((state) => state.isMobile);
+  const isTab = useSelector((state) => state.isTab);
+  const [dropdownPosition, setDropdownPosition] = useState({
+    top: "120px",
+    left: "800px",
+  });
+  const [dropdownMaxPosition, setDropdownMaxPosition] = useState({
+    top: "120px",
+    left: "975px",
+  });
 
-    const handleResize = () => {
-      const rect = document.getElementById('dropdown-button')?.getBoundingClientRect();
-      if (rect) {
-        setDropdownPosition({ top: `${rect.bottom+7}px`, left: `${rect.left-35}px` });
-        setDropdownMaxPosition({ top: `${rect.bottom+7}px`, left: `${rect.left-35}px` });
+  const handleResize = () => {
+    const rect = document
+      .getElementById("dropdown-button")
+      ?.getBoundingClientRect();
+    if (rect) {
+      setDropdownPosition({
+        top: `${rect.bottom + 7}px`,
+        left: `${rect.left - 35}px`,
+      });
+      setDropdownMaxPosition({
+        top: `${rect.bottom + 7}px`,
+        left: `${rect.left - 35}px`,
+      });
+    }
+  };
+
+  const IntialState = {
+    showDropDown: false,
+    showMin: true,
+    showMax: false,
+    isLoading: true,
+  };
+
+  function StateReducer(state, action) {
+    switch (action.type) {
+      case "showoption":
+        return {
+          ...state,
+          showDropDown: !state.showDropDown,
+        };
+
+      case "showminoption":
+        return {
+          ...state,
+          showMin: true,
+          showMax: false,
+          showDropDown: false,
+        };
+
+      case "showmaxoption":
+        return {
+          ...state,
+          showMax: true,
+          showMin: false,
+          showDropDown: false,
+        };
+
+      case "loaded":
+        return {
+          ...state,
+          isLoading: false,
+        };
+
+      default:
+        return state;
+    }
+  }
+
+  const [state, StateDisptch] = useReducer(StateReducer, IntialState);
+
+  async function getData() {
+    const rs = await axios.get(
+      `https://academics.newtonschool.co/api/v1/reddit/post?limit=${limit}`,
+      {
+        headers: {
+          projectID: "dj024nttemeg",
+        },
+      }
+    );
+    setInfo(rs.data.data);
+    StateDisptch({ type: "loaded" });
+    console.log(rs.data.data);
+  }
+
+  useEffect(() => {
+    if (limit <= 100) {
+      getData();
+    }
+  }, [limit]);
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [state.showMax, state.showMin]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + Math.round(window.scrollY) >=
+        document.body.offsetHeight
+      ) {
+        setLimit((l) => l + 10);
       }
     };
 
-    const IntialState = {
-      showDropDown : false,
-      showMin : true,
-      showMax : false,
-      isLoading : true,
-    }
+    window.addEventListener("scroll", handleScroll);
 
-    function StateReducer(state, action){
-      switch(action.type) {
-        case "showoption" :
-          return {
-            ...state,
-            showDropDown : !state.showDropDown
-          }
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
-        case "showminoption" :
-          return {
-            ...state,
-            showMin : true,
-            showMax : false,
-            showDropDown : false
-          }
-
-          case "showmaxoption" :
-            return {
-              ...state,
-              showMax : true,
-              showMin : false,
-              showDropDown : false
-            }
-
-          case "loaded" :
-            return {
-             ...state,
-             isLoading : false,
-            }
-
-
-        default:
-          return state
-      }
-    }
-
-    const [state, StateDisptch] = useReducer(StateReducer, IntialState);
-    
-
-    async function getData(){
-        const rs = await axios.get(`https://academics.newtonschool.co/api/v1/reddit/post?limit=${limit}`, {
-            headers:  {
-               'projectID': 'dj024nttemeg'
-            }
-        })
-        setInfo(rs.data.data);
-        console.log(rs.data.data);
-    }
-
-    useEffect(()=>{
-        if (limit <= 100) {
-            getData();
-            // StateDisptch({type: "loaded"}) 
-        }
-    }, [limit])
-
-    useEffect(()=>{
-      console.log(state.isLoading)
-    }, [])
-
-    useEffect(() => {
-      handleResize();
-      window.addEventListener('resize', handleResize);
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-      // https://reddit-clone-jishnu.vercel.app/static/media/Reddit_logo_full_lmg.ef9dd8508176069f1425.png
-    }, [state.showMax, state.showMin]);
-
-    useEffect(()=>{
-        const handleScroll = () => {
-            if ((window.innerHeight + Math.round(window.scrollY)) >= document.body.offsetHeight) {
-                setLimit((l) => l + 10 );
-            }
-        }
-
-        window.addEventListener("scroll", handleScroll);
-
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        }
-
-    }, [])
-
-    return (
-      <>
-      {/* {state.isLoading ? (<div className="flex items-center justify-center h-screen bg-blue-200"><img
-  src="https://www.svgrepo.com/show/452094/reddit.svg"
-  alt="Reddit Logo"
-  className="w-24 h-24 transform-transition duration-300 ease-in-out "
-/>
-</div>) : */}
+  return (
+    <>
+      <SideBar />
+      {state.isLoading ? (
+        <div className="flex items-center justify-center h-screen">
+          <img
+            src="https://www.svgrepo.com/show/452094/reddit.svg"
+            alt="Reddit Logo"
+            className="w-12 h-12 transition ease-in-out duration-300 animate-ping"
+          />
+        </div>
+      ) : (
         <div className="p-1 mt-12 flex justify-center w-full max-w-full">
-          <div className={`flex justify-center w-full flex-col m-2 ${state.showMax ? "max-w-5xl" : "max-w-2xl"}`}>
+          <div
+            className={`flex justify-center w-full flex-col m-2 ${
+              state.showMax ? "max-w-5xl" : "max-w-2xl"
+            }`}
+          >
             <div className="flex items-center pt-4 justify-between gap-15 pb-7 pl-7 pr-7">
               <button className="border p-2 pr-3 pl-3 rounded-full border-black text-sm font-semibold cursor-pointer">
                 Create a Post
               </button>
-              {isTab && <div onClick={()=> StateDisptch({type:"showoption"})} id="dropdown-button" className={`flex items-center gap-1 max-w-2xl rounded-full p-2 cursor-pointer ${state.showDropDown ? "bg-gray-300" : "hover:bg-gray-200"}`}>
-                {state.showMin ? <ViewCardOutlineIcon /> : <ViewClassicOutlineIcon /> }
-                <CaretDownOutlineIcon />
-              </div>}
-              {isTab && state.showDropDown && <>
-            <div style={state.showMax ? dropdownMaxPosition : dropdownPosition} className={`z-10 fixed shadow bg-white w-32 rounded-sm`}>
-                <nav className="p-3 pl-4 pb-2">View</nav>
-                <div>
-                  <div onClick={()=> StateDisptch({type:"showminoption"})} className={`flex items-center gap-2 p-2 pl-6 h-12 cursor-pointer ${state.showMin ? "bg-gray-200" : "hover:bg-gray-100"}`}>
-                    {state.showMin ? <ViewCardFillIcon /> : <ViewCardOutlineIcon /> }
-                    <nav>Card</nav>
-                  </div> 
-                  <div onClick={()=> StateDisptch({type:"showmaxoption"})} className={`flex items-center gap-2 p-2 pl-6 h-12 cursor-pointer ${state.showMax ? "bg-gray-200" : "hover:bg-gray-100"}`}>
-                    {state.showMax ? <ViewClassicFillIcon /> : <ViewClassicOutlineIcon /> }
-                    <nav>Classic</nav>
-                  </div>
+              {isTab && (
+                <div
+                  onClick={() => StateDisptch({ type: "showoption" })}
+                  id="dropdown-button"
+                  className={`flex items-center gap-1 max-w-2xl rounded-full p-2 cursor-pointer ${
+                    state.showDropDown ? "bg-gray-300" : "hover:bg-gray-200"
+                  }`}
+                >
+                  {state.showMin ? (
+                    <ViewCardOutlineIcon />
+                  ) : (
+                    <ViewClassicOutlineIcon />
+                  )}
+                  <CaretDownOutlineIcon />
                 </div>
-              </div>
-          </>}
+              )}
+              {isTab && state.showDropDown && (
+                <>
+                  <div
+                    style={
+                      state.showMax ? dropdownMaxPosition : dropdownPosition
+                    }
+                    className={`z-10 fixed shadow bg-white w-32 rounded-sm`}
+                  >
+                    <nav className="p-3 pl-4 pb-2">View</nav>
+                    <div>
+                      <div
+                        onClick={() => StateDisptch({ type: "showminoption" })}
+                        className={`flex items-center gap-2 p-2 pl-6 h-12 cursor-pointer ${
+                          state.showMin ? "bg-gray-200" : "hover:bg-gray-100"
+                        }`}
+                      >
+                        {state.showMin ? (
+                          <ViewCardFillIcon />
+                        ) : (
+                          <ViewCardOutlineIcon />
+                        )}
+                        <nav>Card</nav>
+                      </div>
+                      <div
+                        onClick={() => StateDisptch({ type: "showmaxoption" })}
+                        className={`flex items-center gap-2 p-2 pl-6 h-12 cursor-pointer ${
+                          state.showMax ? "bg-gray-200" : "hover:bg-gray-100"
+                        }`}
+                      >
+                        {state.showMax ? (
+                          <ViewClassicFillIcon />
+                        ) : (
+                          <ViewClassicOutlineIcon />
+                        )}
+                        <nav>Classic</nav>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
             {info.map((data, idx) => (
               <div
@@ -199,9 +257,9 @@ export default function Home(){
               </div>
             ))}
           </div>
-          {isMobile && <Community /> }
+          {isMobile && <Community />}
         </div>
-        {/* } */}
-      </>
-    );
+      )}
+    </>
+  );
 }

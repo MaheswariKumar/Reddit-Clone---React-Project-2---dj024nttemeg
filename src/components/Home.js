@@ -14,6 +14,7 @@ import ViewCardFillIcon from "./icons/ViewCardFillIcon";
 import ViewClassicOutlineIcon from "./icons/ViewClassicOutlineIcon";
 import SideBar from "./SideBar";
 
+
 export default function Home() {
   const [info, setInfo] = useState([]);
   const [limit, setLimit] = useState(10);
@@ -135,7 +136,7 @@ export default function Home() {
 
   return (
     <>
-      <SideBar />
+    
       {state.isLoading ? (
         <div className="flex items-center justify-center h-screen">
           <img
@@ -146,6 +147,8 @@ export default function Home() {
         </div>
       ) : (
         <div className="p-1 mt-12 flex justify-center w-full max-w-full">
+          <SideBar />
+          <div className="flex justify-center">
           <div
             className={`flex justify-center w-full flex-col m-2 ${
               state.showMax ? "max-w-5xl" : "max-w-2xl"
@@ -258,6 +261,7 @@ export default function Home() {
             ))}
           </div>
           {isMobile && <Community />}
+          </div>
         </div>
       )}
     </>

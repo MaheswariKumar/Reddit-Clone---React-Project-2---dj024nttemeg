@@ -146,7 +146,7 @@ export default function Home() {
           />
         </div>
       ) : (
-        <div className="p-1 mt-12 flex justify-center w-full max-w-full">
+        <div className="p-1 mt-12 flex justify-evenly w-full max-w-full">
           <SideBar />
           <div className="flex justify-center">
           <div

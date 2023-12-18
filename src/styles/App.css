@@ -77,9 +77,8 @@
 }
 
 .side_bar1{
-  min-height: 100vh;
+  height: 42rem;
   overflow-y: auto;
-  max-height: 32rem;
 }
 
 .side_bar1::-webkit-scrollbar {

@@ -76,6 +76,26 @@
   background-color: initial;
 }
 
+.side_bar1{
+  min-height: 100vh;
+  overflow-y: auto;
+  max-height: 32rem;
+}
+
+.side_bar1::-webkit-scrollbar {
+  width: 6px;
+}
+
+.side_bar1::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+}
+
+.side_bar1::-webkit-scrollbar-track {
+  background-color: initial;
+}
+
 .shadow {
   box-shadow: 0 0 5px 0.2px rgba(0, 0, 0, 0.5);
 }

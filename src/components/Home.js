@@ -136,7 +136,6 @@ export default function Home() {
 
   return (
     <>
-    
       {state.isLoading ? (
         <div className="flex items-center justify-center h-screen">
           <img
@@ -148,10 +147,10 @@ export default function Home() {
       ) : (
         <div className="p-1 mt-12 flex justify-evenly w-full max-w-full">
           <SideBar />
-          <div className="flex justify-center">
-          <div
-            className={`flex justify-center w-full flex-col m-2 ${
-              state.showMax ? "max-w-5xl" : "max-w-2xl"
+          <div className={`flex justify-evenly`}>
+          <div 
+            className={`flex justify-center w-full flex-col m-2  ${
+              state.showMax ? "max-w-4xl" : "max-w-3xl"
             }`}
           >
             <div className="flex items-center pt-4 justify-between gap-15 pb-7 pl-7 pr-7">
@@ -260,7 +259,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          {isMobile && <Community />}
+          {isMobile && <Community showMax={state.showMax} />}
           </div>
         </div>
       )}

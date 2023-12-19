@@ -35,10 +35,9 @@ export default function SideBar() {
       }
 
   }
-
     return (
         <>
-            <div className={`border-r w-56 max-w-lg ${seemore ? "side_bar1 h-10" : null}`}>
+            <div className="border-r side_bar1 side sticky top-14 left-10 z-10 w-56 max-w-lg">
               <div className="flex flex-col justify-center pt-8 pr-4">
                 <div className="border-b pb-2">
                 <div className="flex justify-start gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">
@@ -72,7 +71,7 @@ export default function SideBar() {
                 <nav className="text-sm">No Topics</nav>
               </div>}
             </div>
-            <div className="pb-3 pt-3">
+            <div className="pb-3 pt-3 ">
             <div className="flex justify-between gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">
               <nav className="text-xs text-gray-600">RESOURCES</nav>
               <div onClick={()=> SetOpenResource(!openResource)}>
@@ -136,13 +135,13 @@ export default function SideBar() {
                 </div>
                 </div>
                 </>}
-                <div className="flex flex-col mr-24 pr-6 pb-3">
+                <div className="flex flex-col mr-24 pr-6 pb-3 mb-8">
                 <button onClick={handleSeeMore} className="text-xs whitespace-nowrap font-medium rounded-full pt-2 p-2 hover:bg-gray-300">{text}</button>
               </div> 
               </div>}
-              <p style={{color:"rgb(67, 67, 67)", fontSize: ".65rem"}} className="pt-12">Reddit, Inc. © 2023. All rights reserved.</p>
             </div>
               </div>
+              <p style={{color:"rgb(67, 67, 67)", fontSize: ".65rem"}} className="fixed bottom-1 pt-12 text-center">Reddit, Inc. © 2023. All rights reserved.</p>
           </div>
         </>
     )

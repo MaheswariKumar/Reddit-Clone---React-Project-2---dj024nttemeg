@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import "../styles/App.css";
 
-export default function Community(){
+export default function Community({showMax}){
     const [seemore, setSeeMore] = useState(false);
     const [text, setText] = useState("See more");
 
@@ -14,12 +14,11 @@ export default function Community(){
         else {
             setText("See less");
         }
-
     }
  
     return (
         <>
-          <div className="side_bar m-3 ml-7 mt-10 pl-2 w-80 max-h-96 bg-gray-50">
+          <div className={`side_bar sticky top-14 m-3 ml-7 mt-10 pl-2 max-h-96 bg-gray-50 ${showMax ? "w-72" : "w-80"}`}>
             <nav className="pb-5 pt-2 text-xs text-gray-600 font-semibold">POPULAR COMMUNITIES</nav>
             <div className="flex item-center justify-center flex-col gap-2 pl-2 pr-2">
               <div className="flex item-center gap-2 pl-2 pt-2 pr-14 pb-2 hover:bg-gray-200 cursor-pointer">

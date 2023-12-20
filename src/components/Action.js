@@ -3,4 +3,9 @@ export const setIsMobile = (isMobile, isTab) => ({
     isMobile,
     isTab,
   });
+
+export const setSideBar = (isSideBarOpen) => ({
+  type:"SET_SIDEBAR",
+  isSideBarOpen,
+})
   

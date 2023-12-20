@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsMobile } from "./Action";
+import { setIsMobile, setSideBar } from "./Action";
 import CustomLogo from "./icons/CustomLogo";
 import MenuIcon from "./icons/MenuIcon";
 import SearchIcon from "./icons/SearchIcon";
@@ -11,6 +11,7 @@ import OverflowHorizontalOutlineIcon from "./icons/OverflowHorizontalOutlineIcon
 
 export default function NavBar(){
     const isMobile = useSelector((state) => state.isMobile);
+    const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
     const dispatch = useDispatch();
 
     useEffect(()=>{
@@ -29,7 +30,7 @@ export default function NavBar(){
       <>
         <div className="p-1 pb-2 pl-4 pr-7 flex items-center justify-between gap-4 border-b w-full bg-white fixed top-0 z-5">
           <div className="flex items-center gap-2 pr-4">
-            <div>
+            <div className="cursor-pointer" onClick={()=> dispatch(setSideBar(!isSideBarOpen))}>
               <MenuIcon />
             </div>
             <img

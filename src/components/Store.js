@@ -3,6 +3,7 @@ import { createStore } from "redux";
 const initialState = {
   isMobile: window.innerWidth >= 1024,
   isTab: window.innerWidth >= 768,
+  isSideBarOpen: true,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -13,6 +14,13 @@ const rootReducer = (state = initialState, action) => {
         isMobile: action.isMobile,
         isTab : action.isTab
       };
+    
+    case "SET_SIDEBAR":
+      return {
+        ...state,
+        isSideBarOpen: action.isSideBarOpen,
+      }
+
     default:
       return state;
   }

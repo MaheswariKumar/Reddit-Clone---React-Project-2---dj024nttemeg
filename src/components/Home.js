@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { setSideBar } from "./Action";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import CaretDownOutlineIcon from "./icons/CaretDownOutlineIcon";
 import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
@@ -18,11 +19,13 @@ import SideBar from "./SideBar";
 export default function Home() {
   const [info, setInfo] = useState([]);
   const [limit, setLimit] = useState(10);
+  const dispatch = useDispatch();
   const isMobile = useSelector((state) => state.isMobile);
   const isTab = useSelector((state) => state.isTab);
+  const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
   const [dropdownPosition, setDropdownPosition] = useState({
     top: "120px",
-    left: "800px",
+    left: "1000px",
   });
   const [dropdownMaxPosition, setDropdownMaxPosition] = useState({
     top: "120px",
@@ -110,7 +113,21 @@ export default function Home() {
   }, [limit]);
 
   useEffect(() => {
+    const handleSideBar = () => {
+      dispatch(setSideBar(false))
+    }
+    
+    window.addEventListener("resize", handleSideBar);
+
+    return () => {
+      window.removeEventListener("resize", handleSideBar);
+    };
+
+  }, []);
+
+  useEffect(() => {
     handleResize();
+    
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -146,7 +163,7 @@ export default function Home() {
         </div>
       ) : (
         <div className="p-1 mt-12 flex justify-evenly w-full max-w-full">
-          <SideBar />
+          {isSideBarOpen && <SideBar />}
           <div className={`flex justify-evenly`}>
           <div 
             className={`flex justify-center w-full flex-col m-2  ${
@@ -159,7 +176,7 @@ export default function Home() {
               </button>
               {isTab && (
                 <div
-                  onClick={() => StateDisptch({ type: "showoption" })}
+                  onClick={() => {StateDisptch({ type: "showoption" }), handleResize()}}
                   id="dropdown-button"
                   className={`flex items-center gap-1 max-w-2xl rounded-full p-2 cursor-pointer ${
                     state.showDropDown ? "bg-gray-300" : "hover:bg-gray-200"

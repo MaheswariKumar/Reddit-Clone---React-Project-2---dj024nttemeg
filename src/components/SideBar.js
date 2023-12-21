@@ -37,7 +37,7 @@ export default function SideBar() {
   }
     return (
         <>
-            <div className="border-r side_bar1 side sticky top-14 left-10 z-10 w-56 max-w-lg">
+            <div className="border-r side_bar1 side sticky top-14 left-10 z-20 w-56 max-w-lg">
               <div className="flex flex-col justify-center pt-8 pr-4">
                 <div className="border-b pb-2">
                 <div className="flex justify-start gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">

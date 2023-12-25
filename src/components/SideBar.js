@@ -35,6 +35,9 @@ export default function SideBar() {
       }
 
   }
+
+  // border-r side_bar1 side sticky top-14 left-10 z-20 w-56 max-w-lg
+  // border-r side_bar1 top-14 left-0 z-20 w-60 pl-4 max-w-lg fixed bg-white
     return (
         <>
             <div className="border-r side_bar1 side sticky top-14 left-10 z-20 w-56 max-w-lg">

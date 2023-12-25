@@ -153,8 +153,10 @@ export default function Home() {
 
   return (
     <>
-      {state.isLoading ? (
-        <div className="flex items-center justify-center h-screen">
+        <div className={`p-1 flex justify-around w-full max-w-full ${state.isLoading ? null : "mt-12"}`}>
+          {isSideBarOpen && <SideBar />}
+          {state.isLoading ? (
+        <div className="flex items-center justify-center h-screen flex-1">
           <img
             src="https://www.svgrepo.com/show/452094/reddit.svg"
             alt="Reddit Logo"
@@ -162,8 +164,6 @@ export default function Home() {
           />
         </div>
       ) : (
-        <div className="p-1 mt-12 flex justify-evenly w-full max-w-full">
-          {isSideBarOpen && <SideBar />}
           <div className={`flex justify-evenly`}>
           <div 
             className={`flex justify-center w-full flex-col m-2  ${
@@ -278,8 +278,8 @@ export default function Home() {
           </div>
           {isMobile && <Community showMax={state.showMax} />}
           </div>
+          )}
         </div>
-      )}
     </>
   );
 }

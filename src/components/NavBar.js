@@ -50,7 +50,7 @@ export default function NavBar(){
           </div>
           <div className="flex items-center gap-3">
             {isMobile && (
-              <div className="flex items-center bg-gray-200 max-w-2xl rounded-full p-2 pl-3 pr-3 gap-2">
+              <div className="flex items-center bg-gray-200 max-w-2xl rounded-full p-2 pl-3 pr-3 gap-2 cursor-pointer">
                 <QrCodeOutlineIcon />
                 <nav className="text-sm font-semibold whitespace-nowrap">
                   Get app

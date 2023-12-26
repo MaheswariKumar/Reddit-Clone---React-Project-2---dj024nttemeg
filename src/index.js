@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import store from "./components/Store.js";
 import App from "./components/App";
+import AuthApp from "./components/AuthApp.js";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 
@@ -13,7 +14,17 @@ root.render(
     <React.StrictMode>
       <Provider store={store}>
         <App />
+        <AuthApp />
       </Provider>
     </React.StrictMode>
   </BrowserRouter>
+);
+
+const authroot = ReactDOM.createRoot(document.getElementById("Auth_root"));
+authroot.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <AuthApp />
+      </Provider>
+    </React.StrictMode>
 );

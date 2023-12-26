@@ -18,7 +18,7 @@ import TopicLawOutlineIcon from "./icons/TopicLawOutlineIcon";
 import RulesOutlineIcon from "./icons/RulesOutlineIcon";
 
 
-export default function SideBar() {
+export default function SideBar({isMobile, isSideBarOpen}) {
   const [openRecent, setOpenRecent] = useState(false);
   const [openTopic, setOpenTopic] = useState(false);
   const [openResource, SetOpenResource] = useState(false);
@@ -40,7 +40,7 @@ export default function SideBar() {
   // border-r side_bar1 top-14 left-0 z-20 w-60 pl-4 max-w-lg fixed bg-white
     return (
         <>
-            <div className="border-r side_bar1 side sticky top-14 left-10 z-20 w-56 max-w-lg">
+            <div className={`${!isMobile && isSideBarOpen ? "border-r side_bar1 top-12 h-full left-0 w-60 pl-4 max-w-lg fixed bg-white" : "border-r side_bar1 side sticky top-14 left-10 w-56 max-w-lg"} }`}>
               <div className="flex flex-col justify-center pt-8 pr-4">
                 <div className="border-b pb-2">
                 <div className="flex justify-start gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">
@@ -144,7 +144,7 @@ export default function SideBar() {
               </div>}
             </div>
               </div>
-              <p style={{color:"rgb(67, 67, 67)", fontSize: ".65rem"}} className="fixed bottom-1 pt-12 text-center">Reddit, Inc. © 2023. All rights reserved.</p>
+              <p style={{color:"rgb(67, 67, 67)", fontSize: ".65rem"}} className="bg-white fixed bottom-1 pt-12 text-center">Reddit, Inc. © 2023. All rights reserved.</p>
           </div>
         </>
     )

@@ -154,7 +154,7 @@ export default function Home() {
   return (
     <>
         <div className={`p-1 flex justify-around w-full max-w-full ${state.isLoading ? null : "mt-12"}`}>
-          {isSideBarOpen && <SideBar />}
+          {isMobile && isSideBarOpen  && <SideBar isMobile={isMobile} isSideBarOpen={isSideBarOpen} />}
           {state.isLoading ? (
         <div className="flex items-center justify-center h-screen flex-1">
           <img

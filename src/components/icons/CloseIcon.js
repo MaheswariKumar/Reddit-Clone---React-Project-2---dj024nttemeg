@@ -1,0 +1,12 @@
+import React from 'react';
+import SvgIcon from '@mui/material/SvgIcon';
+
+function CloseIcon(props) {
+  return (
+    <SvgIcon {...props} fill="currentColor" viewBox="0 0 20 20">
+      <path d="m18.442 2.442-.884-.884L10 9.116 2.442 1.558l-.884.884L9.116 10l-7.558 7.558.884.884L10 10.884l7.558 7.558.884-.884L10.884 10l7.558-7.558Z" />
+    </SvgIcon>
+  );
+}
+
+export default CloseIcon;

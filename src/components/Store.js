@@ -4,6 +4,7 @@ const initialState = {
   isMobile: window.innerWidth >= 1024,
   isTab: window.innerWidth >= 768,
   isSideBarOpen: true,
+  isQrOpen: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -19,6 +20,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isSideBarOpen: action.isSideBarOpen,
+      }
+    
+    case "OPEN_QR":
+      return {
+        ...state,
+        isQrOpen: !state.isQrOpen
       }
 
     default:

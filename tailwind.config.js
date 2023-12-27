@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       backgroundColor: {
         'D93A00': '#D93A00',
+        '962900': '#962900'
       },
       maxHeight: {
         '128': '32rem',

@@ -93,17 +93,21 @@ export default function Home() {
   const [state, StateDisptch] = useReducer(StateReducer, IntialState);
 
   async function getData() {
-    const rs = await axios.get(
-      `https://academics.newtonschool.co/api/v1/reddit/post?limit=${limit}`,
-      {
-        headers: {
-          projectID: "dj024nttemeg",
-        },
-      }
-    );
-    setInfo(rs.data.data);
-    StateDisptch({ type: "loaded" });
-    console.log(rs.data.data);
+    try {
+      const rs = await axios.get(
+        `https://academics.newtonschool.co/api/v1/reddit/post?limit=${limit}`,
+        {
+          headers: {
+            projectID: "dj024nttemeg",
+          },
+        }
+      );
+      setInfo(rs.data.data);
+      StateDisptch({ type: "loaded" });
+      console.log(rs.data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+    }
   }
 
   useEffect(() => {

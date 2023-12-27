@@ -8,4 +8,8 @@ export const setSideBar = (isSideBarOpen) => ({
   type:"SET_SIDEBAR",
   isSideBarOpen,
 })
+
+export const openQR = () => ({
+  type: "OPEN_QR",
+})
   

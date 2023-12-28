@@ -3,8 +3,11 @@ import { createStore } from "redux";
 const initialState = {
   isMobile: window.innerWidth >= 1024,
   isTab: window.innerWidth >= 768,
+  isMob: window.innerWidth >= 500,
   isSideBarOpen: true,
   isQrOpen: false,
+  isLogin: false,
+  isSignUp: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -13,8 +16,14 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isMobile: action.isMobile,
-        isTab : action.isTab
+        isTab : action.isTab,
       };
+
+    case "SET_IS_MOB":
+      return {
+        ...state,
+        isMob : action.isMob,
+      }
     
     case "SET_SIDEBAR":
       return {
@@ -26,6 +35,18 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isQrOpen: !state.isQrOpen
+      }
+
+    case "OPEN_LOGIN":
+      return {
+        ...state,
+        isLogin: !state.isLogin
+      }
+
+    case "SHOW_SIGNUP":
+      return {
+        ...state,
+        isSignUp: !state.isSignUp
       }
 
     default:

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsMobile, setSideBar, openQR } from "./Action";
+import { setIsMobile, setSideBar, openQR, openLogin } from "./Action";
 import CustomLogo from "./icons/CustomLogo";
 import MenuIcon from "./icons/MenuIcon";
 import SearchIcon from "./icons/SearchIcon";
@@ -24,6 +24,8 @@ export default function NavBar(){
         return () => {
             window.removeEventListener("resize", handleReSize);
         }
+
+        
     }, [])
 
     return (
@@ -48,16 +50,16 @@ export default function NavBar(){
               className="bg-gray-200 p-2 rounded-full w-3/6 font-sans placeholder-gray-500"
             />
           </div>
-          <div className="flex items-center gap-3" onClick={()=> dispatch(openQR())}>
+          <div className="flex items-center gap-3" >
             {isMobile && (
-              <div className="flex items-center bg-gray-200 hover:bg-gray-300 max-w-2xl rounded-full p-2 pl-3 pr-3 gap-2 cursor-pointer">
+              <div onClick={()=> dispatch(openQR())} className="flex items-center bg-gray-200 hover:bg-gray-300 max-w-2xl rounded-full p-2 pl-3 pr-3 gap-2 cursor-pointer">
                 <QrCodeOutlineIcon />
                 <nav className="text-sm font-semibold whitespace-nowrap">
                   Get app
                 </nav>
               </div>
             )}
-            <div className="bg-D93A00 hover:bg-962900 max-w-xl rounded-full p-3 gap-2 cursor-pointer">
+            <div onClick={()=> dispatch(openLogin())} className="bg-D93A00 hover:bg-962900 max-w-xl rounded-full p-3 gap-2 cursor-pointer">
               <nav className="text-sm font-semibold text-white whitespace-nowrap">
                 Log In
               </nav>

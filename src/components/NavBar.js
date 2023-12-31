@@ -1,17 +1,19 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsMobile, setSideBar, openQR, openLogin } from "./Action";
+import { setIsMobile, setSideBar, openQR, openLogin, showMenuBar } from "./Action";
 import CustomLogo from "./icons/CustomLogo";
 import MenuIcon from "./icons/MenuIcon";
 import SearchIcon from "./icons/SearchIcon";
 import QrCodeOutlineIcon from "./icons/QrCodeOutlineIcon";
 import OverflowHorizontalOutlineIcon from "./icons/OverflowHorizontalOutlineIcon";
+import MenuBar from "./MenuBar";
 
 
 export default function NavBar(){
     const isMobile = useSelector((state) => state.isMobile);
     const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
+    const isMenuBar = useSelector((state) => state.isMenuBar);
     const dispatch = useDispatch();
 
     useEffect(()=>{
@@ -25,7 +27,6 @@ export default function NavBar(){
             window.removeEventListener("resize", handleReSize);
         }
 
-        
     }, [])
 
     return (
@@ -64,9 +65,10 @@ export default function NavBar(){
                 Log In
               </nav>
             </div>
-            <div>
+            <div onClick={()=> dispatch(showMenuBar())}  className="cursor-pointer rounded-full hover:bg-gray-200 w-10 h-10 flex items-center justify-center">
               <OverflowHorizontalOutlineIcon />
             </div>
+            {isMenuBar && <MenuBar />}
           </div>
         </div>
       </>

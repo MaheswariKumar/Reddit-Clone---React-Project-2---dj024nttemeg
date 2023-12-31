@@ -25,4 +25,8 @@ export const openLogin = () => ({
 export const showSignUp = () => ({
   type: "SHOW_SIGNUP",
 })
+
+export const showMenuBar = () => ({
+  type: "SHOW_MENUBAR",
+})
   

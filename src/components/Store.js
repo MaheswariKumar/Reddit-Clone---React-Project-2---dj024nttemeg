@@ -8,6 +8,7 @@ const initialState = {
   isQrOpen: false,
   isLogin: false,
   isSignUp: false,
+  isMenu: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -47,6 +48,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isSignUp: !state.isSignUp
+      }
+
+    case "SHOW_MENUBAR":
+      return {
+        ...state,
+        isMenu: !state.isMenu
       }
 
     default:

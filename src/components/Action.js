@@ -26,7 +26,27 @@ export const showSignUp = () => ({
   type: "SHOW_SIGNUP",
 })
 
-export const showMenuBar = () => ({
+export const showSetUsername = () => ({
+  type: "SHOW_SET_USERNAME",
+})
+
+export const showMenuBar = (isMenu) => ({
   type: "SHOW_MENUBAR",
+  isMenu,
 })
   
+export const setUserAuth = (user) => ({
+  type: 'SET_USER_AUTH',
+  user,
+});
+
+export const setSignUp = (username, email, password)=> ({
+  type: 'SET_SIGNUP',
+  username, 
+  email,
+  password
+})
+
+export const isLoggedIn = () => ({
+  type: 'IS_USER_LOGGEDIN',
+});

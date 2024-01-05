@@ -8,7 +8,14 @@ const initialState = {
   isQrOpen: false,
   isLogin: false,
   isSignUp: false,
+  isUserName: false,
   isMenu: false,
+  signUpForm: { 
+    username:'', 
+    email: '',
+    password:''
+  },
+  isUserLoggedin: false
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -50,11 +57,39 @@ const rootReducer = (state = initialState, action) => {
         isSignUp: !state.isSignUp
       }
 
+    case "SHOW_SET_USERNAME":
+      return {
+        ...state,
+        isUserName: !state.isUserName
+      }
+
     case "SHOW_MENUBAR":
       return {
         ...state,
-        isMenu: !state.isMenu
+        isMenu: action.isMenu
       }
+
+    case 'SET_USER_AUTH':
+      return {
+        ...state,
+        user: action.user,
+      };
+
+    case 'SET_SIGNUP':
+      return {
+        ...state,
+        signUpForm: { 
+          username: action.username,
+          email: action.email, 
+          password: action.password
+        }
+      };
+
+    case 'IS_USER_LOGGEDIN':
+      return {
+        ...state,
+        isUserLoggedin: !state.isUserLoggedin,
+      };
 
     default:
       return state;

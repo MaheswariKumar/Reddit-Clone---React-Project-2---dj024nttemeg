@@ -5,6 +5,7 @@ import SideBar from "./SideBar";
 import QRCode from "./QRCode";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import UserName from "./UserName";
 
 export default function AuthApp() {
     const isMobile = useSelector((state) => state.isMobile);
@@ -12,6 +13,7 @@ export default function AuthApp() {
     const isQrOpen = useSelector((state) => state.isQrOpen);
     const isLogin = useSelector((state) => state.isLogin);
     const isSignUp = useSelector((state) => state.isSignUp);
+    const isUserName = useSelector((state) => state.isUserName);
     const dispatch = useDispatch();
     const backGroundDiv = useRef(null);
 
@@ -36,6 +38,9 @@ export default function AuthApp() {
             </div>}
             {isSignUp && <div style={{backgroundColor: "rgb(26, 26, 27, 0.4)"}} className="w-full flex items-center justify-center fixed top-0 bottom-0">
                 <SignUp />
+            </div>}
+            {isUserName && <div style={{backgroundColor: "rgb(26, 26, 27, 0.4)"}} className="w-full flex items-center justify-center fixed top-0 bottom-0">
+                <UserName />
             </div>}
         </div>
     )

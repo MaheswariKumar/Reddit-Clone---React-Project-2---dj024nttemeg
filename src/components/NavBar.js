@@ -10,33 +10,17 @@ import OverflowHorizontalOutlineIcon from "./icons/OverflowHorizontalOutlineIcon
 import CaretDownBigOutlineIcon from "./icons/CaretDownBigOutlineIcon";
 import HomeFillIcon from "./icons/HomeFillIcon";
 import PopularOutlineIcon from "./icons/PopularOutlineIcon";
-import MoreIcon from "./icons/MoreIcon";
-import CustomSpeakerIcon from "./icons/CustomSpeakerIcon";
+import TopicActivismOutlineIcon from "./icons/TopicActivismOutlineIcon";
 
 
 export default function NavBar(){
     const isMobile = useSelector((state) => state.isMobile);
+    const isTab = useSelector((state) => state.isTab);
     const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
     const isMenu = useSelector((state) => state.isMenu);
     const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
+    const checkedStatus = useSelector((state) => state.checkedStatus);
     const dispatch = useDispatch();
-
-    const menuRef = useRef(null);
-  
-    const handleDiv = (e) => {
-        if (!menuRef.current.contains(e.target)) {
-           dispatch(showMenuBar(false))
-        }
-    }
-  
-    useEffect(() => {
-      document.addEventListener('click', handleDiv);
-  
-      return () => {
-        document.removeEventListener('click', handleDiv);
-      };
-    }, []);
-
 
     useEffect(()=>{
         const handleReSize = () => {
@@ -54,25 +38,25 @@ export default function NavBar(){
 
     return (
       <>
-        <div className="p-1 pb-2 pl-4 pr-7 flex items-center justify-between gap-4 border-b w-full bg-white fixed top-0 z-5">
-          <div className="flex items-center gap-2 pr-4">
-            {/* <div className="cursor-pointer" onClick={()=> dispatch(setSideBar(!isSideBarOpen))}>
+        <div className={`p-1 pb-2 pl-4 pr-7 flex items-center justify-between border-b w-full bg-white fixed top-0 z-5 ${isMobile ? "gap-4" : "gap-6"}`}>
+          <div className="flex items-center gap-2 pr-4 mr-1">
+            {!isUserLoggedin && <div className="cursor-pointer" onClick={()=> dispatch(setSideBar(!isSideBarOpen))}>
               <MenuIcon />
-            </div> */}
+            </div>}
             <img
               src="https://www.svgrepo.com/show/452094/reddit.svg"
               className="w-9 h-9"
             ></img>
             {isMobile && <CustomLogo />}
-            <div onClick={()=> dispatch(setSideBar(!isSideBarOpen))} className="flex justify-between items-center h-[45px] w-[260px] flex-1 hover:border cursor-pointer">
-            <div className="flex justify-start gap-4 p-3 rounded-sm cursor-pointer w-full">
+            {isUserLoggedin && <div onClick={()=> dispatch(setSideBar(!isSideBarOpen))} className={`flex justify-between items-center h-[45px] ${isMobile ? "w-[260px]" : null} hover:border cursor-pointer`}>
+            <div className={`flex justify-start gap-2 rounded-sm cursor-pointer w-ful ${isMobile ? "p-3" : null}`}>
               <HomeFillIcon />
-              <nav className="text-sm">Home</nav>
+              {isMobile && <nav className="text-sm">Home</nav>}
             </div>
-            <div className="">
+            <div>
             <CaretDownBigOutlineIcon />
             </div>
-            </div>
+            </div>}
           </div>
           <div className="w-full flex items-center bg-gray-200 max-w-3xl rounded-full">
             <div className="pl-4">
@@ -84,7 +68,7 @@ export default function NavBar(){
             />
           </div>
           <div className="flex items-center gap-3" >
-            {/* {isMobile && (
+            {!isUserLoggedin ? <> {isMobile && (
               <div onClick={()=> dispatch(openQR())} className="flex items-center bg-gray-200 hover:bg-gray-300 max-w-2xl rounded-full p-2 pl-3 pr-3 gap-2 cursor-pointer">
                 <QrCodeOutlineIcon />
                 <nav className="text-sm font-semibold whitespace-nowrap">
@@ -97,14 +81,43 @@ export default function NavBar(){
                 Log In
               </nav>
             </div>
-            <div ref={menuRef} onClick={()=> dispatch(showMenuBar(!isMenu))}  className="cursor-pointer rounded-full hover:bg-gray-200 w-10 h-10 flex items-center justify-center">
+            <div onClick={()=> dispatch(showMenuBar(!isMenu))}  className="cursor-pointer rounded-full hover:bg-gray-200 w-10 h-10 flex items-center justify-center">
               <OverflowHorizontalOutlineIcon />
-            </div> */}
+            </div> </> :
+            <>
+            {isTab && <> <div className="cursor-pointer hover:bg-gray-300 h-8 w-8 flex items-center justify-center">
             <PopularOutlineIcon />
-            <img width="25" height="25" src="https://img.icons8.com/ios/50/speech-bubble-with-dots--v1.png" alt="speech-bubble-with-dots--v1"/>
+            </div>
+            <div className="cursor-pointer hover:bg-gray-300 h-8 w-8 flex items-center justify-center">
+            <img className="cursor-pointer hover:bg-gray-300" width="25" height="25" src="https://img.icons8.com/ios/50/speech-bubble-with-dots--v1.png" alt="speech-bubble-with-dots--v1"/>
+            </div>
+            <div className="cursor-pointer hover:bg-gray-300 h-8 w-8 flex items-center justify-center">
             <img width="25" height="25" src="https://img.icons8.com/fluency-systems-regular/48/appointment-reminders--v1.png" alt="appointment-reminders--v1"/>
-            <img width="30" height="30" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="plus-math--v1"/>
-            <CustomSpeakerIcon />
+            </div>
+            <img className="cursor-pointer hover:bg-gray-300" width="30" height="30" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="plus-math--v1"/>
+            <div className="cursor-pointer flex gap-1 items-center justify-center text-sm font-semibold bg-gray-200 hover:bg-gray-300 max-w-xl rounded-full py-1 px-2">
+            <TopicActivismOutlineIcon />
+            <nav>Advertise</nav>
+            </div> </>}
+            <div onClick={()=> dispatch(showMenuBar(!isMenu))}  className={`flex justify-between items-center h-[45px] ${isMobile ? "w-[280px]" : null} flex-1 border cursor-pointer`}>
+            <div className="flex items-center">
+              <div className="rounded-full bg=gray-400 w-10 h-10">
+              <img src="https://i.redd.it/snoovatar/avatars/a23dbde1-4832-4cc6-b528-8e3637c03984-headshot.png" alt="Prof_Img"></img>
+              {checkedStatus && <nav className="w-3 h-3 rounded-full bg-[#46d160] relative left-6 bottom-3 border-inherit border-2"></nav>}
+              </div>
+              {isMobile && <div className="flex flex-col">
+                <nav className="font-semibold text-sm">Profile Name</nav>
+                <div className="flex items-center gap-1">
+                  <img className="h-4 w-4 rounded-full" src="https://styles.redditmedia.com/t5_2qhhz/styles/communityIcon_6wrax3ocfar41.png"></img>
+                  <nav className="text-gray-400 text-sm">1 Karma</nav>
+                </div>
+              </div>}
+            </div>
+            <div>
+            <CaretDownBigOutlineIcon />
+            </div>
+            </div>
+            </>}
           </div>
         </div>
       </>

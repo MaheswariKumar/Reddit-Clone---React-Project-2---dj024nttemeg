@@ -67,7 +67,7 @@ export default function SideBar({isMobile, isSideBarOpen}) {
             <div className="flex justify-between gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">
               <nav className="text-xs text-gray-600">TOPICS</nav>
               <div onClick={()=> setOpenTopic(!openTopic)}>
-              {openTopic ? <CaretDownBigOutlineIcon /> : <CaretDownBigOutlineIcon />}  
+              {openTopic ? <CaretUpOutlineIcon /> : <CaretDownBigOutlineIcon />}  
               </div>
             </div>
             {openTopic &&               <div className="flex flex-col p-3">
@@ -78,7 +78,7 @@ export default function SideBar({isMobile, isSideBarOpen}) {
             <div className="flex justify-between gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">
               <nav className="text-xs text-gray-600">RESOURCES</nav>
               <div onClick={()=> SetOpenResource(!openResource)}>
-              {openResource ? <CaretDownBigOutlineIcon /> : <CaretDownBigOutlineIcon />}
+              {openResource ? <CaretUpOutlineIcon /> : <CaretDownBigOutlineIcon />}
               </div>
             </div>
             {openResource &&               <div className="flex flex-col">

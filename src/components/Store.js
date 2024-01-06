@@ -15,7 +15,9 @@ const initialState = {
     email: '',
     password:''
   },
-  isUserLoggedin: false
+  isUserLoggedin: true,
+  checkedStatus: true,
+  checkedTheme: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -89,6 +91,18 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         isUserLoggedin: !state.isUserLoggedin,
+      };
+
+    case 'SHOW_STATUS':
+      return {
+        ...state,
+        checkedStatus: !state.checkedStatus,
+      };
+
+    case 'CHANGE_THEME':
+      return {
+        ...state,
+        checkedTheme: !state.checkedTheme,
       };
 
     default:

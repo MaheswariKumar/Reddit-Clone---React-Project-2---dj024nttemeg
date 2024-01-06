@@ -50,3 +50,11 @@ export const setSignUp = (username, email, password)=> ({
 export const isLoggedIn = () => ({
   type: 'IS_USER_LOGGEDIN',
 });
+
+export const showStatus = () => ({
+  type: 'SHOW_STATUS',
+});
+
+export const changeTheme = () => ({
+  type: 'CHANGE_THEME',
+});

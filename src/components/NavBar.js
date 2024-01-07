@@ -11,15 +11,19 @@ import CaretDownBigOutlineIcon from "./icons/CaretDownBigOutlineIcon";
 import HomeFillIcon from "./icons/HomeFillIcon";
 import PopularOutlineIcon from "./icons/PopularOutlineIcon";
 import TopicActivismOutlineIcon from "./icons/TopicActivismOutlineIcon";
+import NavBarMoreIcon from "./icons/NavBarMoreIcon";
+import CustomSvgIcon from "./icons/CustomSvgIcon";
+import CustomPlusIcon from "./icons/CustomPlusIcon";
 
 
-export default function NavBar(){
+export default function NavBar({toggleRef}){
     const isMobile = useSelector((state) => state.isMobile);
     const isTab = useSelector((state) => state.isTab);
     const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
     const isMenu = useSelector((state) => state.isMenu);
     const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
     const checkedStatus = useSelector((state) => state.checkedStatus);
+    const checkedTheme = useSelector((state) => state.checkedTheme);
     const dispatch = useDispatch();
 
     useEffect(()=>{
@@ -35,10 +39,14 @@ export default function NavBar(){
 
     }, [])
 
+    const togggleMenu = () => {
+      dispatch(showMenuBar(!isMenu))
+    }
 
+    // bg-[#272729, #343536] 
     return (
       <>
-        <div className={`p-1 pb-2 pl-4 pr-7 flex items-center justify-between border-b w-full bg-white fixed top-0 z-5 ${isMobile ? "gap-4" : "gap-6"}`}>
+        <div className={`${checkedTheme ? "all" : null} p-1 pb-2 pl-4 pr-7 flex items-center justify-between border-b w-full bg-white fixed top-0 z-5 ${isMobile ? "gap-4" : "gap-6"}`}>
           <div className="flex items-center gap-2 pr-4 mr-1">
             {!isUserLoggedin && <div className="cursor-pointer" onClick={()=> dispatch(setSideBar(!isSideBarOpen))}>
               <MenuIcon />
@@ -58,13 +66,13 @@ export default function NavBar(){
             </div>
             </div>}
           </div>
-          <div className="w-full flex items-center bg-gray-200 max-w-3xl rounded-full">
+          <div className={`w-full flex items-center ${checkedTheme ? "bg-[#272729]" : "bg-gray-200"} max-w-3xl rounded-full`}>
             <div className="pl-4">
               <SearchIcon />
             </div>
             <input
               placeholder="Search Reddit"
-              className="bg-gray-200 p-2 rounded-full w-3/6 font-sans placeholder-gray-500"
+              className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-200"} p-2 rounded-full w-3/6 font-sans placeholder-gray-500`}
             />
           </div>
           <div className="flex items-center gap-3" >
@@ -81,21 +89,23 @@ export default function NavBar(){
                 Log In
               </nav>
             </div>
-            <div onClick={()=> dispatch(showMenuBar(!isMenu))}  className="cursor-pointer rounded-full hover:bg-gray-200 w-10 h-10 flex items-center justify-center">
+            <div onClick={togggleMenu}  className="cursor-pointer rounded-full hover:bg-gray-200 w-10 h-10 flex items-center justify-center">
               <OverflowHorizontalOutlineIcon />
             </div> </> :
             <>
-            {isTab && <> <div className="cursor-pointer hover:bg-gray-300 h-8 w-8 flex items-center justify-center">
+            {isTab && <> <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
             <PopularOutlineIcon />
             </div>
-            <div className="cursor-pointer hover:bg-gray-300 h-8 w-8 flex items-center justify-center">
-            <img className="cursor-pointer hover:bg-gray-300" width="25" height="25" src="https://img.icons8.com/ios/50/speech-bubble-with-dots--v1.png" alt="speech-bubble-with-dots--v1"/>
+            <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
+              <NavBarMoreIcon />
             </div>
-            <div className="cursor-pointer hover:bg-gray-300 h-8 w-8 flex items-center justify-center">
-            <img width="25" height="25" src="https://img.icons8.com/fluency-systems-regular/48/appointment-reminders--v1.png" alt="appointment-reminders--v1"/>
+            <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
+              <CustomSvgIcon />
             </div>
-            <img className="cursor-pointer hover:bg-gray-300" width="30" height="30" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="plus-math--v1"/>
-            <div className="cursor-pointer flex gap-1 items-center justify-center text-sm font-semibold bg-gray-200 hover:bg-gray-300 max-w-xl rounded-full py-1 px-2">
+            <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
+              <CustomPlusIcon />
+            </div>
+            <div className={`cursor-pointer flex gap-1 items-center justify-center text-sm font-semibold ${checkedTheme ? "bg-[#272729]" : "bg-gray-200 hover:bg-gray-300"}  max-w-xl rounded-full py-1 px-2`}>
             <TopicActivismOutlineIcon />
             <nav>Advertise</nav>
             </div> </>}

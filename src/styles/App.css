@@ -114,3 +114,8 @@
   max-height: calc(100vh - 55px);
   min-height: calc(100vh - 55px);
 }
+
+.all {
+  background-color: #1A1A1B;
+  color: #d7dadc;
+}

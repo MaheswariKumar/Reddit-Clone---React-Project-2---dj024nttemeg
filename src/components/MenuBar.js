@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
-import {showStatus, changeTheme, showMenuBar} from "./Action"
+import {showStatus, changeTheme} from "./Action"
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import LogoutIcon from "./icons/LogoutIcon";
 import ConversionIcon from "./icons/ConversionIcon";
@@ -22,128 +22,116 @@ export default function MenuBar() {
     const theme = createTheme();
     const [openMore, setOpenMore] = useState(false);
     const [openTerms, setOpenTerms] = useState(false);
-    const menuRef = useRef(null);
-    const isMenu = useSelector((state) => state.isMenu);
-
-  
-    const handleDiv = (e) => {
-        if (!isMenu && menuRef && !menuRef.current.contains(e.target)) {
-           dispatch(showMenuBar(false))
-        }
-    }
-  
-    useEffect(() => {
-      document.addEventListener('click', handleDiv);
-  
-      return () => {
-        document.removeEventListener('click', handleDiv);
-      };
-    }, []);
 
 
     return (
         <ThemeProvider theme={theme}>
-        <div ref={menuRef} className="side_bar2 fixed top-14 right-4 z-50 shadow sm w-64 py-4 bg-white overscroll-auto">
+        <div className={`${checkedTheme ? "all" : null} side_bar2 fixed top-14 right-4 z-50 shadow sm w-64 py-4 bg-white overscroll-auto`}>
             {isUserLoggedin ? <>
             <div className="flex gap-3 pl-4">
                 <MyCustomIcon style={{color: "gray"}} />
                 <nav className="text-gray-500">My Stuff</nav>
             </div>
-            <div className="pl-14 flex gap-8 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-8 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm`}>
                 <nav>Online Status</nav>
                 <IOSSwitch checked={checkedStatus} onChange={()=> dispatch(showStatus())} />
             </div>
-            <nav className="pl-14 flex items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">Profile</nav>
-            <nav className="pl-14 flex items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">Style Avatar</nav>
-            <nav className="pl-14 flex items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">User</nav>
-            <nav className="border my-3"></nav>
+            <nav className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>Profile</nav>
+            <nav className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>Style Avatar</nav>
+            <nav className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>User</nav>
+            <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-3`}></nav>
             <div className="flex gap-3 pl-4">
-                <img width="26" height="26" src="https://img.icons8.com/carbon-copy/100/ophthalmology.png" alt="ophthalmology"/>
+                {!checkedTheme ? <img width="26" height="26" src="https://img.icons8.com/carbon-copy/100/ophthalmology.png" alt="ophthalmology"/> :
+                <img width="26" height="26" src="https://img.icons8.com/ios/50/FFFFFF/eye-checked.png" alt="eye-checked"/>}
                 <nav className="text-gray-500">View Options</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm`}>
                 <nav>Dark Mode</nav>
                 <IOSSwitch checked={checkedTheme} onChange={()=> dispatch(changeTheme())} />
             </div>
-            <nav className="border my-3"></nav>
-            <div className="flex justify-start items-center gap-5 pl-4 cursor-pointer hover:bg-gray-100 h-10">
+            <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-3`}></nav>
+            <div className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
                 <CommunityOutlineIcon />
                 <nav className="text-sm font-semibold">Create a Commmnunity</nav>
             </div>
-            <div className="flex justify-start items-center gap-5 pl-4 cursor-pointer hover:bg-gray-100 h-10">
+            <div className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
                 <TopicActivismOutlineIcon />
                 <nav className="text-sm font-semibold">Advertise on Reddit</nav>
             </div>
-            <div className="flex justify-start items-center gap-4 pl-4 cursor-pointer hover:bg-gray-100 h-10">
-                <img width="23" height="23" src="https://img.icons8.com/material-outlined/24/shield.png" alt="shield"/>
+            <div className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
+                {checkedTheme ? <img width="23" height="23" src="https://img.icons8.com/ios/50/FFFFFF/shield.png" alt="shield"/>:
+                <img width="23" height="23" src="https://img.icons8.com/material-outlined/24/shield.png" alt="shield"/>}
                 <nav className="text-sm font-semibold">Premium</nav>
             </div>
-            <div className="flex justify-start items-center gap-5 pl-4 cursor-pointer hover:bg-gray-100 h-10">
+            <div className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
                 <HelpOutlineIcon />
                 <nav className="text-sm font-semibold">Help Center</nav>
             </div>
-            <div onClick={()=> setOpenMore(!openMore)} className="flex justify-between items-center gap-4 pl-4 pr-12 hover:bg-gray-100  cursor-pointer h-10">
+            <div onClick={()=> setOpenMore(!openMore)} className={`flex justify-between items-center gap-4 pl-4 pr-12 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"}  cursor-pointer h-10`}>
                 <div className="flex gap-5">
-                    <img width="23" height="23" src="https://img.icons8.com/ios/50/info--v1.png" alt="info--v1"/>
+                    {checkedTheme ? <img width="24" height="24" src="https://img.icons8.com/external-febrian-hidayat-basic-outline-febrian-hidayat/24/FFFFFF/external-information-ui-essential-febrian-hidayat-basic-outline-febrian-hidayat.png" alt="external-information-ui-essential-febrian-hidayat-basic-outline-febrian-hidayat"/>:
+                    <img width="23" height="23" src="https://img.icons8.com/ios/50/info--v1.png" alt="info--v1"/>}
                     <nav className="text-sm font-semibold">More</nav>
                 </div>
                 {openMore ? <CaretUpOutlineIcon /> :<CaretDownOutlineIcon />}
             </div>
             {openMore && <>
-                <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+                <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Reddit iOS</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Reddit Android</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Rereddit</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Best Communities</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Communities</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>About Reddit</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Blog</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Careers</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Press</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Visit Old Reddit</nav>
             </div>
             </> }
-            <div onClick={()=> setOpenTerms(!openTerms)} className="flex justify-between items-center gap-4 pl-4 pr-10 hover:bg-gray-100  cursor-pointer h-10">
+            <div onClick={()=> setOpenTerms(!openTerms)} className={`flex justify-between items-center gap-4 pl-4 pr-10 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"}  cursor-pointer h-10`}>
                 <div className="flex gap-5">
-                    <img width="23" height="23" src="https://img.icons8.com/ios/50/terms-and-conditions.png" alt="terms-and-conditions"/>
+                    {checkedTheme ? <img width="23" height="23" src="https://img.icons8.com/ios/50/FFFFFF/terms-and-conditions.png" alt="terms-and-conditions"/> :
+                    <img width="23" height="23" src="https://img.icons8.com/ios/50/terms-and-conditions.png" alt="terms-and-conditions"/> }
                     <nav className="text-sm font-semibold">Terms & Policies</nav>
                 </div>
                 {openTerms ? <CaretUpOutlineIcon /> : <CaretDownOutlineIcon />}
             </div>
             {openTerms && <>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>User Agreement</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Privacy Policy</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Content Policy</nav>
             </div>
-            <div className="pl-14 flex gap-12 items-center justify-start font-semibold hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Moderator Code of Conduct</nav>
             </div>
             </>}
-            <div className="flex justify-start items-center gap-5 pl-4 cursor-pointer hover:bg-gray-100 h-10">
-                <img width="21" height="21" src="https://img.icons8.com/ios/50/exit--v1.png" alt="exit--v1"/>
+            <div className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
+                {checkedTheme ? <img width="21" height="21" src="https://img.icons8.com/windows/32/FFFFFF/exit.png" alt="exit"/> : 
+                <img width="21" height="21" src="https://img.icons8.com/ios/50/exit--v1.png" alt="exit--v1"/> }
                 <nav className="text-sm font-semibold">Log Out</nav>
             </div>
             <p style={{color:"rgb(67, 67, 67)", fontSize:"0.825rem"}} className="pt-2 pl-4 text-sm">Reddit, Inc. © 2024. All rights reserved.</p>

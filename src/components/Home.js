@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSideBar } from "./Action";
+import { changeTheme, setSideBar } from "./Action";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import CaretDownOutlineIcon from "./icons/CaretDownOutlineIcon";
 import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
@@ -14,6 +14,7 @@ import ViewClassicFillIcon from "./icons/ViewClassicFillIcon";
 import ViewCardFillIcon from "./icons/ViewCardFillIcon";
 import ViewClassicOutlineIcon from "./icons/ViewClassicOutlineIcon";
 import SideBar from "./SideBar";
+import HomePage from "./HomePage";
 
 
 export default function Home() {
@@ -23,6 +24,8 @@ export default function Home() {
   const isMobile = useSelector((state) => state.isMobile);
   const isTab = useSelector((state) => state.isTab);
   const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
+  const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
+  const checkedTheme = useSelector((state) => state.checkedTheme);
   const [dropdownPosition, setDropdownPosition] = useState({
     top: "120px",
     left: "1000px",
@@ -157,7 +160,7 @@ export default function Home() {
 
   return (
     <>
-        <div className={`p-1 flex justify-around w-full max-w-full ${state.isLoading ? null : "mt-12"}`}>
+        <div className={`${checkedTheme ? "bg-black" : "bg-gray-300"} py-1 pr-1 flex justify-between w-full max-w-full ${state.isLoading ? null : "mt-12"}`}>
           {isMobile && isSideBarOpen  && <SideBar isMobile={isMobile} isSideBarOpen={isSideBarOpen} />}
           {state.isLoading ? (
         <div className="flex items-center justify-center h-screen flex-1">
@@ -167,11 +170,14 @@ export default function Home() {
             className="w-12 h-12 transition ease-in-out duration-300 animate-ping"
           />
         </div>
-      ) : (
+      ) : isUserLoggedin ? <div className="flex items-center justify-center w-full mt-5">
+                              <HomePage state={state} StateDisptch={StateDisptch} handleResize={handleResize} dropdownMaxPosition={dropdownMaxPosition} dropdownPosition={dropdownPosition} /> 
+                           </div>
+        : (
           <div className={`flex justify-evenly`}>
           <div 
             className={`flex justify-center w-full flex-col m-2  ${
-              state.showMax ? "max-w-4xl" : "max-w-3xl"
+              state.showMax ? "max-w-4xl" : "max-w-[800px]"
             }`}
           >
             <div className="flex items-center pt-4 justify-between gap-15 pb-7 pl-7 pr-7">

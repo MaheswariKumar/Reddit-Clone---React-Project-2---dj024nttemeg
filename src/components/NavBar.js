@@ -46,7 +46,7 @@ export default function NavBar({toggleRef}){
     // bg-[#272729, #343536] 
     return (
       <>
-        <div className={`${checkedTheme ? "all" : null} p-1 pb-2 pl-4 pr-7 flex items-center justify-between border-b w-full bg-white fixed top-0 z-5 ${isMobile ? "gap-4" : "gap-6"}`}>
+        <div className={`${checkedTheme ? "all" : null} p-1 pb-2 pl-4 pr-7 flex items-center justify-between ${checkedTheme ? "border-b border-[#343536]" : "border-b"} w-full bg-white fixed top-0 z-5 ${isMobile ? "gap-4" : "gap-6"}`}>
           <div className="flex items-center gap-2 pr-4 mr-1">
             {!isUserLoggedin && <div className="cursor-pointer" onClick={()=> dispatch(setSideBar(!isSideBarOpen))}>
               <MenuIcon />

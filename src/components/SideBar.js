@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import HomeFillIcon from "./icons/HomeFillIcon";
 import PopularOutlineIcon from "./icons/PopularOutlineIcon";
 import CaretUpOutlineIcon from "./icons/CaretUpOutlineIcon";
@@ -16,12 +17,14 @@ import TopicOutlineIcon from "./icons/TopicOutlineIcon";
 import TopicEthicsOutlineIcon from "./icons/TopicEthicsOutlineIcon";
 import TopicLawOutlineIcon from "./icons/TopicLawOutlineIcon";
 import RulesOutlineIcon from "./icons/RulesOutlineIcon";
+import { changeTheme } from "./Action";
 
 
 export default function SideBar({isMobile, isSideBarOpen}) {
   const [openRecent, setOpenRecent] = useState(false);
   const [openTopic, setOpenTopic] = useState(false);
   const [openResource, SetOpenResource] = useState(false);
+  const checkedTheme = useSelector((state) => state.checkedTheme);
   const [seemore, setSeeMore] = useState(false);
   const [text, setText] = useState("See more");
 
@@ -40,20 +43,20 @@ export default function SideBar({isMobile, isSideBarOpen}) {
   // border-r side_bar1 top-14 left-0 z-20 w-60 pl-4 max-w-lg fixed bg-white
     return (
         <>
-            <div className={`${!isMobile && isSideBarOpen ? "border-r side_bar1 top-12 h-full left-0 w-60 pl-4 max-w-lg fixed bg-white" : "border-r side_bar1 side sticky top-14 left-10 w-56 max-w-lg"} }`}>
+            <div className={`${checkedTheme ? "all" : null} ${!isMobile && isSideBarOpen ? "border-r side_bar1 top-12 h-full left-0 w-60 pl-4 max-w-lg fixed bg-white" : "bg-white border-r side_bar1 side sticky top-14 left-0 w-64 pl-4 max-w-lg"} }`}>
               <div className="flex flex-col justify-center pt-8 pr-4">
-                <div className="border-b pb-2">
-                <div className="flex justify-start gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">
+                <div className={`${checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-2`}>
+                <div className={`flex justify-start gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>
               <HomeFillIcon />
               <nav className="text-sm">Home</nav>
             </div>
-            <div className="flex gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">
+            <div className={`flex gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>
               <PopularOutlineIcon />
               <nav className="text-sm">Popular</nav>
             </div>
                 </div>
-                <div className="border-b pb-3 pt-3">
-                <div className="flex justify-between gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">
+                <div className={`${checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-3 pt-3`}>
+                <div className={`flex justify-between gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} p-3 rounded-sm cursor-pointer w-full`}>
               <nav className="text-xs text-gray-600">RECENT</nav>
               <div onClick={()=> setOpenRecent(!openRecent)}>
               {openRecent ? <CaretUpOutlineIcon /> : <CaretDownBigOutlineIcon />}
@@ -63,8 +66,8 @@ export default function SideBar({isMobile, isSideBarOpen}) {
                 <nav className="text-sm">No Recents</nav>
               </div>}
                 </div>
-            <div className="border-b pb-3 pt-3">
-            <div className="flex justify-between gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">
+            <div className={`${checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-3 pt-3`}>
+            <div className={`flex justify-between gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} p-3 rounded-sm cursor-pointer w-full`}>
               <nav className="text-xs text-gray-600">TOPICS</nav>
               <div onClick={()=> setOpenTopic(!openTopic)}>
               {openTopic ? <CaretUpOutlineIcon /> : <CaretDownBigOutlineIcon />}  
@@ -75,7 +78,7 @@ export default function SideBar({isMobile, isSideBarOpen}) {
               </div>}
             </div>
             <div className="pb-3 pt-3 ">
-            <div className="flex justify-between gap-4 hover:bg-gray-100 p-3 rounded-sm cursor-pointer w-full">
+            <div className={`flex justify-between gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} p-3 rounded-sm cursor-pointer w-full`}>
               <nav className="text-xs text-gray-600">RESOURCES</nav>
               <div onClick={()=> SetOpenResource(!openResource)}>
               {openResource ? <CaretUpOutlineIcon /> : <CaretDownBigOutlineIcon />}
@@ -109,7 +112,7 @@ export default function SideBar({isMobile, isSideBarOpen}) {
                 </div>
                 </div>
                 {seemore && <>
-                  <div className="flex flex-col p-3 pt-4 border-t">
+                  <div className={`flex flex-col p-3 pt-4 ${checkedTheme ? "border-t border-[#343536]" : "border-t"}`}>
                 <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <CommunityOutlineIcon />
                 <nav className="text-sm">Communities</nav>
@@ -123,7 +126,7 @@ export default function SideBar({isMobile, isSideBarOpen}) {
                 <nav className="text-sm">Topics</nav>
                 </div>
                 </div>
-                <div className="flex flex-col p-3 pt-4 border-t">
+                <div className={`flex flex-col p-3 pt-4 ${checkedTheme ? "border-t border-[#343536]" : "border-t"}`}>
                 <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <TopicEthicsOutlineIcon />
                 <nav className="text-sm">Content Policy</nav>
@@ -139,12 +142,12 @@ export default function SideBar({isMobile, isSideBarOpen}) {
                 </div>
                 </>}
                 <div className="flex flex-col mr-24 pr-6 pb-3 mb-8">
-                <button onClick={handleSeeMore} className="text-xs whitespace-nowrap font-medium rounded-full pt-2 p-2 hover:bg-gray-300">{text}</button>
+                <button onClick={handleSeeMore} className={`text-xs whitespace-nowrap font-medium rounded-full pt-2 p-2  ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"}`}>{text}</button>
               </div> 
               </div>}
             </div>
               </div>
-              <p style={{color:"rgb(67, 67, 67)", fontSize: ".65rem"}} className="bg-white fixed bottom-1 pt-12 text-center">Reddit, Inc. © 2023. All rights reserved.</p>
+              <p style={{color:"rgb(67, 67, 67)", fontSize: ".65rem"}} className={`${checkedTheme ? "bg-[#1A1A1B]" : "bg-white"} fixed bottom-1 pt-8 text-center`}>Reddit, Inc. © 2023. All rights reserved.</p>
           </div>
         </>
     )

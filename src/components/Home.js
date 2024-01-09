@@ -160,7 +160,7 @@ export default function Home() {
 
   return (
     <>
-        <div className={`${checkedTheme ? "bg-black" : "bg-gray-300"} py-1 pr-1 flex justify-between w-full max-w-full ${state.isLoading ? null : "mt-12"}`}>
+        <div className={`${!isUserLoggedin ? "bg-white" : (checkedTheme ? "bg-black" : "bg-gray-300")} py-1 pr-1 flex justify-between w-full max-w-full ${state.isLoading ? null : "mt-12"}`}>
           {isMobile && isSideBarOpen  && <SideBar isMobile={isMobile} isSideBarOpen={isSideBarOpen} />}
           {state.isLoading ? (
         <div className="flex items-center justify-center h-screen flex-1">
@@ -171,7 +171,7 @@ export default function Home() {
           />
         </div>
       ) : isUserLoggedin ? <div className="flex items-center justify-center w-full mt-5">
-                              <HomePage state={state} StateDisptch={StateDisptch} handleResize={handleResize} dropdownMaxPosition={dropdownMaxPosition} dropdownPosition={dropdownPosition} /> 
+                              <HomePage info={info} state={state} StateDisptch={StateDisptch} handleResize={handleResize} dropdownMaxPosition={dropdownMaxPosition} dropdownPosition={dropdownPosition} /> 
                            </div>
         : (
           <div className={`flex justify-evenly`}>
@@ -267,11 +267,11 @@ export default function Home() {
                 <div className="flex item-center pb-5 gap-5">
                   <div className="flex item-center justify-center gap-2 bg-gray-100 rounded-full p-2 cursor-pointer hover:bg-gray-200">
                     <div className="hover:text-orange-500">
-                      <UpvoteOutlineIcon />
+                      <UpvoteOutlineIcon height="16" width="16"/>
                     </div>
                     <nav className="text-xs font-bold">{data.likeCount}</nav>
                     <div className="hover:text-blue-500">
-                      <DownvoteOutlineIcon />
+                      <DownvoteOutlineIcon height="16" width="16"/>
                     </div>
                   </div>
                   <div className="flex item-center justify-center gap-2 bg-gray-100 rounded-full p-2 cursor-pointer hover:bg-gray-200">

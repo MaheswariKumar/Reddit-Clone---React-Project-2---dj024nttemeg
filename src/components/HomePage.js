@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { changeTheme } from "./Action";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import ViewClassicFillIcon from "./icons/ViewClassicFillIcon";
 import ViewCardFillIcon from "./icons/ViewCardFillIcon";
 import ViewClassicOutlineIcon from "./icons/ViewClassicOutlineIcon";
 import CaretDownOutlineIcon from "./icons/CaretDownOutlineIcon";
-import { changeTheme } from "./Action";
+import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
+import DownvoteOutlineIcon from "./icons/DownvoteOutlineIcon";
+import CommentOutlineIcon from "./icons/CommentOutlineIcon";
 
-export default function HomePage({state, StateDisptch, handleResize, dropdownMaxPosition, dropdownPosition}) {
+export default function HomePage({info, state, StateDisptch, handleResize, dropdownMaxPosition, dropdownPosition}) {
     const checkedTheme = useSelector((state) => state.checkedTheme);
     const checkedStatus = useSelector((state) => state.checkedStatus);
     const isTab = useSelector((state) => state.isTab);
+    const [blue, setBlue] = useState(false)
+    const [orange, setOrange] = useState(false)
 
     return (
         <>
-        <div className={`flex w-full max-w-[40rem] flex-col m-2`}>
+        <div className={`flex w-full ${state.showMax ? "max-w-[52rem]" : "max-w-[40rem]"} flex-col m-2`}>
             <div className={`flex h-14 items-center gap-3 px-2 rounded-lg ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                 <div className="cursor-pointer">
                     <div className="w-12 h-12">
@@ -36,15 +41,15 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
                 <div className="flex items-center gap-3 px-1">
                     <div className={`flex items-center gap-2 p-1 px-2 rounded-full cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"}`}>
                         <img width="24" height="24" src="https://img.icons8.com/external-tanah-basah-basic-outline-tanah-basah/24/737373/external-rocket-transportation-tanah-basah-basic-outline-tanah-basah.png" alt="external-rocket-transportation-tanah-basah-basic-outline-tanah-basah"/>
-                        <nav>Best</nav>
+                        <nav className="font-semibold">Best</nav>
                     </div>
                     <div className={`flex items-center gap-2 p-1 px-2 rounded-full cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"}`}>
                         <img width="24" height="24" src="https://img.icons8.com/sf-regular/48/737373/fire-element.png" alt="fire-element"/>
-                        <nav>Hot</nav>
+                        <nav className="font-semibold">Hot</nav>
                     </div>
                     <div className={`flex items-center gap-2 p-1 px-2 rounded-full cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"}`}>
                         <img width="28" height="24" src="https://img.icons8.com/parakeet-line/48/737373/new.png" alt="new"/>
-                        <nav>New</nav>
+                        <nav className="font-semibold">New</nav>
                     </div>
                 </div>
                 <>
@@ -118,6 +123,45 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
               )}
                 </>
             </div> 
+            {info.map((data, idx) => (
+              <div key={idx} className={`flex mt-4 h-auto gap-3 px-2 rounded-lg ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
+              <div className={`flex flex-col items-center pt-2 ${checkedTheme ? "bg-black text-white" : null } `}>
+                <div className="hover:text-orange-500 text-gray-500 cursor-pointer">
+                  <UpvoteOutlineIcon height="20" width="20"/>
+                </div>
+                <nav className="text-sm font-bold">{data.likeCount}</nav>
+                <div className="hover:text-blue-500 text-gray-500 cursor-pointer">
+                  <DownvoteOutlineIcon height="20" width="20" />
+                </div>
+              </div>
+              <div className={`flex flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
+                <div className="flex items-center gap-2">
+                  <img className="rounded-full w-6 h-6" src={data.channel.image} alt="Prof_Img"></img>
+                  <nav className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav>
+                  <div className="text-gray-500 text-xs pl-2 flex gap-1">
+                    <nav >Posted by</nav>
+                    <nav className="hover:underline cursor-pointer">u/{data.author.name}</nav>
+                  </div>
+                </div>
+                <div className={`${state.showMax ? "w-32 h-32 rounded-lg" : null }`}>
+                  <img src={data.images[0]} alt="Image"></img>
+                </div>
+                <div>
+                  <p>{data.content}</p>
+                </div>
+                <div className="flex">
+                <div className={`flex text-gray-500 item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
+                  <CommentOutlineIcon />
+                  <nav className="text-xs font-bold">8 {data.commentCount}</nav>
+                </div>
+                <div className={`flex item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
+                  <img width="20" height="20" src="https://img.icons8.com/small/16/737373/forward-arrow.png" alt="forward-arrow"/>
+                  <nav className="text-xs text-gray-500 font-bold">Share</nav>
+                </div>
+              </div>
+              </div>
+            </div> 
+            ))}
         </div>
         </>
     )

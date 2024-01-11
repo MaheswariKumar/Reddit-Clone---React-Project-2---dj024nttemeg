@@ -15,6 +15,7 @@ import ViewCardFillIcon from "./icons/ViewCardFillIcon";
 import ViewClassicOutlineIcon from "./icons/ViewClassicOutlineIcon";
 import SideBar from "./SideBar";
 import HomePage from "./HomePage";
+import CommunityPage from "./CommunityPage";
 
 
 export default function Home() {
@@ -170,8 +171,9 @@ export default function Home() {
             className="w-12 h-12 transition ease-in-out duration-300 animate-ping"
           />
         </div>
-      ) : isUserLoggedin ? <div className="flex items-center justify-center w-full mt-5">
-                              <HomePage info={info} state={state} StateDisptch={StateDisptch} handleResize={handleResize} dropdownMaxPosition={dropdownMaxPosition} dropdownPosition={dropdownPosition} /> 
+      ) : isUserLoggedin ? <div className="flex justify-center w-full mt-5">
+                              <HomePage info={info} state={state} StateDisptch={StateDisptch} handleResize={handleResize} dropdownMaxPosition={dropdownMaxPosition} dropdownPosition={dropdownPosition} />
+                              <CommunityPage /> 
                            </div>
         : (
           <div className={`flex justify-evenly`}>

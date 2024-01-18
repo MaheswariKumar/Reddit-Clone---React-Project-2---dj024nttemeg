@@ -72,7 +72,7 @@ export default function NavBar({toggleRef}){
             </div>
             <input
               placeholder="Search Reddit"
-              className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-200"} p-2 rounded-full w-3/6 font-sans placeholder-gray-500`}
+              className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-200"} p-2 rounded-full w-3/6 font-sans placeholder-gray-500 outline-0`}
             />
           </div>
           <div className="flex items-center gap-3" >

@@ -43,7 +43,7 @@ export default function SideBar({isMobile, isSideBarOpen}) {
   // border-r side_bar1 top-14 left-0 z-20 w-60 pl-4 max-w-lg fixed bg-white
     return (
         <>
-            <div className={`${checkedTheme ? "all" : null} ${!isMobile && isSideBarOpen ? "border-r side_bar1 top-12 h-full left-0 w-60 pl-4 max-w-lg fixed bg-white" : "bg-white border-r side_bar1 side sticky top-14 left-0 w-64 pl-4 max-w-lg"} }`}>
+            <div className={`${checkedTheme ? "all border-r border-[#343536]" : null} ${!isMobile && isSideBarOpen ? "border-r side_bar1 top-12 h-full left-0 w-60 pl-4 max-w-lg fixed bg-white" : "bg-white border-r side_bar1 side sticky top-14 left-0 w-72 pl-4 max-w-lg"} }`}>
               <div className="flex flex-col justify-center pt-8 pr-4">
                 <div className={`${checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-2`}>
                 <div className={`flex justify-start gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>

@@ -4,6 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 export default function CommunityPage() {
     const checkedTheme = useSelector((state) => state.checkedTheme);
 
+    function scrollToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      }
+
     return (
         <>
         <div className={`flex w-full max-w-[20rem] flex-col m-2`}>
@@ -35,34 +40,35 @@ export default function CommunityPage() {
                 <div className="px-2">
                     <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-3`}></nav>
                 </div>
-                <button className="rounded-full mb-3 mx-3 p-1 bg-[#0079d3] text-white font-semibold">Create Post</button>
-                <button className="rounded-full mb-3 mx-3 p-1 border border-[#0079d3] text-[#0079d3] font-semibold">Create Community</button>
+                <button className={`rounded-full mb-3 mx-3 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Create Post</button>
+                <button className={`rounded-full mb-3 mx-3 p-1 ${checkedTheme ? "border border-[#d7dadc] text-[#d7dadc]" : "border border-[#0079d3] text-[#0079d3]"} font-semibold`}>Create Community</button>
             </div>
-            <div className={`mt-4 flex p-2 pl-4 pr-3 flex-col rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
-                <div className="flex text-xs gap-12 p-1">
+            <div className={`mt-4 sticky top-16 flex p-2 pl-4 pr-3 flex-col rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
+                <div className="flex text-xs justify-between p-1 pr-14">
                     <nav>User Agreement</nav>
                     <nav>Content Policy</nav>
                 </div>
-                <div className="flex text-xs gap-16 p-1 h-10">
+                <div className="flex text-xs justify-between p-1 pr-[1.8rem]">
                     <nav>Privacy Policy</nav>
-                    <div>
-                        <nav className="break-words">Moderator Code Of Conduct</nav>
-                    </div>
+                    <nav>Moderator Code Of  <br /> Conduct</nav>
                 </div>
-                <div className="flex text-xs gap-6 p-1">
+                <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-2`}></nav>
+                <div className="flex text-xs justify-between p-1 pr-[5.6rem]">
                     <nav>English</nav>
                     <nav>Deutsch</nav>
                 </div>
-                <div className="flex text-xs gap-6 p-1">
+                <div className="flex text-xs justify-between p-1 pr-[5.7rem]">
                     <nav>Français</nav>
                     <nav>Español</nav>
                 </div>
-                <div className="flex text-xs gap-6 p-1">
+                <div className="flex text-xs justify-between p-1 pr-[5rem]">
                     <nav>Italiano</nav>
                     <nav>Português</nav>
                 </div>
-                <nav>Reddit, Inc. © 2024. All rights reserved.</nav>
+                <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-2`}></nav>
+                <nav className="text-xs">Reddit, Inc. © 2024. All rights reserved.</nav>
             </div>
+            <button onClick={scrollToTop} className={`rounded-full mt-10 mx-24 fixed bottom-1 px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Back to Top</button>
         </div>
         </>
     )

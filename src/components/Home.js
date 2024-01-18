@@ -173,7 +173,7 @@ export default function Home() {
         </div>
       ) : isUserLoggedin ? <div className="flex justify-center w-full mt-5">
                               <HomePage info={info} state={state} StateDisptch={StateDisptch} handleResize={handleResize} dropdownMaxPosition={dropdownMaxPosition} dropdownPosition={dropdownPosition} />
-                              <CommunityPage /> 
+                              {isMobile && <CommunityPage /> }
                            </div>
         : (
           <div className={`flex justify-evenly`}>

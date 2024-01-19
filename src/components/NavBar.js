@@ -66,14 +66,17 @@ export default function NavBar({toggleRef}){
             </div>
             </div>}
           </div>
-          <div className={`w-full flex items-center ${checkedTheme ? "bg-[#272729]" : "bg-gray-200"} max-w-3xl rounded-full`}>
+          <div className={`w-full rounded-t-[1.2rem] flex items-center ${checkedTheme ? "bg-[#272729] hover:border-[white] hover:border" : "bg-gray-100 hover:border-[#0079d3] hover:border"} max-w-3xl`}>
             <div className="pl-4">
               <SearchIcon />
             </div>
             <input
               placeholder="Search Reddit"
-              className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-200"} p-2 rounded-full w-3/6 font-sans placeholder-gray-500 outline-0`}
+              className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} p-2 rounded-full w-3/6 font-sans placeholder-gray-500 outline-0`}
             />
+          </div>
+          <div style={{border: '1px solid #edeff1', boxShadow: '0 2px 4px 0 rgba(28, 28, 28, 0.2)'}} className="flex text-[#1A1A1B] text-xs font-semibold bg-white h-10 max-w-60 w-[31rem] fixed top-11 right-[38.3rem]">
+            <h1>TRENDING TODAY</h1>
           </div>
           <div className="flex items-center gap-3" >
             {!isUserLoggedin ? <> {isMobile && (

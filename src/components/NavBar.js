@@ -1,7 +1,9 @@
 import React from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsMobile, setSideBar, openQR, openLogin, showMenuBar } from "./Action";
+import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm } from "./Action";
 import CustomLogo from "./icons/CustomLogo";
 import MenuIcon from "./icons/MenuIcon";
 import SearchIcon from "./icons/SearchIcon";
@@ -19,12 +21,75 @@ import CustomPlusIcon from "./icons/CustomPlusIcon";
 export default function NavBar({toggleRef}){
     const isMobile = useSelector((state) => state.isMobile);
     const isTab = useSelector((state) => state.isTab);
+    const isMob = useSelector((state) => state.isMob);
     const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
     const isMenu = useSelector((state) => state.isMenu);
     const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
     const checkedStatus = useSelector((state) => state.checkedStatus);
     const checkedTheme = useSelector((state) => state.checkedTheme);
+    const searchTerm = useSelector((state) => state.searchTerm);
+    const [searchBox, setSearchBox] = useState({
+      top: "48px",
+      left: "210px",
+    });
     const dispatch = useDispatch();
+    const [searchResults, setSearchResults] = useState([]);
+    const navigate = useNavigate(); 
+    const apiEndpoint = "https://academics.newtonschool.co/api/v1/reddit/post"
+  
+    const handleSearch = async () => {
+      try {
+        const response = await fetch(
+          `${apiEndpoint}?search={"content":"${searchTerm}"}`,
+          {
+            method: 'GET',
+            headers: {
+              projectID: "dj024nttemeg",
+            },
+          }
+        );
+    
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+    
+        const data = await response.json();
+        setSearchResults(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching song list:", error);
+      }
+    };
+  
+    useEffect(() => {
+      if (searchTerm) {
+        handleSearch();
+        console.log(searchTerm)
+      } else {
+        setSearchResults([]);
+      }
+    }, [searchTerm]);
+
+    const handleResize = () => {
+      const rect = document
+        .getElementById("search-box")
+        ?.getBoundingClientRect();
+      if (rect) {
+        setSearchBox({
+          top: `${rect.bottom}px`,
+          left: `${rect.left - 1}px`,
+        });
+      }
+    };
+
+    useEffect(() => {
+      handleResize();
+      
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, []);
 
     useEffect(()=>{
         const handleReSize = () => {
@@ -42,6 +107,25 @@ export default function NavBar({toggleRef}){
     const togggleMenu = () => {
       dispatch(showMenuBar(!isMenu))
     }
+
+    useEffect(()=>{
+      const handleReSize = () => {
+          dispatch(setIsMob(window.innerWidth>=500));
+      }
+
+      window.addEventListener("resize", handleReSize);
+
+      return () => {
+          window.removeEventListener("resize", handleReSize);
+      }
+  }, [])
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      navigate(`/search?${searchTerm}`);
+    }
+  };
+
 
     // bg-[#272729, #343536] 
     return (
@@ -66,18 +150,20 @@ export default function NavBar({toggleRef}){
             </div>
             </div>}
           </div>
-          <div className={`w-full rounded-t-[1.2rem] flex items-center ${checkedTheme ? "bg-[#272729] hover:border-[white] hover:border" : "bg-gray-100 hover:border-[#0079d3] hover:border"} max-w-3xl`}>
+          <div id="search-box" className={`w-full rounded-t-[1.2rem] flex items-center ${checkedTheme ? "bg-[#272729] hover:border-[white] hover:border" : "bg-gray-100 hover:border-[#0079d3] hover:border"} max-w-3xl`}>
             <div className="pl-4">
               <SearchIcon />
             </div>
             <input
               placeholder="Search Reddit"
               className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} p-2 rounded-full w-3/6 font-sans placeholder-gray-500 outline-0`}
+              onChange={(e)=> dispatch(setSearchTerm(e.target.value))}
+              onKeyDown={handleKeyDown}
             />
           </div>
-          <div style={{border: '1px solid #edeff1', boxShadow: '0 2px 4px 0 rgba(28, 28, 28, 0.2)'}} className="flex text-[#1A1A1B] text-xs font-semibold bg-white h-10 max-w-60 w-[31rem] fixed top-11 right-[38.3rem]">
+          {/* <div style={{border: '1px solid #edeff1', boxShadow: '0 2px 4px 0 rgba(28, 28, 28, 0.2)', ...(!isMob ? { top: "48px", left: "0px", width: "100%" } : searchBox),}} className={`flex text-[#1A1A1B] text-xs font-semibold bg-white h-10 max-w-60 w-[31rem] fixed`}>
             <h1>TRENDING TODAY</h1>
-          </div>
+          </div> */}
           <div className="flex items-center gap-3" >
             {!isUserLoggedin ? <> {isMobile && (
               <div onClick={()=> dispatch(openQR())} className="flex items-center bg-gray-200 hover:bg-gray-300 max-w-2xl rounded-full p-2 pl-3 pr-3 gap-2 cursor-pointer">

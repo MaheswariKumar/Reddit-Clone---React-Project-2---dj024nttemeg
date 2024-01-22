@@ -6,9 +6,11 @@ import {showMenuBar} from "./Action"
 import NavBar from "./NavBar";
 import Home from "./Home";
 import MenuBar from "./MenuBar";
+import SearchItems from "./SearchItems";
 
 function App() {
   const isMenu = useSelector((state) => state.isMenu);
+  const searchTerm = useSelector((state) => state.searchTerm);
   const dispatch = useDispatch()
   const menuRef = useRef(null);
 
@@ -34,6 +36,7 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path={`/search`} element={<SearchItems />} />
       </Routes>
     </div>
   );

@@ -58,3 +58,8 @@ export const showStatus = () => ({
 export const changeTheme = () => ({
   type: 'CHANGE_THEME',
 });
+
+export const setSearchTerm = (searchTerm) => ({
+  type: 'SET_SEARCH_TERM',
+  searchTerm
+});

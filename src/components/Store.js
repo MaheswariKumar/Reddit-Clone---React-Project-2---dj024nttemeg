@@ -18,6 +18,7 @@ const initialState = {
   isUserLoggedin: true,
   checkedStatus: true,
   checkedTheme: false,
+  searchTerm: '',
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -103,6 +104,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         checkedTheme: !state.checkedTheme,
+      };
+
+    case 'SET_SEARCH_TERM':
+      return {
+        ...state,
+        searchTerm: action.searchTerm,
       };
 
     default:

@@ -22,7 +22,7 @@ export default function PostPpl() {
                             <nav className="text-xs text-[#7c7c7c]">10.9k Members</nav>
                         </div>
                     </div>
-                    <button className="text-[#0079d3] font-bold bg-[#f6f7f8] px-4  rounded-full hover:bg-[#e9f5fd]">Join</button>
+                    <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Join</button>
                 </div>
                 <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav>
                 <div className="flex justify-between px-3">
@@ -33,7 +33,7 @@ export default function PostPpl() {
                             <nav className="text-xs text-[#7c7c7c]">58.9k Members</nav>
                         </div>
                     </div>
-                    <button className="text-[#0079d3] font-bold bg-[#f6f7f8] px-4  rounded-full hover:bg-[#e9f5fd]">Join</button>
+                    <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Join</button>
                 </div>
                 <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav>
                 <div className="flex justify-between px-3">
@@ -44,7 +44,7 @@ export default function PostPpl() {
                             <nav className="text-xs text-[#7c7c7c]">3.0 Members</nav>
                         </div>
                     </div>
-                    <button className="text-[#0079d3] font-bold bg-[#f6f7f8] px-4  rounded-full hover:bg-[#e9f5fd]">Join</button>
+                    <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Join</button>
                 </div>
                 <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav>
                 <div className="flex justify-between px-3">
@@ -55,7 +55,7 @@ export default function PostPpl() {
                             <nav className="text-xs text-[#7c7c7c]">10.9k Members</nav>
                         </div>
                     </div>
-                    <button className="text-[#0079d3] font-bold bg-[#f6f7f8] px-4  rounded-full hover:bg-[#e9f5fd]">Join</button>
+                    <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Join</button>
                 </div>
                 <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav>
                 <div className="flex justify-between px-3">
@@ -66,7 +66,7 @@ export default function PostPpl() {
                             <nav className="text-xs text-[#7c7c7c]">10.9k Members</nav>
                         </div>
                     </div>
-                    <button className="text-[#0079d3] font-bold bg-[#f6f7f8] px-4  rounded-full hover:bg-[#e9f5fd]">Join</button>
+                    <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Join</button>
                 </div>
                 <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav>
                 <nav className="text-sm text-[#0079d3] font-semibold pl-4 pb-3">See more communities</nav>
@@ -81,7 +81,7 @@ export default function PostPpl() {
                             <nav className="text-xs text-[#7c7c7c]">1.9k Karma</nav>
                         </div>
                     </div>
-                    <button className="text-[#0079d3] font-bold bg-[#f6f7f8] px-4  rounded-full hover:bg-[#e9f5fd]">Follow</button>
+                    <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Follow</button>
                 </div>
                 <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav>
                 <div className="flex justify-between px-3">
@@ -92,7 +92,7 @@ export default function PostPpl() {
                             <nav className="text-xs text-[#7c7c7c]">5.9k Karma</nav>
                         </div>
                     </div>
-                    <button className="text-[#0079d3] font-bold bg-[#f6f7f8] px-4  rounded-full hover:bg-[#e9f5fd]">Follow</button>
+                    <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Follow</button>
                 </div>
                 <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav>
                 <div className="flex justify-between px-3">
@@ -103,7 +103,7 @@ export default function PostPpl() {
                             <nav className="text-xs text-[#7c7c7c]">3.0 Karma</nav>
                         </div>
                     </div>
-                    <button className="text-[#0079d3] font-bold bg-[#f6f7f8] px-4  rounded-full hover:bg-[#e9f5fd]">Follow</button>
+                    <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Follow</button>
                 </div>
                 <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav>
                 <div className="flex justify-between px-3">
@@ -114,7 +114,7 @@ export default function PostPpl() {
                             <nav className="text-xs text-[#7c7c7c]">11.5k Karma</nav>
                         </div>
                     </div>
-                    <button className="text-[#0079d3] font-bold bg-[#f6f7f8] px-4  rounded-full hover:bg-[#e9f5fd]">Follow</button>
+                    <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Follow</button>
                 </div>
                 <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav>
                 <div className="flex justify-between px-3">
@@ -125,7 +125,7 @@ export default function PostPpl() {
                             <nav className="text-xs text-[#7c7c7c]">10.9k Karma</nav>
                         </div>
                     </div>
-                    <button className="text-[#0079d3] font-bold bg-[#f6f7f8] px-4  rounded-full hover:bg-[#e9f5fd]">Follow</button>
+                    <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Follow</button>
                 </div>
             </div>
             <button onClick={scrollToTop} className={`rounded-full mt-10 mx-24 px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Back to Top</button>

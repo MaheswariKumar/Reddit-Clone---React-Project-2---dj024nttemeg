@@ -19,6 +19,9 @@ const initialState = {
   checkedStatus: true,
   checkedTheme: false,
   searchTerm: '',
+  searchPostResults: [],
+  searchComutyResults: [],
+  searchPplResults: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -111,6 +114,25 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         searchTerm: action.searchTerm,
       };
+
+    case 'SET_POST_RESULTS':
+      return {
+        ...state,
+        searchPostResults: action.searchPostResults,
+      };
+
+    case 'SET_COMUTY_RESULTS':
+      return {
+        ...state,
+        searchComutyResults: action.searchComutyResults,
+      };
+
+    case 'SET_PPL_RESULTS':
+      return {
+        ...state,
+        searchPplResults: action.searchPplResults
+      };
+
 
     default:
       return state;

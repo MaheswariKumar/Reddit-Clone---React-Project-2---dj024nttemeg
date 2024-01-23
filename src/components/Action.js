@@ -63,3 +63,18 @@ export const setSearchTerm = (searchTerm) => ({
   type: 'SET_SEARCH_TERM',
   searchTerm
 });
+
+export const setPostResults = (searchPostResults) => ({
+  type: 'SET_POST_RESULTS',
+  searchPostResults,
+});
+
+export const setComutyResults = (searchComutyResults) => ({
+  type: 'SET_COMUTY_RESULTS',
+  searchComutyResults,
+});
+
+export const setPplResults = (searchPplResults) => ({
+  type: 'SET_PPL_RESULTS',
+  searchPplResults
+});

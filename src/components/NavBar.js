@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm } from "./Action";
+import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm, setPostResults, setComutyResults, setPplResults } from "./Action";
 import CustomLogo from "./icons/CustomLogo";
 import MenuIcon from "./icons/MenuIcon";
 import SearchIcon from "./icons/SearchIcon";
@@ -35,39 +35,84 @@ export default function NavBar({toggleRef}){
     const dispatch = useDispatch();
     const [searchResults, setSearchResults] = useState([]);
     const navigate = useNavigate(); 
-    const apiEndpoint = "https://academics.newtonschool.co/api/v1/reddit/post"
-  
-    const handleSearch = async () => {
-      try {
-        const response = await fetch(
-          `${apiEndpoint}?search={"content":"${searchTerm}"}`,
-          {
-            method: 'GET',
-            headers: {
-              projectID: "dj024nttemeg",
-            },
-          }
+    
+  //user:name => people , comment :content => comments, channel:name => community post:content=> posts
+  const handlePostSearch = async () => {
+    try {
+        const encodedSearchTerm = encodeURIComponent(searchTerm);
+        
+        const response = await axios.get(
+            `https://academics.newtonschool.co/api/v1/reddit/post?search={"content":"${encodedSearchTerm}"}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'projectID': 'dj024nttemeg',
+                },
+            }
         );
-    
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-    
-        const data = await response.json();
-        setSearchResults(data);
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching song list:", error);
-      }
-    };
+
+        const data = response.data;
+        dispatch(setPostResults(data.data))
+        console.log("post", data);
+    } catch (error) {
+        console.error('Error fetching song list:', error);
+    }
+};
+
+const handleComutySearch = async () => {
+  try {
+      const encodedSearchTerm = encodeURIComponent(searchTerm);
+
+      // Using Axios for the API call
+      const response = await axios.get(
+          `https://academics.newtonschool.co/api/v1/reddit/post?search={"channel.name":"${encodedSearchTerm}"}`,
+          {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'projectID': 'dj024nttemeg',
+              },
+          }
+      );
+
+      const data = response.data;
+      dispatch(setComutyResults(data.data))
+      console.log("com", data);
+  } catch (error) {
+      console.error('Error fetching song list:', error);
+  }
+};
+
+const handlePplSearch = async () => {
+  try {
+      const encodedSearchTerm = encodeURIComponent(searchTerm);
+
+      // Using Axios for the API call
+      const response = await axios.get(
+          `https://academics.newtonschool.co/api/v1/reddit/post?search={"author.name":"${encodedSearchTerm}"}`,
+          {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'projectID': 'dj024nttemeg',
+              },
+          }
+      );
+
+      const data = response.data;
+      dispatch(setPplResults(data.data))
+      console.log("ppl", data);
+  } catch (error) {
+      console.error('Error fetching song list:', error);
+  }
+};
+
   
     useEffect(() => {
       if (searchTerm) {
-        handleSearch();
+        handlePostSearch();
+        handleComutySearch();
+        handlePplSearch();
         console.log(searchTerm)
-      } else {
-        setSearchResults([]);
-      }
+      } 
     }, [searchTerm]);
 
     const handleResize = () => {
@@ -124,6 +169,7 @@ export default function NavBar({toggleRef}){
     if (e.key === 'Enter') {
       navigate(`/search?${searchTerm}`);
     }
+    dispatch(setSearchTerm(""))
   };
 
 

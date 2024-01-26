@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm, setPostResults, setComutyResults, setPplResults } from "./Action";
+import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm, setPostResults, setComutyResults, setPplResults, setDropOption } from "./Action";
 import CustomLogo from "./icons/CustomLogo";
 import MenuIcon from "./icons/MenuIcon";
 import SearchIcon from "./icons/SearchIcon";
@@ -28,6 +28,8 @@ export default function NavBar({toggleRef}){
     const checkedStatus = useSelector((state) => state.checkedStatus);
     const checkedTheme = useSelector((state) => state.checkedTheme);
     const searchTerm = useSelector((state) => state.searchTerm);
+    const searchComutyResults = useSelector((state) => state.searchComutyResults);
+    const showDropOption = useSelector((state) => state.showDropOption);
     const [searchBox, setSearchBox] = useState({
       top: "48px",
       left: "210px",
@@ -35,6 +37,21 @@ export default function NavBar({toggleRef}){
     const dispatch = useDispatch();
     const [searchResults, setSearchResults] = useState([]);
     const navigate = useNavigate(); 
+    const dropDownRef = useRef(null)
+
+    const handleOutsideClick = (event) => {
+      if (dropDownRef.current && !dropDownRef.current.contains(event.target)) {
+        dispatch(setDropOption(false));
+      }
+    };
+  
+    useEffect(() => {
+      document.addEventListener("mousedown", handleOutsideClick);
+    
+      return () => {
+        document.removeEventListener("mousedown", handleOutsideClick);
+      };
+    }, []);
     
   //user:name => people , comment :content => comments, channel:name => community post:content=> posts
   const handlePostSearch = async () => {
@@ -172,6 +189,10 @@ const handlePplSearch = async () => {
     dispatch(setSearchTerm(""))
   };
 
+  const handleDropOption = () => {
+    navigate(`/search?${searchTerm}`);
+    dispatch(setSearchTerm(""))
+  };
 
     // bg-[#272729, #343536] 
     return (
@@ -196,7 +217,7 @@ const handlePplSearch = async () => {
             </div>
             </div>}
           </div>
-          <div id="search-box" className={`w-full rounded-t-[1.2rem] flex items-center ${checkedTheme ? "bg-[#272729] hover:border-[white] hover:border" : "bg-gray-100 hover:border-[#0079d3] hover:border"} max-w-3xl`}>
+          <div id="search-box" className={`w-full ${showDropOption ? "rounded-t-[1.2rem]" : "rounded-full"} flex items-center ${checkedTheme ? "bg-[#272729] hover:border-[white] hover:border" : "bg-gray-100 hover:border-[#0079d3] hover:border"} max-w-3xl`}>
             <div className="pl-4">
               <SearchIcon />
             </div>
@@ -205,11 +226,18 @@ const handlePplSearch = async () => {
               className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} p-2 rounded-full w-3/6 font-sans placeholder-gray-500 outline-0`}
               onChange={(e)=> dispatch(setSearchTerm(e.target.value))}
               onKeyDown={handleKeyDown}
+              onClick={()=> dispatch(setDropOption(true))}
             />
           </div>
-          {/* <div style={{border: '1px solid #edeff1', boxShadow: '0 2px 4px 0 rgba(28, 28, 28, 0.2)', ...(!isMob ? { top: "48px", left: "0px", width: "100%" } : searchBox),}} className={`flex text-[#1A1A1B] text-xs font-semibold bg-white h-10 max-w-60 w-[31rem] fixed`}>
-            <h1>TRENDING TODAY</h1>
-          </div> */}
+          {showDropOption && searchTerm &&           <div ref={dropDownRef} style={{ boxShadow: '0 2px 4px 0 rgba(28, 28, 28, 0.2)', ...(!isMob ? { top: "48px", left: "0px", width: "100%" } : searchBox),}} className={`${checkedTheme ? "all" : "bg-white"} flex flex-col text-[#1A1A1B] text-xs font-semibold bg-white h-10 max-w-60 w-[31rem] fixed`}>
+            <h1 className="p-1">TRENDING TODAY</h1>
+            {searchComutyResults.length > 0 && searchComutyResults.slice(0, 5).map((data, idx)=> (
+              <div onClick={handleDropOption} key={idx} className={`cursor-pointer flex items-center gap-3 pl-3 p-2 ${checkedTheme ? "all hover:bg-[#343536]" : "bg-white hover:bg-gray-200"} `}>
+                <img src={data.channel.image} className="w-8 h-8 rounded-full"></img>
+                <nav>r/{data.channel.name}</nav>
+              </div>
+            ))}
+          </div>}
           <div className="flex items-center gap-3" >
             {!isUserLoggedin ? <> {isMobile && (
               <div onClick={()=> dispatch(openQR())} className="flex items-center bg-gray-200 hover:bg-gray-300 max-w-2xl rounded-full p-2 pl-3 pr-3 gap-2 cursor-pointer">

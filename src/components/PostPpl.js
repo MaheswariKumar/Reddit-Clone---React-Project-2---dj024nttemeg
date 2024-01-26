@@ -1,13 +1,30 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect, useRef } from "react";
 
 export default function PostPpl() {
     const checkedTheme = useSelector((state) => state.checkedTheme);
 
-    function scrollToTop() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-      }
+    // function scrollToTop() {
+    //     document.body.scrollTop = 0;
+    //     document.documentElement.scrollTop = 0;
+    //   }
+    
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //       const button = document.getElementById("backToTopButton");
+    
+    //       if (button) {
+    //         button.style.display = window.scrollY > 150 ? "block" : "none";
+    //       }
+    //     };
+    
+    //     window.addEventListener("scroll", handleScroll);
+
+    //     return () => {
+    //       window.removeEventListener("scroll", handleScroll);
+    //     };
+    //   }, []);
 
     return (
         <>
@@ -68,8 +85,8 @@ export default function PostPpl() {
                     </div>
                     <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Join</button>
                 </div>
-                <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav>
-                <nav className="text-sm text-[#0079d3] font-semibold pl-4 pb-3">See more communities</nav>
+                {/* <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-0.5`}></nav> */}
+                {/* <nav className="text-sm text-[#0079d3] font-semibold pl-4 pb-3">See more communities</nav> */}
             </div>
             <div className={`mt-4 cursor-pointer flex flex-col rounded py-2 gap-3 ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                 <nav className="font-semibold px-3">People</nav>
@@ -128,7 +145,7 @@ export default function PostPpl() {
                     <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Follow</button>
                 </div>
             </div>
-            <button onClick={scrollToTop} className={`rounded-full mt-10 mx-24 px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Back to Top</button>
+            {/* <button id="backToTopButton" style={{ position: 'fixed', bottom: '1rem', right: '16rem', display: 'none' }} onClick={scrollToTop} className={`rounded-full mt-10 mx-24 px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Back to Top</button> */}
             </div>
         </>
     )

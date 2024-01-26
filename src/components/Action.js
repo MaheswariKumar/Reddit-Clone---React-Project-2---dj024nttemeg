@@ -78,3 +78,13 @@ export const setPplResults = (searchPplResults) => ({
   type: 'SET_PPL_RESULTS',
   searchPplResults
 });
+
+export const setDropOption = (showDropOption) => ({
+  type: 'SET_DROP_OPTION',
+  showDropOption
+});
+
+export const setID = (getId) => ({
+  type: 'SET_ID',
+  getId
+});

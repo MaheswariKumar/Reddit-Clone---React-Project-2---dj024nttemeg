@@ -22,6 +22,8 @@ const initialState = {
   searchPostResults: [],
   searchComutyResults: [],
   searchPplResults: [],
+  showDropOption: false,
+  getId:""
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -133,6 +135,17 @@ const rootReducer = (state = initialState, action) => {
         searchPplResults: action.searchPplResults
       };
 
+    case 'SET_DROP_OPTION':
+      return {
+        ...state,
+        showDropOption: action.showDropOption,
+      };
+
+    case 'SET_ID':
+      return {
+        ...state,
+        getId: action.getId,
+      };
 
     default:
       return state;

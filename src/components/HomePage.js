@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { changeTheme } from "./Action";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import ViewClassicFillIcon from "./icons/ViewClassicFillIcon";
@@ -17,6 +18,7 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
     const [best, setBest] = useState(true)
     const [hot, setHot] = useState(false)
     const [newopt, setNewOpt] = useState(false)
+    const navigate = useNavigate();
 
     function handleBest() {
       setBest(true)
@@ -36,6 +38,10 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
       setNewOpt(true)
     }
 
+    function handlePost() {
+      navigate("/submit")
+    }
+
     return (
         <>
         <div className={`flex w-full ${state.showMax ? "max-w-[52rem]" : "max-w-[40rem]"} flex-col m-2`}>
@@ -46,8 +52,8 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
                     </div>
                     {/* {checkedStatus && <nav className="w-4 h-4 rounded-full bg-[#46d160] relative left-6 bottom-3 border-inherit border-2"></nav>} */}
                 </div>
-                <div className={`w-full flex items-center ${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} max-w-2xl mt-0.5`}>
-                    <input className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} indent-4 p-2 rounded-full w-3/6 font-sans placeholder-gray-500`} type="text" placeholder="Create Post"></input>
+                <div onClick={handlePost} className={`w-full flex items-center ${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} max-w-2xl mt-0.5`}>
+                    <input className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} outline-0 indent-4 p-2 rounded-full w-3/6 font-sans placeholder-gray-500`} type="text" placeholder="Create Post"></input>
                 </div>              
                 <div className={`${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-10 rounded-lg flex items-center justify-center cursor-pointer`}>
                     <img width="23" height="23" src="https://img.icons8.com/external-basicons-line-edtgraphics/50/737373/external-Picture-images-basicons-line-edtgraphics.png" alt="external-Picture-images-basicons-line-edtgraphics"/>

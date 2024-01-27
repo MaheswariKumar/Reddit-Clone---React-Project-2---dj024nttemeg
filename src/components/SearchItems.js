@@ -55,8 +55,8 @@ export default function SearchItems() {
     }
 
     const handleComment = (data, id) => {
-      navigate(`/r/${data}/comments`);
       dispatch(setID(id))
+      navigate(`/r/${data}/comments`);
     };
 
     return (

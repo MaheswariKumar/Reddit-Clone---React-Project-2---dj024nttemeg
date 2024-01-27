@@ -8,6 +8,7 @@ import Home from "./Home";
 import MenuBar from "./MenuBar";
 import SearchItems from "./SearchItems";
 import DropComment from "./DropComment";
+import CreatePost from "./CreatePost";
 
 function App() {
   const isMenu = useSelector((state) => state.isMenu);
@@ -39,6 +40,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path={`/search`} element={<SearchItems />} />
         <Route path={`/r/:data/comments`} element={<DropComment />} />
+        <Route path={`/submit`} element={<CreatePost />} />
       </Routes>
     </div>
   );

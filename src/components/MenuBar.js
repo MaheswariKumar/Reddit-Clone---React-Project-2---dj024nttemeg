@@ -1,7 +1,13 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
-import {showStatus, changeTheme} from "./Action"
+import { useNavigate } from "react-router-dom";
+import {showStatus, changeTheme, isLoggedIn} from "./Action"
+import { useAuthState } from "react-firebase-hooks/auth";
+import {
+  auth,
+  logOut
+} from "./firebase";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import LogoutIcon from "./icons/LogoutIcon";
 import ConversionIcon from "./icons/ConversionIcon";
@@ -22,6 +28,22 @@ export default function MenuBar() {
     const theme = createTheme();
     const [openMore, setOpenMore] = useState(false);
     const [openTerms, setOpenTerms] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logOut();
+        dispatch(isLoggedIn())
+        navigate("/")
+        console.log("logged out")
+    }
+
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+          console.log("User is signed in:", user.uid);
+        } else {
+          console.log("No user is signed in.");
+        }
+      });
 
 
     return (
@@ -129,7 +151,7 @@ export default function MenuBar() {
                 <nav>Moderator Code of Conduct</nav>
             </div>
             </>}
-            <div className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
+            <div onClick={handleLogout} className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
                 {checkedTheme ? <img width="21" height="21" src="https://img.icons8.com/windows/32/FFFFFF/exit.png" alt="exit"/> : 
                 <img width="21" height="21" src="https://img.icons8.com/ios/50/exit--v1.png" alt="exit--v1"/> }
                 <nav className="text-sm font-semibold">Log Out</nav>

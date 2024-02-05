@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeTheme, setID } from "./Action";
@@ -10,16 +10,88 @@ import CaretDownOutlineIcon from "./icons/CaretDownOutlineIcon";
 import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
 import DownvoteOutlineIcon from "./icons/DownvoteOutlineIcon";
 import CommentOutlineIcon from "./icons/CommentOutlineIcon";
+import SideBar from "./SideBar";
 
-export default function HomePage({info, state, StateDisptch, handleResize, dropdownMaxPosition, dropdownPosition}) {
+export default function UserPosts() {
     const checkedTheme = useSelector((state) => state.checkedTheme);
     const checkedStatus = useSelector((state) => state.checkedStatus);
     const isTab = useSelector((state) => state.isTab);
+    const isMobile = useSelector((state) => state.isMobile);
+    const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
+    const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
     const [best, setBest] = useState(true)
     const [hot, setHot] = useState(false)
     const [newopt, setNewOpt] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [dropdownPosition, setDropdownPosition] = useState({
+        top: "120px",
+        left: "1000px",
+      });
+      const [dropdownMaxPosition, setDropdownMaxPosition] = useState({
+        top: "120px",
+        left: "975px",
+      });
+
+      const handleResize = () => {
+        const rect = document
+          .getElementById("dropdown-button")
+          ?.getBoundingClientRect();
+        if (rect) {
+          setDropdownPosition({
+            top: `${rect.bottom + 7}px`,
+            left: `${rect.left - 35}px`,
+          });
+          setDropdownMaxPosition({
+            top: `${rect.bottom + 7}px`,
+            left: `${rect.left - 35}px`,
+          });
+        }
+      };
+
+      const IntialState = {
+        showDropDown: false,
+        showMin: true,
+        showMax: false,
+        isLoading: true,
+      };
+    
+      function StateReducer(state, action) {
+        switch (action.type) {
+          case "showoption":
+            return {
+              ...state,
+              showDropDown: !state.showDropDown,
+            };
+    
+          case "showminoption":
+            return {
+              ...state,
+              showMin: true,
+              showMax: false,
+              showDropDown: false,
+            };
+    
+          case "showmaxoption":
+            return {
+              ...state,
+              showMax: true,
+              showMin: false,
+              showDropDown: false,
+            };
+    
+          case "loaded":
+            return {
+              ...state,
+              isLoading: false,
+            };
+    
+          default:
+            return state;
+        }
+      }
+    
+      const [state, StateDisptch] = useReducer(StateReducer, IntialState);
 
     function handleBest() {
       setBest(true)
@@ -48,8 +120,16 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
       navigate(`/r/${data}/comments`);
     };
 
+    function scrollToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      }
+
     return (
         <>
+        <div className={`${!isUserLoggedin ? "bg-white" : (checkedTheme ? "bg-black" : "bg-gray-300")} py-1 pr-1 flex justify-between w-full min-h-[100vh] max-w-full ${state.isLoading ? null : "mt-12"}`}>
+          {isMobile && isSideBarOpen  && <SideBar isMobile={isMobile} isSideBarOpen={isSideBarOpen} />}
+          <div className="flex justify-center w-full mt-16">
         <div className={`flex w-full ${state.showMax ? "max-w-[52rem]" : "max-w-[40rem]"} flex-col m-2`}>
             <div className={`flex h-14 items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                 <div className="cursor-pointer">
@@ -154,7 +234,7 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
               )}
                 </>
             </div> 
-            {info.map((data, idx) => (
+            {/* {info.map((data, idx) => (
               <div onClick={() => handleComment(data.channel ? data.channel.name : "newton", data._id)} key={idx} className={`cursor-pointer flex mt-4 h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
               <div className={`flex flex-col items-center pt-2 ${checkedTheme ? "bg-black text-white" : null } `}>
                 <div className="hover:text-orange-500 text-gray-500 cursor-pointer">
@@ -194,7 +274,37 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
               </div>
               </div>
             </div> 
-            ))}
+            ))} */}
+        </div>
+        {isMobile && 
+        <>
+        <div className={`flex w-full max-w-[20rem] flex-col m-2`}>
+            <div className={`flex flex-col rounded px-3 py-2 gap-3 ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
+                <div className="flex flex-col items-center justify-start gap-2 pt-3">
+                    <div className="w-20 h-20">
+                        <img src="https://i.redd.it/snoovatar/avatars/a23dbde1-4832-4cc6-b528-8e3637c03984-headshot.png"></img>
+                    </div>
+                    <div className="flex flex-col">
+                        <nav className="text-xs font-semibold">Nandi</nav>
+                        <nav className="text-gray-400 text-sm">u/nandi</nav>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                    <div className="flex items-center gap-1">
+                            <img className="h-4 w-4 rounded-full" src="https://styles.redditmedia.com/t5_2qhhz/styles/communityIcon_6wrax3ocfar41.png"></img>
+                            <nav className="text-gray-400 text-sm">1 Karma</nav>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <img className="h-4 w-4 rounded-full" src="https://www.drawhipo.com/wp-content/uploads/2023/04/Birthday-Color-1-Birthday-Cake.png"></img>
+                            <nav className="text-gray-400 text-sm">Jan 5 2024</nav>
+                        </div>
+                    </div>
+                </div>
+                <button className="rounded-full p-1 bg-[#ff4500] text-white font-semibold mb-3">New Post</button>
+            </div>
+            <button onClick={scrollToTop} className={`rounded-full mt-10 mx-24 fixed bottom-2 px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Back to Top</button>
+        </div>
+        </>}
+        </div>
         </div>
         </>
     )

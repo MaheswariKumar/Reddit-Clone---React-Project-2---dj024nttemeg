@@ -43,7 +43,7 @@ export default function DropComment(){
       useEffect(() => {
         getData()
         // console.log(info.channel.image);
-        // console.log(info.images[0]);
+        console.log(info);
       }, []);
 
       function handleComment() {
@@ -81,14 +81,14 @@ export default function DropComment(){
                                           </div>
                                         </div>
                                         <div className={`flex flex-col px-3 pt-2 pb-3 gap-3 ${checkedTheme ? "all" : null}`}>
-                                          {info.channel.image && info.channel.name && info.author.name ? <div className="flex items-center gap-2">
-                                            <img className="rounded-full w-6 h-6" src={info.channel.image} alt="Prof_Img"></img>
-                                            <nav className="text-xs font-semibold hover:underline cursor-pointer">r/{info.channel.name}</nav>
+                                          <div className="flex items-center gap-2">
+                                          {info.channel ? <><img className="rounded-full w-6 h-6" src={info.channel.image} alt="Prof_Img"></img>
+                                            <nav className="text-xs font-semibold hover:underline cursor-pointer">r/{info.channel.name}</nav></> : null}
                                             <div className="text-gray-500 text-xs pl-2 flex gap-1">
                                               <nav >Posted by</nav>
-                                              <nav className="hover:underline cursor-pointer">u/{info.author.name}</nav>
+                                              {info.author ? <nav className="hover:underline cursor-pointer">u/{info.author.name}</nav> : null }
                                             </div>
-                                          </div>: null}
+                                          </div>
                                           {/* <div className="flex justify-center gap-2"> */}
                                             {/* <img className="w-72 h-72" src={info.images[0]} alt="Image"></img> */}
                                           {/* </div> */}
@@ -104,13 +104,15 @@ export default function DropComment(){
                                             <nav className="text-xs text-gray-500 font-bold">Share</nav>
                                           </div>
                                         </div>
+                                        <nav className="font-bold">Comment as</nav>
                                         <div className="flex flex-col gap-2">
-                                            <nav className="font-bold">Comment as</nav>
-                                            <textarea value={commentLine} onChange={(e) => handleCommentBox(e)} className="outline-0 border h-40 text-sm" placeholder="Explore your comments here"></textarea>
+              
+                                            <textarea value={commentLine} onChange={(e) => handleCommentBox(e)} className="indent-2 outline-0 border h-40 text-sm" placeholder="Explore your comments here"></textarea>
+                                            </div>
                                             <div className="flex justify-end">
                                                 <button onClick={handleComment} className=" bg-blue-600 p-2 rounded-full">Comment</button>
                                             </div>
-                                        </div>
+                                       
                                         <div className="flex flex-col">
                                             <nav className="text-base font-bold pb-3">Top Comments</nav>
                                             <div className="flex flex-col gap-1">

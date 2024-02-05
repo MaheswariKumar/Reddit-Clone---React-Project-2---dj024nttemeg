@@ -119,3 +119,9 @@
   background-color: #1A1A1B;
   color: #d7dadc;
 }
+
+.placehold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

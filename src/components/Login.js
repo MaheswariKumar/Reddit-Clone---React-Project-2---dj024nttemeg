@@ -23,6 +23,7 @@ export default function Login() {
 
     const signin = () => {
         logInWithEmailAndPassword(email, pass); 
+        dispatch(isLoggedIn())
         console.log("Hello")
         console.log(user)      
         setEmail("")
@@ -31,7 +32,7 @@ export default function Login() {
 
     auth.onAuthStateChanged((user) => {
         if (user) {
-            dispatch(isLoggedIn())
+            // dispatch(isLoggedIn())
           console.log("User is signed in:", user.uid);
         } else {
           console.log("No user is signed in.");
@@ -88,7 +89,7 @@ export default function Login() {
             <div className="px-8 w-full">
                 <nav className="font-bold text-2xl">Log In</nav>
                 <p className="text-sm my-3 pb-2">By continuing, you agree to our <a href="https://www.redditinc.com/policies/user-agreement" target="_blank" className="text-blue-700">User Agreement</a> and acknowledge that you understand the <a className="text-blue-700" href="https://www.reddit.com/policies/privacy-policy" target="_blank">Privacy Policy</a>.</p>
-                <div onClick={signInWithGoogle} className="cursor-pointer flex mt-2 gap-16 items-center justify-center border-r border-t border-l rounded-full p-2 mb-2 w-full">
+                <div onClick={() => {signInWithGoogle, dispatch(isLoggedIn())}} className="cursor-pointer flex mt-2 gap-16 items-center justify-center border-r border-t border-l rounded-full p-2 mb-2 w-full">
                     <GoogleIcon style={{ height: '18px', width: '18px' }}/>
                     <nav className="flex-1 text-sm font-semibold">Continue with Google</nav>
                 </div>

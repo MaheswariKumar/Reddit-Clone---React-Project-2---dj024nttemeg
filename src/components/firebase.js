@@ -23,6 +23,7 @@ export const auth = getAuth(app);
 const db = getFirestore(app);
 
 
+
 export const registerWithEmailAndPassword = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -38,6 +39,25 @@ export const registerWithEmailAndPassword = async (name, email, password) => {
         email: user.email,
       });
     }
+
+    const newtonSignUpRes = await fetch('https://academics.newtonschool.co/api/v1/user/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'projectID': 'dj024nttemeg'
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+        appType: 'reddit'
+      })
+    });
+
+    const newtonSignUpData = await newtonSignUpRes.json();
+    console.log("Registered through newton api")
+    console.log(newtonSignUpData);
+
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -56,6 +76,25 @@ export const logInWithEmailAndPassword = async (email, password) => {
     console.log("Profile Name:", profileName);
     console.log( "Successfully LoggedIn")
     alert("You are loggedin now. you are going redirect soon")
+
+    const newtonLoginRes = await fetch('https://academics.newtonschool.co/api/v1/user/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'projectID': 'dj024nttemeg'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        appType: 'reddit'
+      })
+    });
+
+    const newtonLoginData = await newtonLoginRes.json();
+    console.log(newtonLoginData);
+
+    console.log("Successfully Logged In thorough newton api");
+    // alert("You are logged in now. You are going to be redirected soon.");
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -98,6 +137,16 @@ export const signInWithGitHub = async () => {
         email: user.email,
       });
     }
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+
+export const logOut = async () => {
+  try {
+    await signOut(auth);
+    console.log("Successfully logged out");
   } catch (err) {
     console.error(err);
     alert(err.message);

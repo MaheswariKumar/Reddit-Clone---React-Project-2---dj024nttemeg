@@ -42,7 +42,7 @@ function App() {
         <Route path={`/search`} element={<SearchItems />} />
         <Route path={`/r/:data/comments`} element={<DropComment />} />
         <Route path={`/submit`} element={<CreatePost />} />
-        <Route path={`/user/:data`} element={<UserPosts />} />
+        <Route path={`/user/:data/:id`} element={<UserPosts />} />
       </Routes>
     </div>
   );

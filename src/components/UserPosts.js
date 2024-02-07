@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeTheme, setID } from "./Action";
@@ -22,8 +23,14 @@ export default function UserPosts() {
     const [best, setBest] = useState(true)
     const [hot, setHot] = useState(false)
     const [newopt, setNewOpt] = useState(false)
+    const [info, setInfo] = useState(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const getId = useSelector((state) => state.getId);
+    const [isLoading, setIsLoading] = useState(true);
+    const [inputTitle, setInputTitle] = useState("");
+    const [inputText, setInputText] = useState("");
+    const [edited, setedited] = useState(false);
     const [dropdownPosition, setDropdownPosition] = useState({
         top: "120px",
         left: "1000px",
@@ -115,20 +122,129 @@ export default function UserPosts() {
       navigate("/submit")
     }
 
-    const handleComment = (data, id) => {
-      dispatch(setID(id))
-      navigate(`/r/${data}/comments`);
-    };
+    // const handleComment = (data, id) => {
+    //   dispatch(setID(id))
+    //   navigate(`/r/${data}/comments`);
+    // };
 
     function scrollToTop() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
       }
+    
+      async function getData() {
+        try {
+          const rs = await axios.get(
+            `https://academics.newtonschool.co/api/v1/reddit/post/${getId}`,
+            {
+              headers: {
+                projectID: "dj024nttemeg",
+              },
+            }
+          );
+          if (Array.isArray(rs.data.data)) {
+            setInfo(rs.data.data);
+        } 
+        else if (typeof rs.data.data === 'object' && rs.data.data !== null) {
+            setInfo([rs.data.data]);
+        }
+          console.log(rs.data.data);
+          console.log(rs.data.data.content);
+          setIsLoading(false);
+        } catch (error) {
+          console.error('Error fetching data:', error.message);
+        }
+      }
+
+    useEffect(() => {
+      getData()
+    }, [])
+
+    const handleDeletePost = async (id) => {
+      try {
+        const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+            'projectID': 'dj024nttemeg',
+          },
+
+        });
+    
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error('Error in handleDeletePost:', error);
+      }
+    
+    };
+
+    const handleTitle = (e) => {
+      setInputTitle(e.target.value);
+  }
+
+  const handleInput = (e) => {
+      setInputText(e.target.value)
+  }
+
+  const handleEditPost = async (id) => {
+    try {
+      const formData = new FormData();
+      formData.append('title', inputTitle);
+      formData.append('content', inputText);
+
+  
+      const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+          'projectID': 'dj024nttemeg',
+        },
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      
+      if (data.data && data.data._id) {
+        console.log(data.data._id)
+        dispatch(setID(data.data._id));
+        navigate(`/user/${inputTitle}/${data.data._id}`);
+        console.log(data);
+    } else {
+        console.error('Data or _id property is missing in the response:', data);
+    }
+    //   console.log(data._id);
+    //   dispatch(setID(data._id))
+    //   navigate(`/user/${inputTitle}/${data._id}`)
+    //   console.log(data);
+    } catch (error) {
+      console.error('Error in handleCreatePost:', error);
+    }  
+
+    setedited(false);
+    getData()
+  };
 
     return (
         <>
         <div className={`${!isUserLoggedin ? "bg-white" : (checkedTheme ? "bg-black" : "bg-gray-300")} py-1 pr-1 flex justify-between w-full min-h-[100vh] max-w-full ${state.isLoading ? null : "mt-12"}`}>
           {isMobile && isSideBarOpen  && <SideBar isMobile={isMobile} isSideBarOpen={isSideBarOpen} />}
+          {isLoading ? 
+                <div className="flex items-center justify-center h-screen flex-1">
+                <img
+                  src="https://www.svgrepo.com/show/452094/reddit.svg"
+                  alt="Reddit Logo"
+                  className="w-12 h-12 transition ease-in-out duration-300 animate-ping"
+                />
+              </div> : 
           <div className="flex justify-center w-full mt-16">
         <div className={`flex w-full ${state.showMax ? "max-w-[52rem]" : "max-w-[40rem]"} flex-col m-2`}>
             <div className={`flex h-14 items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
@@ -234,22 +350,10 @@ export default function UserPosts() {
               )}
                 </>
             </div> 
-            {/* {info.map((data, idx) => (
-              <div onClick={() => handleComment(data.channel ? data.channel.name : "newton", data._id)} key={idx} className={`cursor-pointer flex mt-4 h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
-              <div className={`flex flex-col items-center pt-2 ${checkedTheme ? "bg-black text-white" : null } `}>
-                <div className="hover:text-orange-500 text-gray-500 cursor-pointer">
-                  <UpvoteOutlineIcon height="20" width="20"/>
-                </div>
-                <nav className="text-sm font-bold">{data.likeCount}</nav>
-                <div className="hover:text-blue-500 text-gray-500 cursor-pointer">
-                  <DownvoteOutlineIcon height="20" width="20" />
-                </div>
-              </div>
+            {Array.isArray(info) ? info.map((data, idx) => (
+              <div key={idx} className={`cursor-pointer flex mt-4 h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
               <div className={`flex flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
                 <div className="flex items-center gap-2">
-                  {data.channel ? <> <img className="rounded-full w-6 h-6" src={data.channel.image} alt="Prof_Img"></img>
-                  <nav className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav></> :
-                  <><img className="rounded-full w-6 h-6" src="https://i.ytimg.com/vi/V4jWG2mfYhg/maxresdefault.jpg" alt="Prof_Img"></img></>}
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">
                     <nav >Posted by</nav>
                     <nav className="hover:underline cursor-pointer">u/{data.author.name}</nav>
@@ -260,21 +364,65 @@ export default function UserPosts() {
                   <img src="https://images.indianexpress.com/2022/12/NewtonSchool_LEAD.jpg?w=414" alt="Image"></img>}
                 </div>
                 <div>
-                  <p>{data.content}</p>
+                  {data.content && <p>{data.content}</p>}
                 </div>
+                {edited &&                 <div className="flex flex-col">
+            <div className={`mx-2 mb-3 p-1.5 ${checkedTheme ? "" : ""}`}>
+                            <input value={inputTitle} onChange={(e) => handleTitle(e)} style={{width: "100%"}} type="text" placeholder="Title" className={`outline-1 h-11 indent-2 ${checkedTheme ? "all all border-[#343536] border" : "border"}`}></input>
+            </div>
+            <div className="h-40 box-border resize-y mx-3 mb-5"><textarea value={inputText} style={{width: "100%", boxSizing: "border-box"}} className={`h-40 outline-1 indent-3 ${checkedTheme ? "all border-[#343536] border" : "border"}`} onChange={(e)=> handleInput(e)} placeholder="Text (Optional)"></textarea></div>
+            </div>}
                 <div className="flex">
-                <div className={`flex text-gray-500 item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
-                  <CommentOutlineIcon />
-                  <nav className="text-xs font-bold">{data.commentCount} Comments</nav>
-                </div>
                 <div className={`flex item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
                   <img width="20" height="20" src="https://img.icons8.com/small/16/737373/forward-arrow.png" alt="forward-arrow"/>
                   <nav className="text-xs text-gray-500 font-bold">Share</nav>
                 </div>
+                {edited ? <div onClick={() => handleEditPost(data._id)} className={`flex text-gray-500 item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
+                  <img width="20" height="20" src="https://img.icons8.com/pastel-glyph/64/737373/create-new--v1.png" alt="create-new--v1"/>
+                  <nav className="text-xs font-bold">Save</nav>
+                </div> :
+                <div onClick={() => setedited(true)} className={`flex text-gray-500 item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
+                  <img width="20" height="20" src="https://img.icons8.com/pastel-glyph/64/737373/create-new--v1.png" alt="create-new--v1"/>
+                  <nav className="text-xs font-bold">Edit</nav>
+                </div> }
+                <div onClick={() => handleDeletePost(data._id)} className={`flex item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
+                  <img width="20" height="20" src="https://img.icons8.com/ios/50/737373/minus.png" alt="minus"/>
+                  <nav className="text-xs text-gray-500 font-bold">Remove</nav>
+                </div>
               </div>
               </div>
             </div> 
-            ))} */}
+            ))
+            :  <div className={`cursor-pointer flex h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
+            <div className={`flex flex-col px-3 pt-2 pb-3 gap-3 ${checkedTheme ? "all" : null}`}>
+              <div className="flex items-center gap-2">
+                <div className="text-gray-500 text-xs pl-2 flex gap-1">
+                  <nav >Posted by</nav>
+                  {info.author ? <nav className="hover:underline cursor-pointer">u/{info.author.name}</nav> : null }
+                </div>
+              </div>
+              <div className="flex justify-center gap-2">
+                <img className="w-72 h-72" src={info.images[0]} alt="Image"></img>
+              </div>
+              {info.content && <p className="pt-4">{info.content}</p>}
+              
+              <div className="flex">
+                <div className={`flex item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
+                  <img width="20" height="20" src="https://img.icons8.com/small/16/737373/forward-arrow.png" alt="forward-arrow"/>
+                  <nav className="text-xs text-gray-500 font-bold">Share</nav>
+                </div>
+                <div className={`flex text-gray-500 item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
+                  <img width="20" height="20" src="https://img.icons8.com/pastel-glyph/64/737373/create-new--v1.png" alt="create-new--v1"/>
+                  <nav className="text-xs font-bold">Edit</nav>
+                </div>
+                <div onClick={() => handleDeletePost(info._id)} className={`flex item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
+                  <img width="20" height="20" src="https://img.icons8.com/ios/50/737373/minus.png" alt="minus"/>
+                  <nav className="text-xs text-gray-500 font-bold">Remove</nav>
+                </div>
+            </div>
+          </div>                                  
+        </div> }
+        <nav className="font-semibold text-gray-500 flex items-center justify-center">All you can get here</nav>
         </div>
         {isMobile && 
         <>
@@ -305,6 +453,7 @@ export default function UserPosts() {
         </div>
         </>}
         </div>
+        }
         </div>
         </>
     )

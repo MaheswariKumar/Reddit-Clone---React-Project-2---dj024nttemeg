@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { setID } from "./Action";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
@@ -21,7 +22,10 @@ export default function CreatePost() {
     const [link, setLink] = useState(false);
     const [inputTitle, setInputTitle] = useState("");
     const [inputText, setInputText] = useState("");
+    const [inputImg, setInputImg] = useState("")
     const [buttonDisabled, setButtonDisabled] = useState(false);
+    const [addedImg, setAddedImg] = useState(false);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     function handlePost() {
@@ -60,32 +64,60 @@ export default function CreatePost() {
 // console.log(user)
 
 const handleCreatePost = async () => {
-    // try {
-    //   const formData = new FormData();
-    //   formData.append('title', `${inputTitle}`);
-    //   formData.append('content', `${inputText}`);
-    //   formData.append('images', 'https://images.indianexpress.com/2022/12/NewtonSchool_LEAD.jpg?w=414');
+    try {
+      const formData = new FormData();
+      formData.append('images', inputImg, inputImg.type);
+      formData.append('title', inputTitle);
+      formData.append('content', inputText);
+
   
-    //   const response = await fetch('https://academics.newtonschool.co/api/v1/reddit/post/', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
-    //       'projectID': 'dj024nttemeg',
-    //     },
-    //     body: formData,
-    //   });
+      const response = await fetch('https://academics.newtonschool.co/api/v1/reddit/post/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+          'projectID': 'dj024nttemeg',
+        },
+        body: formData,
+      });
   
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! Status: ${response.status}`);
-    //   }
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
   
-    //   const data = await response.json();
+      const data = await response.json();
+      
+      if (data.data && data.data._id) {
+        console.log(data.data._id)
+        dispatch(setID(data.data._id));
+        navigate(`/user/${inputTitle}/${data.data._id}`);
+        console.log(data);
+    } else {
+        console.error('Data or _id property is missing in the response:', data);
+    }
+    //   console.log(data._id);
+    //   dispatch(setID(data._id))
+    //   navigate(`/user/${inputTitle}/${data._id}`)
     //   console.log(data);
-    // } catch (error) {
-    //   console.error('Error in handleCreatePost:', error);
-    // }
-  
+    } catch (error) {
+      console.error('Error in handleCreatePost:', error);
+    }  
   };
+
+  const handleImageChange = (e) => {
+    console.log(e.target.files)
+    console.log(e.target.files[0])
+    console.log(e.target.files[0].type)
+    const file = e.target.files[0];
+    setInputImg(file)
+    setAddedImg(true)
+
+};
+
+
+function handleClearInput() {
+    setAddedImg(false)
+    setInputImg("")
+}
   
 
 // const handleCreatePost = () => {
@@ -179,8 +211,13 @@ const handleCreatePost = async () => {
                         <div className={`mx-2 mb-3 p-1.5 ${checkedTheme ? "" : ""}`}>
                             <input value={inputTitle} onChange={(e) => handleTitle(e)} style={{width: "100%"}} type="text" placeholder="Title" className={`outline-1 h-11 indent-2 ${checkedTheme ? "all all border-[#343536] border" : "border"}`}></input>
                         </div>
-                        {img ? <div className={`h-40 mx-3 mb-5 ${checkedTheme ? "border-[#343536] border" : "border"} ${img ? "placehold" : null }`}>
-                            <nav className={`${checkedTheme ? "text-[#d7dadc] border border-[#d7dadc]" : "text-[#0079d3] border border-[#0079d3]"} font-bold p-1.5 px-3.5 rounded-full`}>Upload</nav> 
+                        {img ? <div className={`flex flex-col gap-2 cursor-pointer h-40 mx-3 mb-5 ${checkedTheme ? "border-[#343536] border" : "border"} ${img ? "placehold" : null }`}>
+                            {!addedImg ? <><label className={`${checkedTheme ? "text-[#d7dadc] border border-[#d7dadc]" : "text-[#0079d3] border border-[#0079d3]"} font-bold p-1.5 px-3.5 rounded-full`}>Upload
+                            <input className="hidden" type="file" onChange={(e) => handleImageChange(e)} accept="image/gif, image/jpeg, image/png"></input>
+                            </label></> : <>
+                            <img className="h-24 w-24 rounded-lg border-2 border-blue-600" src={URL.createObjectURL(inputImg)} alt="input-image"></img>
+                            <nav onClick={handleClearInput} className={`${checkedTheme ? "text-[#d7dadc] border border-[#d7dadc]" : "text-[#0079d3] border border-[#0079d3]"} font-bold p-1.5 px-3.5 rounded-full`}>Clear</nav>
+                            </>}
                         </div> :
                         <div className="h-40 box-border resize-y mx-3 mb-5"><textarea value={inputText} style={{width: "100%", boxSizing: "border-box"}} className={`h-40 outline-1 indent-3 ${checkedTheme ? "all border-[#343536] border" : "border"}`} onChange={(e)=> handleInput(e)} placeholder={post ? "Text (Optional)" : (link ? "Enter URL" : null)}></textarea></div> }
                         <div className="flex justify-start gap-3 pl-2 mb-4">
@@ -204,7 +241,7 @@ const handleCreatePost = async () => {
                         <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} mb-4 mx-3`}></nav>
                         <div className="flex justify-end pr-2 mb-4 pr-3 gap-2 font-semibold">
                             <nav className={`cursor-not-allowed ${checkedTheme ? "border-[#343536] border text-zinc-700" : "border text-zinc-300"} px-4 rounded-full p-1`}>Save Draft</nav>
-                            <button onClick={() => {handleCreatePost(); navigate(`/user/${inputTitle}`)}} className={`${!checkedTheme && buttonDisabled ? "bg-[#0079d3] text-[#d7dadc]" : checkedTheme && buttonDisabled ? "bg-[#d7dadc] text-[#1A1A1B]" : checkedTheme && !buttonDisabled ? "bg-zinc-700 text-[#d7dadc]" : "bg-zinc-400 text-[#d7dadc]"} px-4 rounded-full p-1`}>Post</button>
+                            <button onClick={() => handleCreatePost()} className={`${!checkedTheme && buttonDisabled ? "bg-[#0079d3] text-[#d7dadc]" : checkedTheme && buttonDisabled ? "bg-[#d7dadc] text-[#1A1A1B]" : checkedTheme && !buttonDisabled ? "bg-zinc-700 text-[#d7dadc]" : "bg-zinc-400 text-[#d7dadc]"} px-4 rounded-full p-1`}>Post</button>
                         </div>
                         <nav className={`${checkedTheme ? "border-[#343536] border" : "border"}`}></nav>
                         <div className={`flex flex-col pt-4 pl-2 gap-2 pb-5 ${checkedTheme ? "text-[#d7dadc] bg-[#272729]" : "bg-[#f6f7f8]"}`}>

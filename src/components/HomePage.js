@@ -43,10 +43,15 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
       navigate("/submit")
     }
 
+    const handleAuthorPosts = (name, id) => {
+      navigate(`/user/${name}/${id}`);
+    }
+
     const handleComment = (data, id) => {
       dispatch(setID(id))
       navigate(`/r/${data}/comments`);
     };
+
 
     return (
         <>
@@ -168,11 +173,11 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
               <div className={`flex flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
                 <div className="flex items-center gap-2">
                   {data.channel ? <> <img className="rounded-full w-6 h-6" src={data.channel.image} alt="Prof_Img"></img>
-                  <nav className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav></> :
+                  <nav onClick={(e) => {e.stopPropagation(); handleAuthorPosts(data.channel.name, data.channel_id)}} className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav></> :
                   <><img className="rounded-full w-6 h-6" src="https://i.ytimg.com/vi/V4jWG2mfYhg/maxresdefault.jpg" alt="Prof_Img"></img></>}
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">
                     <nav >Posted by</nav>
-                    <nav className="hover:underline cursor-pointer">u/{data.author.name}</nav>
+                    <nav onClick={(e) => {e.stopPropagation(); handleAuthorPosts(data.author.name, data.author._id)}} className={`${!data.channel ? "hover:underline cursor-pointer" : null}`}>u/{data.author.name}</nav>
                   </div>
                 </div>
                 <div className={`${state.showMax ? "w-32 h-32 rounded-lg" : null }`}>

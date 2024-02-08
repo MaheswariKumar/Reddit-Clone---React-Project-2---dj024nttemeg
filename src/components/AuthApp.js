@@ -6,6 +6,7 @@ import QRCode from "./QRCode";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import UserName from "./UserName";
+import CreateCommunity from "./CreateCommunity";
 
 export default function AuthApp() {
     const isMobile = useSelector((state) => state.isMobile);
@@ -14,6 +15,7 @@ export default function AuthApp() {
     const isLogin = useSelector((state) => state.isLogin);
     const isSignUp = useSelector((state) => state.isSignUp);
     const isUserName = useSelector((state) => state.isUserName);
+    const showCommunity = useSelector((state) => state.showCommunity);
     const dispatch = useDispatch();
     const backGroundDiv = useRef(null);
 
@@ -41,6 +43,9 @@ export default function AuthApp() {
             </div>}
             {isUserName && <div style={{backgroundColor: "rgb(26, 26, 27, 0.4)"}} className="w-full flex items-center justify-center fixed top-0 bottom-0">
                 <UserName />
+            </div>}
+            {showCommunity && <div style={{backgroundColor: "rgb(26, 26, 27, 0.4)"}} className="w-full flex items-center justify-center fixed top-0 bottom-0">
+                <CreateCommunity />
             </div>}
         </div>
     )

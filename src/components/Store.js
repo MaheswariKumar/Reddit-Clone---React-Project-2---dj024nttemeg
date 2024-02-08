@@ -23,7 +23,9 @@ const initialState = {
   searchComutyResults: [],
   searchPplResults: [],
   showDropOption: false,
-  getId:""
+  getId:"",
+  postTime: "",
+  showCommunity: false
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -146,6 +148,18 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         getId: action.getId,
       };
+
+      case 'SET_TIME':
+        return {
+          ...state,
+          postTime: action.postTime,
+        };
+
+      case 'SET_COMMUNITY':
+        return {
+          ...state,
+          showCommunity: !state.showCommunity,
+        };
 
     default:
       return state;

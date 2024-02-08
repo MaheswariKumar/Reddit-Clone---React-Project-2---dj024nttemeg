@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm, setPostResults, setComutyResults, setPplResults, setDropOption } from "./Action";
+import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm, setPostResults, setComutyResults, setPplResults, setDropOption, setCommunity } from "./Action";
 import CustomLogo from "./icons/CustomLogo";
 import MenuIcon from "./icons/MenuIcon";
 import SearchIcon from "./icons/SearchIcon";
@@ -265,7 +265,7 @@ const handlePplSearch = async () => {
             <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
               <CustomSvgIcon />
             </div>
-            <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
+            <div onClick={()=> dispatch(setCommunity())} className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
               <CustomPlusIcon />
             </div>
             <div className={`cursor-pointer flex gap-1 items-center justify-center text-sm font-semibold ${checkedTheme ? "bg-[#272729]" : "bg-gray-200 hover:bg-gray-300"}  max-w-xl rounded-full py-1 px-2`}>

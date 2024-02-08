@@ -88,3 +88,12 @@ export const setID = (getId) => ({
   type: 'SET_ID',
   getId
 });
+
+export const setTime = (postTime) => ({
+  type: 'SET_TIME',
+  postTime
+});
+
+export const setCommunity = () => ({
+  type: 'SET_COMMUNITY',
+});

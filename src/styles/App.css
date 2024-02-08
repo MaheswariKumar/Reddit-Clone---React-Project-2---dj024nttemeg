@@ -125,3 +125,7 @@
   align-items: center;
   justify-content: center;
 }
+
+input[type="radio"].custom-radio:checked {
+  accent-color: blue;
+}

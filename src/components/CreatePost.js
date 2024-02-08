@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setID } from "./Action";
+import { setID, setTime } from "./Action";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
@@ -63,12 +63,42 @@ export default function CreatePost() {
 // const [user] = useAuthState(auth);
 // console.log(user)
 
+function getTimeSincePostCreation(creationTime) {
+    const currentDate = new Date();
+    const postCreationDate = new Date(creationTime); // Assuming creationTime is in ISO format
+  
+    const timeDifference = currentDate - postCreationDate; // Difference in milliseconds
+  
+    // Convert milliseconds to seconds, minutes, hours, and days
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+  
+    // Determine the appropriate time unit to display
+    if (days > 0) {
+      return `${days} day${days !== 1 ? 's' : ''} ago`;
+    } else if (hours > 0) {
+      return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    } else {
+      return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+    }
+  }
+
 const handleCreatePost = async () => {
     try {
       const formData = new FormData();
-      formData.append('images', inputImg, inputImg.type);
-      formData.append('title', inputTitle);
-      formData.append('content', inputText);
+      if (inputImg){
+        formData.append('images', inputImg, inputImg.type);
+      }
+      if (inputTitle) {
+        formData.append('title', inputTitle);
+      }
+      if (inputText) {
+        formData.append('content', inputText);
+      }
 
   
       const response = await fetch('https://academics.newtonschool.co/api/v1/reddit/post/', {
@@ -89,6 +119,10 @@ const handleCreatePost = async () => {
       if (data.data && data.data._id) {
         console.log(data.data._id)
         dispatch(setID(data.data._id));
+        const currentDate = new Date();
+        const currentISOTime = currentDate.toISOString();
+        const timeSinceCreation = getTimeSincePostCreation(currentISOTime);
+        dispatch(setTime(timeSinceCreation))
         navigate(`/user/${inputTitle}/${data.data._id}`);
         console.log(data);
     } else {

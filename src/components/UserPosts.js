@@ -20,6 +20,7 @@ export default function UserPosts() {
     const isMobile = useSelector((state) => state.isMobile);
     const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
     const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
+    const postTime = useSelector((state) => state.postTime);
     const [best, setBest] = useState(true)
     const [hot, setHot] = useState(false)
     const [newopt, setNewOpt] = useState(false)
@@ -158,7 +159,8 @@ export default function UserPosts() {
 
     useEffect(() => {
       getData()
-    }, [])
+      console.log(postTime)
+    }, [info])
 
     const handleDeletePost = async (id) => {
       try {
@@ -174,8 +176,13 @@ export default function UserPosts() {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        if (response.status === 204) {
+          console.log('Post deleted successfully');
+          setInfo(info.filter(post => post._id !== id));
+        }
     
         const data = await response.json();
+
         console.log(data);
       } catch (error) {
         console.error('Error in handleDeletePost:', error);
@@ -194,8 +201,12 @@ export default function UserPosts() {
   const handleEditPost = async (id) => {
     try {
       const formData = new FormData();
-      formData.append('title', inputTitle);
-      formData.append('content', inputText);
+      if (inputTitle) {
+        formData.append('title', inputTitle);
+      }
+      if (inputText) {
+        formData.append('content', inputText);
+      }
 
   
       const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/${id}`, {
@@ -354,14 +365,16 @@ export default function UserPosts() {
               <div key={idx} className={`cursor-pointer flex mt-4 h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
               <div className={`flex flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
                 <div className="flex items-center gap-2">
+                  <nav className="border rounded-full w-8 h-8"></nav>
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">
                     <nav >Posted by</nav>
                     <nav className="hover:underline cursor-pointer">u/{data.author.name}</nav>
                   </div>
+                  <nav className="text-gray-500 text-xs">{postTime}</nav>
                 </div>
                 <div className={`${state.showMax ? "w-32 h-32 rounded-lg" : null }`}>
                   {data.images.length > 0 ? <img src={data.images[0]} alt="Image"></img> :
-                  <img src="https://images.indianexpress.com/2022/12/NewtonSchool_LEAD.jpg?w=414" alt="Image"></img>}
+                  null}
                 </div>
                 <div>
                   {data.content && <p>{data.content}</p>}
@@ -422,7 +435,7 @@ export default function UserPosts() {
             </div>
           </div>                                  
         </div> }
-        <nav className="font-semibold text-gray-500 flex items-center justify-center">All you can get here</nav>
+        <nav className="font-semibold text-gray-500 flex items-center justify-center pt-2">All you can get here</nav>
         </div>
         {isMobile && 
         <>

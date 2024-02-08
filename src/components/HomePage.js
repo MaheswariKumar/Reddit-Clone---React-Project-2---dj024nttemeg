@@ -52,6 +52,30 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
       navigate(`/r/${data}/comments`);
     };
 
+    function getTimeSincePostCreation(creationTime) {
+      const currentDate = new Date();
+      const postCreationDate = new Date(creationTime); // Assuming creationTime is in ISO format
+    
+      const timeDifference = currentDate - postCreationDate; // Difference in milliseconds
+    
+      // Convert milliseconds to seconds, minutes, hours, and days
+      const seconds = Math.floor(timeDifference / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+    
+      // Determine the appropriate time unit to display
+      if (days > 0) {
+        return `${days} day${days !== 1 ? 's' : ''} ago`;
+      } else if (hours > 0) {
+        return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+      } else if (minutes > 0) {
+        return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+      } else {
+        return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+      }
+    }
+
 
     return (
         <>
@@ -174,15 +198,16 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
                 <div className="flex items-center gap-2">
                   {data.channel ? <> <img className="rounded-full w-6 h-6" src={data.channel.image} alt="Prof_Img"></img>
                   <nav onClick={(e) => {e.stopPropagation(); handleAuthorPosts(data.channel.name, data.channel_id)}} className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav></> :
-                  <><img className="rounded-full w-6 h-6" src="https://i.ytimg.com/vi/V4jWG2mfYhg/maxresdefault.jpg" alt="Prof_Img"></img></>}
+                  <><nav className="border rounded-full w-8 h-8"></nav></>}
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">
                     <nav >Posted by</nav>
                     <nav onClick={(e) => {e.stopPropagation(); handleAuthorPosts(data.author.name, data.author._id)}} className={`${!data.channel ? "hover:underline cursor-pointer" : null}`}>u/{data.author.name}</nav>
                   </div>
+                  <nav className="text-gray-500 text-xs">{getTimeSincePostCreation(data.createdAt)}</nav>
                 </div>
                 <div className={`${state.showMax ? "w-32 h-32 rounded-lg" : null }`}>
                   {data.images.length > 0 ? <img src={data.images[0]} alt="Image"></img> :
-                  <img src="https://images.indianexpress.com/2022/12/NewtonSchool_LEAD.jpg?w=414" alt="Image"></img>}
+                  null}
                 </div>
                 <div>
                   <p>{data.content}</p>

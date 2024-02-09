@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useReducer } from "react";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { changeTheme, setID } from "./Action";
@@ -7,19 +8,95 @@ import ViewClassicFillIcon from "./icons/ViewClassicFillIcon";
 import ViewCardFillIcon from "./icons/ViewCardFillIcon";
 import ViewClassicOutlineIcon from "./icons/ViewClassicOutlineIcon";
 import CaretDownOutlineIcon from "./icons/CaretDownOutlineIcon";
-import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
-import DownvoteOutlineIcon from "./icons/DownvoteOutlineIcon";
-import CommentOutlineIcon from "./icons/CommentOutlineIcon";
+import SideBar from "./SideBar";
 
-export default function HomePage({info, state, StateDisptch, handleResize, dropdownMaxPosition, dropdownPosition}) {
+export default function NewChannel() {
     const checkedTheme = useSelector((state) => state.checkedTheme);
     const checkedStatus = useSelector((state) => state.checkedStatus);
     const isTab = useSelector((state) => state.isTab);
+    const isMobile = useSelector((state) => state.isMobile);
+    const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
+    const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
+    const postTime = useSelector((state) => state.postTime);
     const [best, setBest] = useState(true)
     const [hot, setHot] = useState(false)
     const [newopt, setNewOpt] = useState(false)
+    const [info, setInfo] = useState(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const getId = useSelector((state) => state.getId);
+    const [isLoading, setIsLoading] = useState(true);
+    const [inputTitle, setInputTitle] = useState("");
+    const [inputText, setInputText] = useState("");
+    const [edited, setedited] = useState(false);
+    const [dropdownPosition, setDropdownPosition] = useState({
+        top: "120px",
+        left: "1000px",
+      });
+      const [dropdownMaxPosition, setDropdownMaxPosition] = useState({
+        top: "120px",
+        left: "975px",
+      });
+
+      const handleResize = () => {
+        const rect = document
+          .getElementById("dropdown-button")
+          ?.getBoundingClientRect();
+        if (rect) {
+          setDropdownPosition({
+            top: `${rect.bottom + 7}px`,
+            left: `${rect.left - 35}px`,
+          });
+          setDropdownMaxPosition({
+            top: `${rect.bottom + 7}px`,
+            left: `${rect.left - 35}px`,
+          });
+        }
+      };
+
+      const IntialState = {
+        showDropDown: false,
+        showMin: true,
+        showMax: false,
+        isLoading: true,
+      };
+    
+      function StateReducer(state, action) {
+        switch (action.type) {
+          case "showoption":
+            return {
+              ...state,
+              showDropDown: !state.showDropDown,
+            };
+    
+          case "showminoption":
+            return {
+              ...state,
+              showMin: true,
+              showMax: false,
+              showDropDown: false,
+            };
+    
+          case "showmaxoption":
+            return {
+              ...state,
+              showMax: true,
+              showMin: false,
+              showDropDown: false,
+            };
+    
+          case "loaded":
+            return {
+              ...state,
+              isLoading: false,
+            };
+    
+          default:
+            return state;
+        }
+      }
+    
+      const [state, StateDisptch] = useReducer(StateReducer, IntialState);
 
     function handleBest() {
       setBest(true)
@@ -43,42 +120,37 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
       navigate("/submit")
     }
 
-    const handleAuthorPosts = (name, id) => {
-      navigate(`/user/${name}/${id}`);
-    }
+    // const handleComment = (data, id) => {
+    //   dispatch(setID(id))
+    //   navigate(`/r/${data}/comments`);
+    // };
 
-    const handleComment = (data, id) => {
-      dispatch(setID(id))
-      navigate(`/r/${data}/comments`);
-    };
-
-    function getTimeSincePostCreation(creationTime) {
-      const currentDate = new Date();
-      const postCreationDate = new Date(creationTime); // Assuming creationTime is in ISO format
-    
-      const timeDifference = currentDate - postCreationDate; // Difference in milliseconds
-    
-      // Convert milliseconds to seconds, minutes, hours, and days
-      const seconds = Math.floor(timeDifference / 1000);
-      const minutes = Math.floor(seconds / 60);
-      const hours = Math.floor(minutes / 60);
-      const days = Math.floor(hours / 24);
-    
-      // Determine the appropriate time unit to display
-      if (days > 0) {
-        return `${days} day${days !== 1 ? 's' : ''} ago`;
-      } else if (hours > 0) {
-        return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
-      } else if (minutes > 0) {
-        return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
-      } else {
-        return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+    function scrollToTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
       }
-    }
-
+    
 
     return (
         <>
+        <div className={`${!isUserLoggedin ? "bg-white" : (checkedTheme ? "bg-black" : "bg-gray-300")} py-1 pr-1 flex justify-between w-full min-h-[100vh] max-w-full ${state.isLoading ? null : "mt-12"}`}>
+          {isMobile && isSideBarOpen  && <SideBar isMobile={isMobile} isSideBarOpen={isSideBarOpen} />}
+          <div className="flex flex-col w-full">
+          <div className="w-full bg-[#0079d3] h-32"></div>
+        <div className={`w-full h-28 flex flex-col justify-around ${checkedTheme ? "all" : "bg-white "}`}>
+            <div className="flex gap-4 pl-8 ">
+                <nav className="bg-white relative top-[-15px] border rounded-full w-20 h-20"></nav>
+                <div className="flex flex-col pt-2">
+                    <h1 className="text-3xl font-bold">Post</h1>
+                    <nav className="font-semibold text-sm">r/Post</nav>
+                </div>
+                <button className={`h-8 mt-3 rounded-full px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Delete</button>
+            </div>
+            <div className="pl-6">
+                <nav style={{textDecorationColor: "blue", textUnderlineOffset: "0.4rem"}} className="font-semibold underline">Posts</nav>
+            </div>
+        </div>
+          <div className="flex justify-center w-full mt-4">
         <div className={`flex w-full ${state.showMax ? "max-w-[52rem]" : "max-w-[40rem]"} flex-col m-2`}>
             <div className={`flex h-14 items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                 <div className="cursor-pointer">
@@ -183,48 +255,61 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
               )}
                 </>
             </div> 
-            {info.map((data, idx) => (
-              <div onClick={() => handleComment(data.channel ? data.channel.name : "newton", data._id)} key={idx} className={`cursor-pointer flex mt-4 h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
-              <div className={`flex flex-col items-center pt-2 ${checkedTheme ? "bg-black text-white" : null } `}>
-                <div className="hover:text-orange-500 text-gray-500 cursor-pointer">
-                  <UpvoteOutlineIcon height="20" width="20"/>
+        <nav className="font-semibold text-gray-500 flex items-center justify-center pt-8">r/Post hasn't made any posts yet!!!</nav>
+        </div>
+        {isMobile && 
+        <>
+        <div className={`flex w-full max-w-[20rem] flex-col m-2`}>
+        <div className={`h-14 flex items-center  ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>
+                <nav className="pl-3">About Community</nav>
+            </div>
+            <div className={`flex flex-col rounded px-3 py-2 gap-3 ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
+            <nav className="text-gray-400 text-sm font-semibold">Created on date</nav>
+            <div className={`flex justify-between py-3 ${checkedTheme ? "border-y border-[#343536]" : "border-y"}`}>
+                <div>
+                    <nav className="text-sm font-bold">1.9M</nav>
+                    <nav className="text-gray-400 text-sm">Members</nav>
                 </div>
-                <nav className="text-sm font-bold">{data.likeCount}</nav>
-                <div className="hover:text-blue-500 text-gray-500 cursor-pointer">
-                  <DownvoteOutlineIcon height="20" width="20" />
-                </div>
-              </div>
-              <div className={`flex w-full flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
-                <div className="flex items-center gap-2">
-                  {data.channel ? <> <img className="rounded-full w-6 h-6" src={data.channel.image} alt="Prof_Img"></img>
-                  <nav onClick={(e) => {e.stopPropagation(); handleAuthorPosts(data.channel.name, data.channel_id)}} className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav></> :
-                  <><nav className="border rounded-full w-8 h-8"></nav></>}
-                  <div className="text-gray-500 text-xs pl-2 flex gap-1">
-                    <nav >Posted by</nav>
-                    <nav onClick={(e) => {e.stopPropagation(); handleAuthorPosts(data.author.name, data.author._id)}} className={`${!data.channel ? "hover:underline cursor-pointer" : null}`}>u/{data.author.name}</nav>
-                  </div>
-                  <nav className="text-gray-500 text-xs">{getTimeSincePostCreation(data.createdAt)}</nav>
-                </div>
-                <div className={`${state.showMax ? "w-32 h-32 rounded-lg" : null }`}>
-                  {data.images.length > 0 ? <img src={data.images[0]} alt="Image"></img> :
-                  null}
+                <div className="flex flex-col">
+                    <nav className="text-sm font-bold">3.1K</nav>
+                    <div className="flex gap-1 items-center">
+                        <nav className="w-3 h-3 rounded-full bg-[#46d160] border-inherit border-2"></nav>
+                        <nav className="text-gray-400 text-sm">Online</nav>
+                    </div>
                 </div>
                 <div>
-                  <p>{data.content}</p>
+                    <nav className="text-sm font-bold">Top 1%</nav>
+                    <nav className="text-gray-400 text-sm">Ranked by 2k</nav>
                 </div>
-                <div className="flex">
-                <div className={`flex text-gray-500 item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
-                  <CommentOutlineIcon />
-                  <nav className="text-xs font-bold">{data.commentCount} Comments</nav>
                 </div>
-                <div className={`flex item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
-                  <img width="20" height="20" src="https://img.icons8.com/small/16/737373/forward-arrow.png" alt="forward-arrow"/>
-                  <nav className="text-xs text-gray-500 font-bold">Share</nav>
+                <div className="flex flex-col items-center justify-start gap-2">
+                    <div className="flex items-center">
+                    <div className="w-14 h-14">
+                        <img src="https://i.redd.it/snoovatar/avatars/a23dbde1-4832-4cc6-b528-8e3637c03984-headshot.png"></img>
+                    </div>
+                    <div className="flex flex-col">
+                        <nav className="text-xs font-semibold">Nandi</nav>
+                        <nav className="text-gray-400 text-sm">u/nandi</nav>
+                    </div>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                    <div className="flex items-center gap-1">
+                            <img className="h-4 w-4 rounded-full" src="https://styles.redditmedia.com/t5_2qhhz/styles/communityIcon_6wrax3ocfar41.png"></img>
+                            <nav className="text-gray-400 text-sm">1 Karma</nav>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <img className="h-4 w-4 rounded-full" src="https://www.drawhipo.com/wp-content/uploads/2023/04/Birthday-Color-1-Birthday-Cake.png"></img>
+                            <nav className="text-gray-400 text-sm">Jan 5 2024</nav>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              </div>
-            </div> 
-            ))}
+                <button className="rounded-full p-1 bg-[#ff4500] text-white font-semibold mb-3">New Post</button>
+            </div>
+            <button onClick={scrollToTop} className={`rounded-full mt-10 mx-24 fixed bottom-2 px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Back to Top</button>
+        </div>
+        </>}
+        </div>
+        </div>
         </div>
         </>
     )

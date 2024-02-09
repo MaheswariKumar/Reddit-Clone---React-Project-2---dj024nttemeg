@@ -10,6 +10,7 @@ import SearchItems from "./SearchItems";
 import DropComment from "./DropComment";
 import CreatePost from "./CreatePost";
 import UserPosts from "./UserPosts";
+import NewChannel from "./NewChannel";
 
 function App() {
   const isMenu = useSelector((state) => state.isMenu);
@@ -43,6 +44,7 @@ function App() {
         <Route path={`/r/:data/comments`} element={<DropComment />} />
         <Route path={`/submit`} element={<CreatePost />} />
         <Route path={`/user/:data/:id`} element={<UserPosts />} />
+        <Route path={`/r/post`} element={<NewChannel />} />
       </Routes>
     </div>
   );

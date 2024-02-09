@@ -21,9 +21,11 @@ root.render(
 
 const authroot = ReactDOM.createRoot(document.getElementById("Auth_root"));
 authroot.render(
+  <BrowserRouter>
     <React.StrictMode>
       <Provider store={store}>
         <AuthApp />
       </Provider>
     </React.StrictMode>
+  </BrowserRouter>
 );

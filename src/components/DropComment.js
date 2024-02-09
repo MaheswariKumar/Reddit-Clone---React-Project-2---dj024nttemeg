@@ -80,7 +80,7 @@ export default function DropComment(){
                                             <DownvoteOutlineIcon height="20" width="20" />
                                           </div>
                                         </div>
-                                        <div className={`flex flex-col px-3 pt-2 pb-3 gap-3 ${checkedTheme ? "all" : null}`}>
+                                        <div className={`flex w-full flex-col px-3 pt-2 pb-3 gap-3 ${checkedTheme ? "all" : null}`}>
                                           <div className="flex items-center gap-2">
                                           {info.channel ? <><img className="rounded-full w-6 h-6" src={info.channel.image} alt="Prof_Img"></img>
                                             <nav className="text-xs font-semibold hover:underline cursor-pointer">r/{info.channel.name}</nav></> : null}

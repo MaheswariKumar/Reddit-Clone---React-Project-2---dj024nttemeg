@@ -1,6 +1,7 @@
 import React from "react";
 import CloseIcon from "./icons/CloseIcon";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setCommunity } from "./Action";
 import WorldFillIcon from "./icons/WorldFillIcon";
 import ViewsOutlineIcon from "./icons/ViewsOutlineIcon";
@@ -10,7 +11,15 @@ import LockOutlineIcon from "./icons/LockOutlineIcon";
 
 export default function CreateCommunity() {
     const checkedTheme = useSelector((state) => state.checkedTheme);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+
+    function handleCreation() {
+      navigate(`/r/post`)
+      window.location.reload();
+      dispatch(setCommunity())
+    }
     
     return (
       <div
@@ -106,6 +115,7 @@ export default function CreateCommunity() {
                 ? "text-[#1A1A1B] bg-[#d7dadc]"
                 : "bg-[#0079d3] text-white"
             } font-semibold`}
+            onClick={handleCreation}
           >
             Create Community
           </button>

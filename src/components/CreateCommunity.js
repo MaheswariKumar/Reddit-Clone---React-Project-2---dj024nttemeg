@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CloseIcon from "./icons/CloseIcon";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -13,15 +13,43 @@ export default function CreateCommunity() {
     const checkedTheme = useSelector((state) => state.checkedTheme);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [available, setAvailable] = useState(false);
+    const [channelname, setChannelName] = useState("");
+    const [namelen, setNameLen] = useState(21);
+    let [len, setLen] = useState(0);
 
+    const handleChannelName = (e) => {
+      const inputText = e.target.value;
+      setChannelName(inputText);
+      
+      if (inputText.length > len) {
+        if (namelen > 0) {
+          setNameLen((prevLen) => prevLen - 1);
+        }
+      } else if (inputText.length < len) {
+        if (namelen < 21) {
+          setNameLen((prevLen) => prevLen + 1);
+        }
+      }
+      
+      setLen(inputText.length);
+      
+      if (channelname.length >= 4){
+        setAvailable(true);
+      }
+      else {
+        setAvailable(false)
+      }
+    }
 
     function handleCreation() {
       navigate(`/r/post`)
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 1000);
       dispatch(setCommunity())
     }
+
     
     return (
       <div
@@ -55,18 +83,24 @@ export default function CreateCommunity() {
             Community names including capitalization cannot be changed
           </nav>
         </div>
-        <div className="w-full flex justify-start pt-3 pb-2">
+        <div className={`flex items-center gap-1 pt-3 mt-3 pb-2 h-11 mx-4 outline-1 ${
+              checkedTheme ? "border-[#343536] border all" : "border"
+            }`}>
+          <span className="pl-1">r/</span>
           <input
             type="text"
-            className={`rounded w-full mx-4 h-9 ${
-              checkedTheme ? "border-[#343536] border all" : "border"
-            }`}
+            className={`h-7 rounded w-full outline-0`}
+            onChange={(e)=> handleChannelName(e)}
           ></input>
         </div>
-        <div className="flex flex-col gap-2 px-4 pb-7">
+        <div className="mx-4 flex justify-between">
+          <nav className="text-xs font-semibold text-gray-500">{namelen} characters remaining</nav>
+          {available && <nav className="text-[#46d160] font-semibold text-xs">✔ Channel name Available.</nav>}
+        </div>
+        <div className="mt-2 flex flex-col gap-2 px-4 pb-7">
           <nav className="text-sm font-bold">Community type</nav>
           <div className="flex gap-1 items-center">
-            <input className="custom-radio" type="radio"></input>
+            <input className="custom-radio" type="radio" name="communityType"></input>
             <WorldFillIcon style={{ height: "16px", width: "16px" }} />
             <nav className="text-sm font-bold">Public</nav>
             <nav className="text-xs text-gray-500">
@@ -74,7 +108,7 @@ export default function CreateCommunity() {
             </nav>
           </div>
           <div className="flex gap-1 items-center">
-          <input className="custom-radio" type="radio"></input>
+          <input className="custom-radio" type="radio" name="communityType"></input>
             <ViewsOutlineIcon style={{ height: "16px", width: "16px" }} />
             <nav className="text-sm font-bold">Restricted</nav>
             <nav className="text-xs text-gray-500">
@@ -82,7 +116,7 @@ export default function CreateCommunity() {
             </nav>
           </div>
           <div className="flex gap-1 items-center">
-            <input className="custom-radio" type="radio"></input>
+            <input className="custom-radio" type="radio" name="communityType"></input>
             <LockOutlineIcon style={{ height: "16px", width: "16px" }} />
             <nav className="text-sm font-bold">Private</nav>
             <nav className="text-xs text-gray-500">

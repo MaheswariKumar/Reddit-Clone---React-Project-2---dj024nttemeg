@@ -17,7 +17,9 @@ export default function CreateCommunity() {
 
     function handleCreation() {
       navigate(`/r/post`)
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
       dispatch(setCommunity())
     }
     

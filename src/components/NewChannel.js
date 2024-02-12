@@ -12,7 +12,6 @@ import SideBar from "./SideBar";
 
 export default function NewChannel() {
     const checkedTheme = useSelector((state) => state.checkedTheme);
-    const checkedStatus = useSelector((state) => state.checkedStatus);
     const isTab = useSelector((state) => state.isTab);
     const isMobile = useSelector((state) => state.isMobile);
     const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
@@ -21,14 +20,18 @@ export default function NewChannel() {
     const [best, setBest] = useState(true)
     const [hot, setHot] = useState(false)
     const [newopt, setNewOpt] = useState(false)
-    const [info, setInfo] = useState(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const getId = useSelector((state) => state.getId);
+    const createdChannelName = useSelector((state) => state.createdChannelName);
     const [isLoading, setIsLoading] = useState(true);
-    const [inputTitle, setInputTitle] = useState("");
-    const [inputText, setInputText] = useState("");
-    const [edited, setedited] = useState(false);
+    const showDate = useSelector((state) => state.showDate);
+    const date = new Date(showDate);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      month: 'short', 
+      day: '2-digit', 
+      year: 'numeric'
+    });
     const [dropdownPosition, setDropdownPosition] = useState({
         top: "120px",
         left: "1000px",
@@ -129,7 +132,41 @@ export default function NewChannel() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
       }
+
+    useEffect(()=> {
+      console.log(createdChannelName)
+      console.log(getId)
+    }, [])
     
+      const handleDelete = async () => {
+        try {
+          const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/channel/${getId}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+              'projectID': 'dj024nttemeg',
+            },
+  
+          });
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          if (response.status === 204) {
+            console.log('Post deleted successfully');
+            navigate("/")
+          }
+      
+          const data = await response.json();
+  
+          console.log(data);
+        } catch (error) {
+          console.error('Error in handleDeletePost:', error);
+        }
+      
+      };
+
+      // 65c9991882c9aea523e1764e
 
     return (
         <>
@@ -141,10 +178,10 @@ export default function NewChannel() {
             <div className="flex gap-4 pl-8 ">
                 <nav className="bg-white relative top-[-15px] border rounded-full w-20 h-20"></nav>
                 <div className="flex flex-col pt-2">
-                    <h1 className="text-3xl font-bold">Post</h1>
-                    <nav className="font-semibold text-sm">r/Post</nav>
+                    <h1 className="text-3xl font-bold">{createdChannelName}</h1>
+                    <nav className="font-semibold text-sm">r/{createdChannelName}</nav>
                 </div>
-                <button className={`h-8 mt-3 rounded-full px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Delete</button>
+                <button onClick={handleDelete} className={`h-8 mt-3 rounded-full px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Delete</button>
             </div>
             <div className="pl-6">
                 <nav style={{textDecorationColor: "blue", textUnderlineOffset: "0.4rem"}} className="font-semibold underline">Posts</nav>
@@ -264,7 +301,10 @@ export default function NewChannel() {
                 <nav className="pl-3">About Community</nav>
             </div>
             <div className={`flex flex-col rounded px-3 py-2 gap-3 ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
-            <nav className="text-gray-400 text-sm font-semibold">Created on date</nav>
+              <div className="flex gap-1 items-center">
+                <img width="24" height="24" src="https://img.icons8.com/external-icongeek26-outline-icongeek26/64/737373/external-website-advertising-icongeek26-outline-icongeek26.png" alt="external-website-advertising-icongeek26-outline-icongeek26"/>
+                <nav className="text-gray-400 text-sm font-semibold">Created on {formattedDate}</nav>
+              </div>
             <div className={`flex justify-between py-3 ${checkedTheme ? "border-y border-[#343536]" : "border-y"}`}>
                 <div>
                     <nav className="text-sm font-bold">1.9M</nav>

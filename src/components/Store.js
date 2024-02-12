@@ -25,7 +25,11 @@ const initialState = {
   showDropOption: false,
   getId:"",
   postTime: "",
-  showCommunity: false
+  showCommunity: false,
+  createdChannelName: "",
+  showDate: "",
+  msg: "",
+  showMsg: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -159,6 +163,30 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
           showCommunity: !state.showCommunity,
+        };
+
+      case 'SET_CREATED_NAME':
+        return {
+          ...state,
+          createdChannelName: action.createdChannelName
+        };
+
+      case 'SET_DATE':
+        return {
+          ...state,
+          showDate: action.showDate
+        };
+
+      case 'SET_MSG':
+        return {
+          ...state,
+          msg: action.msg
+        };
+  
+      case 'SET_SHOW_MSG':
+        return {
+          ...state,
+          showMsg: !state.showMsg
         };
 
     default:

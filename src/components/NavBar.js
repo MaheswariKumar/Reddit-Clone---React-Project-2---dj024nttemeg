@@ -265,7 +265,7 @@ const handlePplSearch = async () => {
             <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
               <CustomSvgIcon />
             </div>
-            <div onClick={()=> dispatch(setCommunity())} className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
+            <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
               <CustomPlusIcon />
             </div>
             <div className={`cursor-pointer flex gap-1 items-center justify-center text-sm font-semibold ${checkedTheme ? "bg-[#272729]" : "bg-gray-200 hover:bg-gray-300"}  max-w-xl rounded-full py-1 px-2`}>

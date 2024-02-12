@@ -159,6 +159,7 @@ export default function Home() {
     };
   }, []);
 
+
   return (
     <>
         <div className={`${!isUserLoggedin ? "bg-white" : (checkedTheme ? "bg-black" : "bg-gray-300")} py-1 pr-1 flex justify-between w-full max-w-full ${state.isLoading ? null : "mt-12"}`}>
@@ -172,7 +173,7 @@ export default function Home() {
           />
         </div>
       ) : isUserLoggedin ? <div className="flex justify-center w-full mt-5">
-                              <HomePage info={info} state={state} StateDisptch={StateDisptch} handleResize={handleResize} dropdownMaxPosition={dropdownMaxPosition} dropdownPosition={dropdownPosition} />
+                              <HomePage state={state} StateDisptch={StateDisptch} handleResize={handleResize} dropdownMaxPosition={dropdownMaxPosition} dropdownPosition={dropdownPosition} />
                               {isMobile && <CommunityPage /> }
                            </div>
         : (

@@ -160,7 +160,7 @@ export default function UserPosts() {
     useEffect(() => {
       getData()
       console.log(postTime)
-    }, [info])
+    }, [])
 
     const handleDeletePost = async (id) => {
       try {
@@ -187,6 +187,8 @@ export default function UserPosts() {
       } catch (error) {
         console.error('Error in handleDeletePost:', error);
       }
+
+      getData();
     
     };
 

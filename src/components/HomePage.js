@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { changeTheme, setID } from "./Action";
+import { changeTheme, setID, setShowMsg, setMsg } from "./Action";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import ViewClassicFillIcon from "./icons/ViewClassicFillIcon";
 import ViewCardFillIcon from "./icons/ViewCardFillIcon";
@@ -11,7 +12,9 @@ import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
 import DownvoteOutlineIcon from "./icons/DownvoteOutlineIcon";
 import CommentOutlineIcon from "./icons/CommentOutlineIcon";
 
-export default function HomePage({info, state, StateDisptch, handleResize, dropdownMaxPosition, dropdownPosition}) {
+export default function HomePage({state, StateDisptch, handleResize, dropdownMaxPosition, dropdownPosition}) {
+    const [info, setInfo] = useState([]);
+    const [limit, setLimit] = useState(10);
     const checkedTheme = useSelector((state) => state.checkedTheme);
     const checkedStatus = useSelector((state) => state.checkedStatus);
     const isTab = useSelector((state) => state.isTab);
@@ -20,6 +23,51 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
     const [newopt, setNewOpt] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+
+    async function getData() {
+      try {
+        const updatedLimit = Math.min(limit, 100);
+        const rs = await axios.get(
+          `https://academics.newtonschool.co/api/v1/reddit/post?limit=${updatedLimit}`,
+          {
+            headers: {
+              projectID: "dj024nttemeg",
+            },
+          }
+        );
+        setInfo(rs.data.data);
+        StateDisptch({ type: "loaded" });
+        console.log(rs.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    }
+  
+    useEffect(() => {
+      if (limit <= 100) {
+        getData();
+      }
+    }, [limit]);
+
+  
+  
+    useEffect(() => {
+      const handleScroll = () => {
+        if (
+          window.innerHeight + Math.round(window.scrollY) >=
+          document.body.offsetHeight
+        ) {
+          setLimit((l) => l + 10);
+        }
+      };
+  
+      window.addEventListener("scroll", handleScroll);
+  
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }, []);
 
     function handleBest() {
       setBest(true)
@@ -44,8 +92,14 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
     }
 
     const handleAuthorPosts = (name, id) => {
+      dispatch(setID(id))
       navigate(`/user/${name}/${id}`);
     }
+
+    const handleChannelPosts = (name) => {
+      navigate(`/r/channel/${name}`);
+    }
+
 
     const handleComment = (data, id) => {
       dispatch(setID(id))
@@ -64,7 +118,6 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
       const hours = Math.floor(minutes / 60);
       const days = Math.floor(hours / 24);
     
-      // Determine the appropriate time unit to display
       if (days > 0) {
         return `${days} day${days !== 1 ? 's' : ''} ago`;
       } else if (hours > 0) {
@@ -75,6 +128,100 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
         return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
       }
     }
+
+    const handleUpvote = async (id) => {
+      try {
+        const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/like/${id}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM',
+            'projectID': 'dj024nttemeg'
+          }
+        });
+  
+        if (!response.ok) {
+          if (response.status === 400) {
+            dispatch(setMsg("Post liked already"));
+            dispatch(setShowMsg(true));
+            setTimeout(() => {
+              dispatch(setShowMsg(false));
+            }, 1000);
+          } 
+        }
+
+        else {
+          const rs = await axios.get(
+            `https://academics.newtonschool.co/api/v1/reddit/post`,
+            {
+              headers: {
+                projectID: "dj024nttemeg",
+              },
+            }
+          );
+  
+          const count = rs.data.data;
+          setInfo(rs.data.data);
+          dispatch(setMsg("Post Liked Sucessfully"))
+          dispatch(setShowMsg(true))
+  
+          setTimeout(() => {
+            dispatch(setShowMsg(false));
+          }, 2000);
+        }
+
+      } catch (error) {
+        console.error('Error upvoting post:', error);
+
+      }
+    };
+
+    const handleDownvote = async (id) => {
+      try {
+        const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/like/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM',
+            'projectID': 'dj024nttemeg'
+          }
+        });
+  
+        if (!response.ok) {
+          if (response.status === 400) {
+            dispatch(setMsg("Post unliked already"));
+            dispatch(setShowMsg(true));
+            setTimeout(() => {
+              dispatch(setShowMsg(false));
+            }, 1000);
+          } 
+        }
+        else {
+          const rs = await axios.get(
+            `https://academics.newtonschool.co/api/v1/reddit/post`,
+            {
+              headers: {
+                projectID: "dj024nttemeg",
+              },
+            }
+          );
+  
+          const count = rs.data.data;
+  
+          setInfo(rs.data.data);
+  
+          dispatch(setMsg("Post Unliked Sucessfully"))
+          dispatch(setShowMsg(true))
+  
+          setTimeout(() => {
+            dispatch(setShowMsg(false));
+          }, 2000);
+        }
+
+    
+      } catch (error) {
+        console.error('Error upvoting post:', error);
+      }
+    };
+
 
 
     return (
@@ -186,18 +333,18 @@ export default function HomePage({info, state, StateDisptch, handleResize, dropd
             {info.map((data, idx) => (
               <div onClick={() => handleComment(data.channel ? data.channel.name : "newton", data._id)} key={idx} className={`cursor-pointer flex mt-4 h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
               <div className={`flex flex-col items-center pt-2 ${checkedTheme ? "bg-black text-white" : null } `}>
-                <div className="hover:text-orange-500 text-gray-500 cursor-pointer">
+                <div onClick={(e)=> {e.stopPropagation(); handleUpvote(data._id)}} className="hover:text-orange-500 text-gray-500 cursor-pointer">
                   <UpvoteOutlineIcon height="20" width="20"/>
                 </div>
                 <nav className="text-sm font-bold">{data.likeCount}</nav>
-                <div className="hover:text-blue-500 text-gray-500 cursor-pointer">
+                <div onClick={(e)=> {e.stopPropagation(); handleDownvote(data._id)}} className="hover:text-blue-500 text-gray-500 cursor-pointer">
                   <DownvoteOutlineIcon height="20" width="20" />
                 </div>
               </div>
               <div className={`flex w-full flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
                 <div className="flex items-center gap-2">
                   {data.channel ? <> <img className="rounded-full w-6 h-6" src={data.channel.image} alt="Prof_Img"></img>
-                  <nav onClick={(e) => {e.stopPropagation(); handleAuthorPosts(data.channel.name, data.channel_id)}} className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav></> :
+                  <nav onClick={(e) => {e.stopPropagation(); handleChannelPosts(data.channel.name)}} className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav></> :
                   <><nav className="border rounded-full w-8 h-8"></nav></>}
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">
                     <nav >Posted by</nav>

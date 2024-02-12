@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CloseIcon from "./icons/CloseIcon";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setCommunity } from "./Action";
+import { setCommunity, setID, setCreatedName, setDate } from "./Action";
 import WorldFillIcon from "./icons/WorldFillIcon";
 import ViewsOutlineIcon from "./icons/ViewsOutlineIcon";
 import LockOutlineIcon from "./icons/LockOutlineIcon";
@@ -17,6 +17,7 @@ export default function CreateCommunity() {
     const [channelname, setChannelName] = useState("");
     const [namelen, setNameLen] = useState(21);
     let [len, setLen] = useState(0);
+    const [communityType, setCommunityType] = useState("public");
 
     const handleChannelName = (e) => {
       const inputText = e.target.value;
@@ -34,7 +35,7 @@ export default function CreateCommunity() {
       
       setLen(inputText.length);
       
-      if (channelname.length >= 4){
+      if (channelname.length >= 3){
         setAvailable(true);
       }
       else {
@@ -42,15 +43,53 @@ export default function CreateCommunity() {
       }
     }
 
-    function handleCreation() {
-      navigate(`/r/post`)
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 1000);
-      dispatch(setCommunity())
-    }
 
+    const handleCreation = async () => {
+      try {
+        const formData = new FormData();
+        formData.append('name', channelname);
+        formData.append('description', "Welcome to your Posts");
+
+        const response = await fetch('https://academics.newtonschool.co/api/v1/reddit/channel/', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+            'projectID': 'dj024nttemeg',
+          },
+          body: formData,
+        });
     
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        
+        if (data.data && data.data._id) {
+          console.log(data.data._id)
+          console.log(data.data._id)
+          console.log(data)
+          console.log(data.data)
+          console.log(data.data.CreatedAt);
+          dispatch(setID(data.data._id));
+          dispatch(setCreatedName(data.data.name));
+          dispatch(setCommunity())
+          dispatch(setDate(data.data.createdAt));
+          navigate(`/r/${channelname}`);
+          console.log(data);
+      } else {
+          console.error('Data or _id property is missing in the response:', data);
+      }
+      } catch (error) {
+        console.error('Error in handleCreation:', error);
+      }  
+   };
+
+   const handleRadioChange = (e) => {
+    setCommunityType(e.target.value);
+  };
+
+
     return (
       <div
         className={`flex flex-col gap-2 items-cente rounded bg-white mx-6 w-full max-w-[540px] h-auto pt-2 ${
@@ -100,7 +139,8 @@ export default function CreateCommunity() {
         <div className="mt-2 flex flex-col gap-2 px-4 pb-7">
           <nav className="text-sm font-bold">Community type</nav>
           <div className="flex gap-1 items-center">
-            <input className="custom-radio" type="radio" name="communityType"></input>
+            <input className="custom-radio" type="radio" name="communityType" value="public" checked={communityType === "public"}
+          onChange={handleRadioChange}></input>
             <WorldFillIcon style={{ height: "16px", width: "16px" }} />
             <nav className="text-sm font-bold">Public</nav>
             <nav className="text-xs text-gray-500">
@@ -108,7 +148,9 @@ export default function CreateCommunity() {
             </nav>
           </div>
           <div className="flex gap-1 items-center">
-          <input className="custom-radio" type="radio" name="communityType"></input>
+          <input className="custom-radio" type="radio" name="communityType" value="restricted"
+          checked={communityType === "restricted"}
+          onChange={handleRadioChange}></input>
             <ViewsOutlineIcon style={{ height: "16px", width: "16px" }} />
             <nav className="text-sm font-bold">Restricted</nav>
             <nav className="text-xs text-gray-500">
@@ -116,7 +158,9 @@ export default function CreateCommunity() {
             </nav>
           </div>
           <div className="flex gap-1 items-center">
-            <input className="custom-radio" type="radio" name="communityType"></input>
+            <input className="custom-radio" type="radio" name="communityType" value="private"
+          checked={communityType === "private"}
+          onChange={handleRadioChange}></input>
             <LockOutlineIcon style={{ height: "16px", width: "16px" }} />
             <nav className="text-sm font-bold">Private</nav>
             <nav className="text-xs text-gray-500">

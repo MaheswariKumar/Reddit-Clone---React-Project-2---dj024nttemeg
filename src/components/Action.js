@@ -97,3 +97,22 @@ export const setTime = (postTime) => ({
 export const setCommunity = () => ({
   type: 'SET_COMMUNITY',
 });
+
+export const setCreatedName = (createdChannelName) => ({
+  type: 'SET_CREATED_NAME',
+  createdChannelName
+});
+
+export const setDate = (showDate) => ({
+  type: 'SET_DATE',
+  showDate
+});
+
+export const setMsg = (msg) => ({
+  type: 'SET_MSG',
+  msg
+});
+
+export const setShowMsg = () => ({
+  type: 'SET_SHOW_MSG',
+});

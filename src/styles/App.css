@@ -129,3 +129,10 @@
 input[type="radio"].custom-radio:checked {
   accent-color: blue;
 }
+
+@media screen and (max-width: 600px) {
+  .pre-buttons {
+    display: flex;
+    flex-direction: column;
+  }
+}

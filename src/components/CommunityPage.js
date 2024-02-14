@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCommunity } from "./Action";
+import { useNavigate } from "react-router-dom";
 
 export default function CommunityPage() {
     const checkedTheme = useSelector((state) => state.checkedTheme);
     const dispatch = useDispatch()
+    const navigate = useNavigate();
 
     function scrollToTop() {
         document.body.scrollTop = 0;
@@ -24,7 +26,7 @@ export default function CommunityPage() {
                         <nav className="text-xs text-gray-500">The best Reddit experience</nav>
                     </div>
                 </div>
-                <button className="rounded-full p-1 bg-[#ff4500] text-white font-semibold">Try Now</button>
+                <button onClick={()=> navigate("/premium")} className="rounded-full p-1 bg-[#ff4500] text-white font-semibold">Try Now</button>
             </div>
             <div className={`mt-4 flex flex-col rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                 <img src="https://www.redditstatic.com/desktop2x/img/id-cards/home-banner@2x.png"></img>

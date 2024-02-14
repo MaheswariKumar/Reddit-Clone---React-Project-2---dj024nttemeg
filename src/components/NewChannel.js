@@ -16,6 +16,8 @@ export default function NewChannel() {
     const isMobile = useSelector((state) => state.isMobile);
     const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
     const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
+    const logginUserToken = useSelector((state) => state.logginUserToken);
+    const logginUserName = useSelector((state) => state.logginUserName);
     const postTime = useSelector((state) => state.postTime);
     const [best, setBest] = useState(true)
     const [hot, setHot] = useState(false)
@@ -143,7 +145,7 @@ export default function NewChannel() {
           const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/channel/${getId}`, {
             method: 'DELETE',
             headers: {
-              'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+              'Authorization': `Bearer ${logginUserToken}`,
               'projectID': 'dj024nttemeg',
             },
   
@@ -176,7 +178,7 @@ export default function NewChannel() {
           <div className="w-full bg-[#0079d3] h-32"></div>
         <div className={`w-full h-28 flex flex-col justify-around ${checkedTheme ? "all" : "bg-white "}`}>
             <div className="flex gap-4 pl-8 ">
-                <nav className="bg-white relative top-[-15px] border rounded-full w-20 h-20"></nav>
+                <img className="rounded-full w-20 h-20"></img>
                 <div className="flex flex-col pt-2">
                     <h1 className="text-3xl font-bold">{createdChannelName}</h1>
                     <nav className="font-semibold text-sm">r/{createdChannelName}</nav>
@@ -328,8 +330,8 @@ export default function NewChannel() {
                         <img src="https://i.redd.it/snoovatar/avatars/a23dbde1-4832-4cc6-b528-8e3637c03984-headshot.png"></img>
                     </div>
                     <div className="flex flex-col">
-                        <nav className="text-xs font-semibold">Nandi</nav>
-                        <nav className="text-gray-400 text-sm">u/nandi</nav>
+                        <nav className="text-xs font-semibold">{logginUserName}</nav>
+                        <nav className="text-gray-400 text-sm">u/{logginUserName}</nav>
                     </div>
                     </div>
                     <div className="flex justify-between gap-3">

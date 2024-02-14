@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { setID } from "./Action";
 import { useSelector, useDispatch } from "react-redux";
 import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
@@ -17,7 +17,7 @@ export default function SearchItems() {
     const searchPostResults = useSelector((state) => state.searchPostResults);
     const searchComutyResults = useSelector((state) => state.searchComutyResults);
     const searchPplResults = useSelector((state) => state.searchPplResults);
-    const searchTerm = useSelector((state) => state.searchTerm);
+    const searchVal = useSelector((state) => state.searchVal);
     const navigate = useNavigate(); 
     const [post, setpost] = useState(true)
     const [cmt, setCmt] = useState(false)
@@ -85,8 +85,8 @@ export default function SearchItems() {
               </div>
               <div className={`flex flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
                 <div className="flex items-center gap-2">
-                  <img className="rounded-full w-6 h-6" src={data.channel.image} alt="Prof_Img"></img>
-                  <nav className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav>
+                  {data.channel ? <>  <img className="rounded-full w-6 h-6" src={data.channel.image} alt="Prof_Img"></img>
+                  <nav className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav></> : null}
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">
                     <nav >Posted by</nav>
                     <nav className="hover:underline cursor-pointer">u/{data.author.name}</nav>
@@ -94,7 +94,7 @@ export default function SearchItems() {
                 </div>
                 <div className="flex justify-center gap-2">
                 {/* <div className={`rounded-lg`}> */}
-                  <img className="w-32 h-32" src={data.images[0]} alt="Image"></img>
+                  {data.images.length > 0 ? <img className="w-32 h-32" src={data.images[0]} alt="Image"></img> : null}
                 {/* </div> */}
                 <p>{data.content}</p>
                 </div>
@@ -120,7 +120,8 @@ export default function SearchItems() {
                     <button className={`font-bold  px-4  rounded-full ${checkedTheme ? "bg-[#343536]" : "bg-[#f6f7f8] hover:bg-[#e9f5fd] text-[#0079d3]"}`}>Join</button>
         </div>))) : ppl && searchPplResults.length > 0 ? (searchPplResults.map((data, idx) => (  <div key={idx} className={`cursor-pointer flex h-auto justify-between gap-3 p-3 pl-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                     <div className="flex gap-2">
-                        <img className="rounded-full w-10 h-10" src={data.author.profileImage}></img>
+                        {data.author.profileImage ? <img className="rounded-full w-10 h-10" src={data.author.profileImage}></img> : 
+                        <><img className="rounded-full w-10 h-10"></img></>}
                         <div className="flex flex-col gap-1">
                             <nav className="text-xs font-bold hover:underline">u/{data.author.name}</nav>
                             <nav className="text-xs text-[#7c7c7c]">14k Karma</nav>
@@ -130,7 +131,7 @@ export default function SearchItems() {
         </div>))) :(<div className={`cursor-pointer flex h-auto justify-center gap-3 p-3 pl-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
           <div className="flex flex-col justify-center items-center gap-1">
             <img className="w-20 h-20" src="https://th.bing.com/th/id/R.9bba8f4e17f0f100605c909ba6015c75?rik=Dx8UzWlXRYahwQ&riu=http%3a%2f%2fwww.sporcle.com%2fblog%2fwp-content%2fuploads%2f2013%2f06%2freddit-open-source1.jpg&ehk=gISPrkBqmwrlrPY0PlsPkst4%2bIAn6zriJNriOEsXbts%3d&risl=&pid=ImgRaw&r=0"></img>
-            <nav className="text-base font-semibold">{`We couldn't locate any results for your search query "${searchTerm}"`}</nav>
+            <nav className="text-base font-semibold">{`We couldn't locate any results for your search query "${searchVal}"`}</nav>
             <nav className="text-base text-[#7c7c7c] font-semibold">Please explore using different keywords to refine your search</nav>
           </div>
           </div>)}

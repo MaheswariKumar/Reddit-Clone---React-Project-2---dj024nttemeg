@@ -17,6 +17,8 @@ export default function CreatePost() {
     const checkedTheme = useSelector((state) => state.checkedTheme);
     const isMobile = useSelector((state) => state.isMobile);
     const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
+    const logginUserToken = useSelector((state) => state.logginUserToken);
+    const logginUserName = useSelector((state) => state.logginUserName);
     const [post, setPost] = useState(true);
     const [img, setImg] = useState(false);
     const [link, setLink] = useState(false);
@@ -104,7 +106,7 @@ const handleCreatePost = async () => {
       const response = await fetch('https://academics.newtonschool.co/api/v1/reddit/post/', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+          'Authorization': `Bearer ${logginUserToken}`,
           'projectID': 'dj024nttemeg',
         },
         body: formData,
@@ -210,7 +212,7 @@ function handleClearInput() {
                     <div className="flex justify-start mt-4">
                         <div className={`flex gap-1 items-center py-1 px-3 pr-44 rounded ${checkedTheme ? "all" : "bg-white"}`}>
                             <img className="h-8 w-8" src="https://i.redd.it/snoovatar/avatars/a23dbde1-4832-4cc6-b528-8e3637c03984-headshot.png"></img>
-                            <nav className="text-sm font-normal">Nandi</nav>
+                            <nav className="text-sm font-normal">{logginUserName}</nav>
                         </div>
                     </div>
                     <div className={`rounded mt-3 ${checkedTheme ? "all" : "bg-white"}`}>

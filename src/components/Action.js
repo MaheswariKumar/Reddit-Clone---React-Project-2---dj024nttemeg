@@ -64,6 +64,11 @@ export const setSearchTerm = (searchTerm) => ({
   searchTerm
 });
 
+export const setSearchVal = (searchVal) => ({
+  type: 'SET_SEARCH_VAL',
+  searchVal
+});
+
 export const setPostResults = (searchPostResults) => ({
   type: 'SET_POST_RESULTS',
   searchPostResults,
@@ -115,4 +120,13 @@ export const setMsg = (msg) => ({
 
 export const setShowMsg = () => ({
   type: 'SET_SHOW_MSG',
+});
+
+export const setLoginUserName = (logginUserName) => ({
+  type: 'SET_LOGIN_USERNAME',
+  logginUserName
+});
+export const setLoginUserToken = (logginUserToken) => ({
+  type: 'SET_LOGIN_USERTOKEN',
+  logginUserToken
 });

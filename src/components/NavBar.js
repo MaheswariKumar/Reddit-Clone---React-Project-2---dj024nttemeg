@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm, setPostResults, setComutyResults, setPplResults, setDropOption, setCommunity } from "./Action";
+import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm, setSearchVal, setPostResults, setComutyResults, setPplResults, setDropOption, setCommunity } from "./Action";
 import CustomLogo from "./icons/CustomLogo";
 import MenuIcon from "./icons/MenuIcon";
 import SearchIcon from "./icons/SearchIcon";
@@ -30,6 +30,7 @@ export default function NavBar({toggleRef}){
     const searchTerm = useSelector((state) => state.searchTerm);
     const searchComutyResults = useSelector((state) => state.searchComutyResults);
     const showDropOption = useSelector((state) => state.showDropOption);
+    const logginUserName = useSelector((state) => (state.logginUserName));
     const [searchBox, setSearchBox] = useState({
       top: "48px",
       left: "210px",
@@ -185,12 +186,15 @@ const handlePplSearch = async () => {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       navigate(`/search?${searchTerm}`);
+      dispatch(setSearchVal(searchTerm))
+      dispatch(setSearchTerm(""))
     }
-    dispatch(setSearchTerm(""))
+    
   };
 
   const handleDropOption = () => {
     navigate(`/search?${searchTerm}`);
+    dispatch(setSearchVal(searchTerm))
     dispatch(setSearchTerm(""))
   };
 
@@ -227,6 +231,7 @@ const handlePplSearch = async () => {
               onChange={(e)=> dispatch(setSearchTerm(e.target.value))}
               onKeyDown={handleKeyDown}
               onClick={()=> dispatch(setDropOption(true))}
+              value={searchTerm}
             />
           </div>
           {showDropOption && searchTerm &&           <div ref={dropDownRef} style={{ boxShadow: '0 2px 4px 0 rgba(28, 28, 28, 0.2)', ...(!isMob ? { top: "48px", left: "0px", width: "100%" } : searchBox),}} className={`${checkedTheme ? "all" : "bg-white"} flex flex-col text-[#1A1A1B] text-xs font-semibold bg-white h-10 max-w-60 w-[31rem] fixed`}>
@@ -279,7 +284,7 @@ const handlePplSearch = async () => {
               {checkedStatus && <nav className="w-3 h-3 rounded-full bg-[#46d160] relative left-6 bottom-3 border-inherit border-2"></nav>}
               </div>
               {isMobile && <div className="flex flex-col">
-                <nav className="font-semibold text-sm">Profile Name</nav>
+                <nav className="font-semibold text-sm">{logginUserName}</nav>
                 <div className="flex items-center gap-1">
                   <img className="h-4 w-4 rounded-full" src="https://styles.redditmedia.com/t5_2qhhz/styles/communityIcon_6wrax3ocfar41.png"></img>
                   <nav className="text-gray-400 text-sm">1 Karma</nav>

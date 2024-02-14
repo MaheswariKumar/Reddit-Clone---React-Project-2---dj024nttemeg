@@ -13,6 +13,8 @@ export default function DropComment(){
     const checkedTheme = useSelector((state) => state.checkedTheme);
     const isMobile = useSelector((state) => state.isMobile);
     const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
+    const logginUserToken = useSelector((state) => state.logginUserToken);
+    const logginUserName = useSelector((state) => state.logginUserName);
     const getId = useSelector((state) => state.getId);
     const [info, setInfo] = useState({});
     const [comment, setComment] = useState([]);
@@ -48,7 +50,7 @@ export default function DropComment(){
       async function getComment() {
         const rs = await axios.get(`https://academics.newtonschool.co/api/v1/reddit/post/${getId}/comments`, {
           headers: {
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM',
+              'Authorization': `Bearer ${logginUserToken}`,
              'projectID': 'dj024nttemeg'
           }, 
       })
@@ -59,7 +61,7 @@ export default function DropComment(){
       const commentDetailsPromises = comments.map(async comment => {
           const userResponse = await axios.get(`https://academics.newtonschool.co/api/v1/reddit/user/${comment.author}`, {
             headers: {
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM',
+              'Authorization': `Bearer ${logginUserToken}`,
              'projectID': 'dj024nttemeg'
           }, 
           });
@@ -71,9 +73,6 @@ export default function DropComment(){
 
       const commentDetails = await Promise.all(commentDetailsPromises);
 
-
-      console.log(commentDetails)
-      console.log(commentDetails[0].name)
       setCommentName(commentDetails);
       setShowComment(true);
       setCommentLine("");
@@ -96,7 +95,7 @@ export default function DropComment(){
                 data,
                 {
                     headers: {
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM',
+                        'Authorization': `Bearer ${logginUserToken}`,
                         'projectID': 'dj024nttemeg'
                     },
                 }
@@ -119,7 +118,7 @@ export default function DropComment(){
               data,
               {
                   headers: {
-                      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM',
+                      'Authorization': `Bearer ${logginUserToken}`,
                       'projectID': 'dj024nttemeg'
                   },
               }
@@ -163,7 +162,7 @@ export default function DropComment(){
           const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/comment/${id}`, {
             method: 'DELETE',
             headers: {
-              'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+              'Authorization': `Bearer ${logginUserToken}`,
               'projectID': 'dj024nttemeg',
             },
   
@@ -235,7 +234,7 @@ export default function DropComment(){
                                             <nav className="text-xs text-gray-500 font-bold">Share</nav>
                                           </div>
                                         </div>
-                                        <nav className="font-bold">Comment as</nav>
+                                        <nav className="font-bold">Comment as {logginUserName}</nav>
                                         <div className="flex flex-col gap-2">
               
                                             <textarea value={commentLine} onChange={(e) => handleCommentBox(e)} className={`indent-2 outline-0 border h-40 text-sm ${checkedTheme ? "bg-[#272729]" : ""}`} placeholder="Explore your comments here"></textarea>
@@ -244,7 +243,7 @@ export default function DropComment(){
                                                 <button onClick={handleComment} className=" bg-blue-600 p-2 rounded-full">Comment</button>
                                             </div>
                                        
-                                        <div className="flex flex-col">
+                                       {comment ? <div className="flex flex-col">
                                             <nav className="text-base font-bold pb-3">Top Comments</nav>
                                             {showComment && comment.map((data, idx) => (
                                             <div key={idx} className="flex flex-col gap-1">
@@ -257,10 +256,10 @@ export default function DropComment(){
                                                   <nav className="text-xs text-gray-500 font-semibold">{getTimeSincePostCreation(commentName[idx].createdAt)}</nav>
                                                 )}                                             
                                             </div>
-                                           {edited && commentName[idx].name === "Sumathi" ? <input onChange={(e) => handleCommentBox(e)} className={`h-10 indent-2 border mx-8 ${checkedTheme ? "bg-[#272729]" : ""}`} type="text"></input> :
+                                           {edited && commentName[idx].name === logginUserName ? <input onChange={(e) => handleCommentBox(e)} className={`h-10 indent-2 border mx-8 ${checkedTheme ? "bg-[#272729]" : ""}`} type="text"></input> :
                                             <nav className="text-sm pl-12">{data.content}</nav>}
                                             {commentName[idx] && (<>
-                                                 {commentName[idx].name === "Sumathi" ? <div className="flex">
+                                                 {commentName[idx].name === logginUserName ? <div className="flex">
                                                  {edited ? <div onClick={() => handleEditComment(data._id)} className={`flex text-gray-500 item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
                   <img width="20" height="20" src="https://img.icons8.com/pastel-glyph/64/737373/create-new--v1.png" alt="create-new--v1"/>
                   <nav className="text-xs font-bold">Save</nav>
@@ -276,8 +275,8 @@ export default function DropComment(){
                                             )}
                                         </div>                                             
                                             ))}                                          
-                                        </div>
-                                        </div>
+                                        </div> : null}
+                                        </div> 
                                       </div>
                                       }
                 </div>

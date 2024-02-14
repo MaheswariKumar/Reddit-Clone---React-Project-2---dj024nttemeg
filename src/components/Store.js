@@ -19,6 +19,7 @@ const initialState = {
   checkedStatus: true,
   checkedTheme: false,
   searchTerm: '',
+  searchVal: "",
   searchPostResults: [],
   searchComutyResults: [],
   searchPplResults: [],
@@ -30,6 +31,8 @@ const initialState = {
   showDate: "",
   msg: "",
   showMsg: false,
+  logginUserName: "",
+  logginUserToken: "",
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -123,6 +126,12 @@ const rootReducer = (state = initialState, action) => {
         searchTerm: action.searchTerm,
       };
 
+    case 'SET_SEARCH_VAL':
+      return {
+        ...state,
+        searchVal: action.searchVal,
+      };
+
     case 'SET_POST_RESULTS':
       return {
         ...state,
@@ -187,6 +196,18 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
           showMsg: !state.showMsg
+        };
+
+      case 'SET_LOGIN_USERNAME':
+        return {
+          ...state,
+          logginUserName: action.logginUserName
+        };
+
+      case 'SET_LOGIN_USERTOKEN':
+        return {
+          ...state,
+          logginUserToken: action.logginUserToken
         };
 
     default:

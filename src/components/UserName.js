@@ -16,12 +16,36 @@ export default function UserName() {
     const [isPassInputFocused, setIsPassInputFocused] = useState(false);
     const signUpForm = useSelector((state) => state.signUpForm);
     const [user] = useAuthState(auth);
+    const [showErr, setShowErr] = useState(false)
 
 
-    const register = () => {
+    const register = async () => {
         console.log("Hello")
-        registerWithEmailAndPassword(signUpForm.username, signUpForm.email, signUpForm.password);       
+        // registerWithEmailAndPassword(signUpForm.username, signUpForm.email, signUpForm.password);
+        const newtonSignUpRes = await fetch('https://academics.newtonschool.co/api/v1/user/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'projectID': 'dj024nttemeg'
+            },
+            body: JSON.stringify({
+              name: signUpForm.username,
+              email: signUpForm.email,
+              password: signUpForm.password,
+              appType: 'reddit'
+            })
+          });
+
+          if (newtonSignUpRes.status === 403) {
+            setShowErr(true)
+            return
+        }
+    
+          const newtonSignUpData = await newtonSignUpRes.json();
+          console.log("Registered through newton api")
+          console.log(newtonSignUpData);       
         dispatch(setSignUp("", "", ""))
+        dispatch(openLogin())
       };
 
       auth.onAuthStateChanged((user) => {
@@ -89,15 +113,16 @@ export default function UserName() {
                 <p className="text-sm my-3 pb-2">Reddit is anonymous, so your username is what you’ll go by here. Choose wisely—because once you get a name, you can’t change it.</p>
                 <div className="flex flex-col w-full relative">
                     <label className={`${isInputFocused || signUpForm.username ? "absolute text-xs top-0 left-5 text-[#576f76] transition-top duration-300 ease-in-out delay-0 cursor-pointer" : "text-[#576f76] absolute top-3 left-5" }`}>Username</label>
-                    <input type="email" value={signUpForm.username} onChange={(e)=> handleUserNameInput(e)} onFocus={handleInputFocus} className="outline-0 indent-2 rounded-[18px] p-3 bg-[#eaedef] mb-4"></input>
+                    <input required type="email" value={signUpForm.username} onChange={(e)=> handleUserNameInput(e)} onFocus={handleInputFocus} className="outline-0 indent-2 rounded-[18px] p-3 bg-[#eaedef] mb-4"></input>
                 </div>
                 <div className="flex flex-col w-full relative">
                     <label className={`${isPassInputFocused || signUpForm.password ? "absolute text-xs top-0 left-5 text-[#576f76] transition-top duration-300 ease-in-out delay-0 cursor-pointer" : "text-[#576f76] absolute top-3 left-5" }`}>Password</label>
-                    <input type="password" value={signUpForm.password} onChange={(e)=> handlePassInput(e)} onFocus={handlePassInputFocus} className="outline-0 indent-2 rounded-[18px] p-3 bg-[#eaedef] mb-4"></input>  
+                    <input required type="password" value={signUpForm.password} onChange={(e)=> handlePassInput(e)} onFocus={handlePassInputFocus} className="outline-0 indent-2 rounded-[18px] p-3 bg-[#eaedef] mb-4"></input>  
                 </div>
+                {showErr && <nav className="text-sm text-red-600 font-semibold">User already Exits</nav>}
             </div>
-            <div onClick={register} className="flex justify-center bg-slate-50 rounded-full p-3 cursor-pointer">
-                <button className="text-slate-400 text-sm font-medium">Continue</button>
+            <div onClick={register} className={`flex w-full justify-center ${signUpForm.password && signUpForm.username ? "bg-D93A00 hover:bg-962900 text-white" : "bg-slate-50"} rounded-full p-3 cursor-pointer`}>
+                <button className="text-sm font-medium">Continue</button>
             </div>
         </div>
     )

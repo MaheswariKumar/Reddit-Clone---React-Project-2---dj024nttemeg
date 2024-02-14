@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import {showStatus, changeTheme, isLoggedIn} from "./Action"
+import {showStatus, changeTheme, isLoggedIn, showMenuBar} from "./Action"
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   auth,
@@ -22,6 +22,7 @@ import CaretDownOutlineIcon from "./icons/CaretDownOutlineIcon";
 
 export default function MenuBar() {
     const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
+    const isMenu = useSelector((state) => state.isMenu);
     const dispatch = useDispatch()
     const checkedStatus = useSelector((state) => state.checkedStatus);
     const checkedTheme = useSelector((state) => state.checkedTheme);
@@ -33,6 +34,7 @@ export default function MenuBar() {
     const handleLogout = () => {
         logOut();
         dispatch(isLoggedIn())
+        dispatch(showMenuBar(!isMenu))
         navigate("/")
         console.log("logged out")
     }

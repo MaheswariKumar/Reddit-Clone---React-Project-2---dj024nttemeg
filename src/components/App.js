@@ -12,6 +12,7 @@ import CreatePost from "./CreatePost";
 import UserPosts from "./UserPosts";
 import NewChannel from "./NewChannel";
 import ChannelPage from "./ChannelPage";
+import Premium from "./Premium";
 
 function App() {
   const isMenu = useSelector((state) => state.isMenu);
@@ -50,6 +51,7 @@ function App() {
         <Route path={`/user/:data/:id`} element={<UserPosts />} />
         <Route path={`/r/:post`} element={<NewChannel />} />
         <Route path={`/r/channel/:data`} element={<ChannelPage />} />
+        <Route path={`/premium`} element={<Premium />} />
       </Routes>
       {showMsg &&  <div className="w-full flex justify-center fixed bottom-3">
       <nav className={`${checkedTheme ? "bg-[#d7dadc]" : "bg-[#0079d3]"} p-3`}></nav>

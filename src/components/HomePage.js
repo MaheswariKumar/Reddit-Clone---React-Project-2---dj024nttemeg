@@ -18,6 +18,7 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
     const checkedTheme = useSelector((state) => state.checkedTheme);
     const checkedStatus = useSelector((state) => state.checkedStatus);
     const isTab = useSelector((state) => state.isTab);
+    const logginUserName = useSelector((state) => state.logginUserName);
     const [best, setBest] = useState(true)
     const [hot, setHot] = useState(false)
     const [newopt, setNewOpt] = useState(false)
@@ -222,6 +223,9 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
       }
     };
 
+    useEffect(()=> {
+      console.log(logginUserName)
+    }, [])
 
 
     return (
@@ -345,7 +349,7 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
                 <div className="flex items-center gap-2">
                   {data.channel ? <> <img className="rounded-full w-6 h-6" src={data.channel.image} alt="Prof_Img"></img>
                   <nav onClick={(e) => {e.stopPropagation(); handleChannelPosts(data.channel.name)}} className="text-xs font-semibold hover:underline cursor-pointer">r/{data.channel.name}</nav></> :
-                  <><nav className="border rounded-full w-8 h-8"></nav></>}
+                  <><img className="rounded-full w-10 h-10"></img></>}
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">
                     <nav >Posted by</nav>
                     <nav onClick={(e) => {e.stopPropagation(); handleAuthorPosts(data.author.name, data.author._id)}} className={`${!data.channel ? "hover:underline cursor-pointer" : null}`}>u/{data.author.name}</nav>

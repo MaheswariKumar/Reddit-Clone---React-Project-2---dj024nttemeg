@@ -20,6 +20,8 @@ export default function UserPosts() {
     const isMobile = useSelector((state) => state.isMobile);
     const isSideBarOpen = useSelector((state) => state.isSideBarOpen);
     const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
+    const logginUserToken = useSelector((state) => state.logginUserToken);
+    const logginUserName = useSelector((state) => state.logginUserName);
     const postTime = useSelector((state) => state.postTime);
     const [best, setBest] = useState(true)
     const [hot, setHot] = useState(false)
@@ -167,7 +169,7 @@ export default function UserPosts() {
         const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/${id}`, {
           method: 'DELETE',
           headers: {
-            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+            'Authorization': `Bearer ${logginUserToken}`,
             'projectID': 'dj024nttemeg',
           },
 
@@ -214,7 +216,7 @@ export default function UserPosts() {
       const response = await fetch(`https://academics.newtonschool.co/api/v1/reddit/post/${id}`, {
         method: 'PATCH',
         headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+          'Authorization': `Bearer ${logginUserToken}`,
           'projectID': 'dj024nttemeg',
         },
         body: formData,
@@ -367,7 +369,7 @@ export default function UserPosts() {
               <div key={idx} className={`cursor-pointer flex mt-4 h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
               <div className={`flex flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
                 <div className="flex items-center gap-2">
-                  <nav className="border rounded-full w-8 h-8"></nav>
+                  <img className="rounded-full w-10 h-10"></img>
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">
                     <nav >Posted by</nav>
                     <nav className="hover:underline cursor-pointer">u/{data.author.name}</nav>
@@ -448,8 +450,8 @@ export default function UserPosts() {
                         <img src="https://i.redd.it/snoovatar/avatars/a23dbde1-4832-4cc6-b528-8e3637c03984-headshot.png"></img>
                     </div>
                     <div className="flex flex-col">
-                        <nav className="text-xs font-semibold">Nandi</nav>
-                        <nav className="text-gray-400 text-sm">u/nandi</nav>
+                        <nav className="text-xs font-semibold">{logginUserName}</nav>
+                        <nav className="text-gray-400 text-sm">u/{logginUserName}</nav>
                     </div>
                     <div className="flex justify-between gap-3">
                     <div className="flex items-center gap-1">

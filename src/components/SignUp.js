@@ -62,13 +62,13 @@ export default function SignUp() {
                 </div>
                 <div className="flex flex-col w-full relative">
                     <label className={`${isInputFocused || signUpForm.email ? "absolute text-xs top-0 left-5 text-[#576f76] transition-top duration-300 ease-in-out delay-0 cursor-pointer" : "text-[#576f76] absolute top-3 left-5" }`}>Email</label>
-                    <input type="email" value={signUpForm.email} onChange={(e)=> handleEmailInput(e)} onFocus={handleInputFocus} className="outline-0 indent-2 rounded-[18px] p-3 bg-[#eaedef] mb-4"></input>
+                    <input required type="email" value={signUpForm.email} onChange={(e)=> handleEmailInput(e)} onFocus={handleInputFocus} className="outline-0 indent-2 rounded-[18px] p-3 bg-[#eaedef] mb-4"></input>
                 </div>
                 <div className="mb-20 text-sm pl-2 pb-4 flex gap-1 w-full">
                     <nav>Already a redditor?</nav>
                     <nav onClick={()=> {dispatch(openLogin()), dispatch(showSignUp())}} className="text-blue-700 cursor-pointer">Log In</nav>
                 </div>
-                <div onClick={()=> {dispatch(showSetUsername())}} className={`flex justify-center rounded-full p-3 cursor-pointer ${isEmailValid ? "bg-D93A00 hover:bg-962900 text-white" : "bg-slate-50 text-slate-400"}`}>
+                <div onClick={()=> {dispatch(showSetUsername())}} className={`flex justify-center rounded-full p-3 cursor-pointer ${signUpForm.email ? "bg-D93A00 hover:bg-962900 text-white" : "bg-slate-50 text-slate-400"}`}>
                     <button className="text-sm font-medium">Continue</button>
                 </div>
             </div>

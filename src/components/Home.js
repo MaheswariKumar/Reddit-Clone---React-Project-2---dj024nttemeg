@@ -162,7 +162,7 @@ export default function Home() {
 
   return (
     <>
-        <div className={`${!isUserLoggedin ? "bg-white" : (checkedTheme ? "bg-black" : "bg-gray-300")} py-1 pr-1 flex justify-between w-full max-w-full ${state.isLoading ? null : "mt-12"}`}>
+        <div className={`${!isUserLoggedin ? "bg-white" : (checkedTheme ? "bg-black" : "bg-gray-300")} py-1 pr-1 flex justify-center w-full max-w-full ${state.isLoading ? null : "mt-12"}`}>
           {isMobile && isSideBarOpen  && <SideBar isMobile={isMobile} isSideBarOpen={isSideBarOpen} />}
           {state.isLoading ? (
         <div className="flex items-center justify-center h-screen flex-1">
@@ -251,11 +251,12 @@ export default function Home() {
               >
                 <div className="flex item-center justify-between pb-2 gap-15">
                   <div className="flex item-center justify-center gap-1">
-                    <img
+                    {data.author.profileImage ?                     <img
                       className="rounded-full w-6 h-6"
                       src={data.author.profileImage}
                       alt="Profile-Image"
-                    ></img>
+                    ></img> : <><img
+                    className="rounded-full w-10 h-10"></img></>}
                     <nav className="text-xs font-medium text-gray-600 cursor-pointer">
                       u/{data.author.name}
                     </nav>

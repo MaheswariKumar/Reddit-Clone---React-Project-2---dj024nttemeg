@@ -11,6 +11,7 @@ import LockOutlineIcon from "./icons/LockOutlineIcon";
 
 export default function CreateCommunity() {
     const checkedTheme = useSelector((state) => state.checkedTheme);
+    const logginUserToken = useSelector((state) => state.logginUserToken);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [available, setAvailable] = useState(false);
@@ -53,7 +54,7 @@ export default function CreateCommunity() {
         const response = await fetch('https://academics.newtonschool.co/api/v1/reddit/channel/', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YmY4ZWI0Yjk5NzNhZDlkYTg0YTBiYSIsImlhdCI6MTcwNzA1MjgwNCwiZXhwIjoxNzM4NTg4ODA0fQ.IrP0kNt3UaHKqg4QXG7EpypG7K6BggcrzDyn3b46OaM`,
+            'Authorization': `Bearer ${logginUserToken}`,
             'projectID': 'dj024nttemeg',
           },
           body: formData,

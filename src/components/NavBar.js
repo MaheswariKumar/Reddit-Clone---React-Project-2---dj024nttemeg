@@ -201,7 +201,7 @@ const handlePplSearch = async () => {
     // bg-[#272729, #343536] 
     return (
       <>
-        <div className={`${checkedTheme ? "all" : null} p-1 pb-2 pl-4 pr-7 flex items-center justify-between ${checkedTheme ? "border-b border-[#343536]" : "border-b"} w-full bg-white fixed top-0 z-5 ${isMobile ? "gap-4" : "gap-6"}`}>
+        <div className={`${!isUserLoggedin ? "bg-white" : checkedTheme ? "all" : null} p-1 pb-2 pl-4 pr-7 flex items-center justify-between ${checkedTheme ? "border-b border-[#343536]" : "border-b"} w-full bg-white fixed top-0 z-5 ${isMobile ? "gap-4" : "gap-6"}`}>
           <div className="flex items-center gap-2 pr-4 mr-1">
             {!isUserLoggedin && <div className="cursor-pointer" onClick={()=> dispatch(setSideBar(!isSideBarOpen))}>
               <MenuIcon />
@@ -221,13 +221,13 @@ const handlePplSearch = async () => {
             </div>
             </div>}
           </div>
-          <div id="search-box" className={`w-full ${showDropOption ? "rounded-t-[1.2rem]" : "rounded-full"} flex items-center ${checkedTheme ? "bg-[#272729] hover:border-[white] hover:border" : "bg-gray-100 hover:border-[#0079d3] hover:border"} max-w-3xl`}>
+          <div id="search-box" className={`${!isUserLoggedin ? "bg-gray-100 hover:border-[#0079d3] hover:border" : "null"} w-full ${showDropOption ? "rounded-t-[1.2rem]" : "rounded-full"} flex items-center ${checkedTheme ? "bg-[#272729] hover:border-[white] hover:border" : "bg-gray-100 hover:border-[#0079d3] hover:border"} max-w-3xl`}>
             <div className="pl-4">
               <SearchIcon />
             </div>
             <input
               placeholder="Search Reddit"
-              className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} p-2 rounded-full w-3/6 font-sans placeholder-gray-500 outline-0`}
+              className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} ${!isUserLoggedin ? "bg-gray-100" : ""} p-2 rounded-full w-3/6 font-sans placeholder-gray-500 outline-0`}
               onChange={(e)=> dispatch(setSearchTerm(e.target.value))}
               onKeyDown={handleKeyDown}
               onClick={()=> dispatch(setDropOption(true))}

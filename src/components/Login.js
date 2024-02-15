@@ -6,6 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import {
   auth,
   logInWithEmailAndPassword,
+  signInWithGitHub,
   signInWithGoogle
 } from "./firebase";
 import CloseIcon from "./icons/CloseIcon";
@@ -15,15 +16,15 @@ import GoogleIcon from "./icons/GoogleIcon";
 export default function Login() {
     const dispatch = useDispatch();
     const isMob = useSelector((state) => state.isMob);
+    const logginUserName = useSelector((state) => state.logginUserName);
     const [isInputFocused, setIsInputFocused] = useState(false);
     const [isPassInputFocused, setIsPassInputFocused] = useState(false);
     const [email, setEmail] = useState("")
     const [pass, setPass] = useState("")
-    const [user] = useAuthState(auth);
+    const [userInfo, setUserInfo] = useState("");
     const [showErr, setShowErr] = useState(false)
 
     const signin = async () => {
-        // logInWithEmailAndPassword(email, pass); 
         const newtonLoginRes = await fetch('https://academics.newtonschool.co/api/v1/user/login', {
             method: 'POST',
             headers: {
@@ -44,29 +45,145 @@ export default function Login() {
       
           const newtonLoginData = await newtonLoginRes.json();
 
-        //   console.log(newtonLoginData);
-        //   console.log(newtonLoginData.data.name)
-        //   console.log(newtonLoginData.token)
           dispatch(setLoginUserName(newtonLoginData.data.name))
           dispatch(setLoginUserToken(newtonLoginData.token))
       
-        // console.log("Successfully Logged In thorough newton api");
         dispatch(isLoggedIn())
-        dispatch(openLogin())
-        // console.log("Hello")
-        // console.log(user)      
+        dispatch(openLogin())    
         setEmail("")
         setPass("") 
       };
 
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            // dispatch(isLoggedIn())
-          console.log("User is signed in:", user.uid);
-        } else {
-          console.log("No user is signed in.");
+
+      const handleGoogleSign = async () => {
+        await signInWithGoogle();
+        auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            setUserInfo(user)
+            console.log("User is signed in:", user.uid);
+            console.log("User is signed in:", user.reloadUserInfo.displayName);
+            console.log("User is signed in:", user.accessToken);
+            console.log("User is signed in:", user);
+            dispatch(setLoginUserName(user.reloadUserInfo.displayName))
+            await performSignupOrLogin();
+          } else {
+            console.log("No user is signed in.");
+          }
+        });
+
+        const performSignupOrLogin = async () => {
+            if (logginUserName) {
+                const newtonSignUpRes = await fetch('https://academics.newtonschool.co/api/v1/user/signup', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'projectID': 'dj024nttemeg',
+                    },
+                    body: JSON.stringify({
+                      name: logginUserName,
+                      email: `${userInfo.uid}@gmail.com`,
+                      password: `${userInfo.uid}`,
+                      appType: 'reddit'
+                    })
+                  });
+            
+                  if (newtonSignUpRes.status === 403) {
+                    const newtonLoginRes = await fetch('https://academics.newtonschool.co/api/v1/user/login', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'projectID': 'dj024nttemeg',
+                      },
+                      body: JSON.stringify({
+                        email: `${userInfo.uid}@gmail.com`,
+                        password: `${userInfo.uid}`,
+                        appType: 'reddit'
+                      })
+                    });
+                    const newtonLoginData = await newtonLoginRes.json();
+                    dispatch(setLoginUserToken(newtonLoginData.token))
+                    
+                    console.log("Academy Access Token:", newtonLoginData);
+                    dispatch(isLoggedIn())
+                    dispatch(showSignUp())
+                    return
+                  }
+            
+                  const newtonSignUpData = await newtonSignUpRes.json();
+                  dispatch(setLoginUserToken(newtonSignUpData.token))
+                  
+                  console.log("Academy Access Token:", newtonSignUpData);
+                  dispatch(isLoggedIn())
+                  dispatch(showSignUp())  
+            }      
         }
-      });
+      }
+
+      const handleGitHubSign= async () => {
+        await signInWithGitHub();
+        auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            setUserInfo(user)
+            console.log("User is signed in:", user.uid);
+            console.log("User is signed in:", user.reloadUserInfo.displayName);
+            console.log("User is signed in:", user.accessToken);
+            console.log("User is signed in:", user);
+            dispatch(setLoginUserName(user.reloadUserInfo.displayName))
+            await performSignupOrLogin();
+          } else {
+            console.log("No user is signed in.");
+          }
+        });
+
+        const performSignupOrLogin = async () => {
+            if (logginUserName) {
+                const newtonSignUpRes = await fetch('https://academics.newtonschool.co/api/v1/user/signup', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'projectID': 'dj024nttemeg',
+                    },
+                    body: JSON.stringify({
+                      name: logginUserName,
+                      email: `${userInfo.uid}@gmail.com`,
+                      password: `${userInfo.uid}`,
+                      appType: 'reddit'
+                    })
+                  });
+            
+                  if (newtonSignUpRes.status === 403) {
+                    const newtonLoginRes = await fetch('https://academics.newtonschool.co/api/v1/user/login', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'projectID': 'dj024nttemeg',
+                      },
+                      body: JSON.stringify({
+                        email: `${userInfo.uid}@gmail.com`,
+                        password: `${userInfo.uid}`,
+                        appType: 'reddit'
+                      })
+                    });
+                    const newtonLoginData = await newtonLoginRes.json();
+                    dispatch(setLoginUserToken(newtonLoginData.token))
+                    
+                    console.log("Academy Access Token:", newtonLoginData);
+                    dispatch(isLoggedIn())
+                    dispatch(showSignUp())
+                    return
+                  }
+            
+                  const newtonSignUpData = await newtonSignUpRes.json();
+                  dispatch(setLoginUserToken(newtonSignUpData.token))
+                  
+                  console.log("Academy Access Token:", newtonSignUpData);
+                  dispatch(isLoggedIn())
+                  dispatch(showSignUp())  
+            }      
+        }
+  
+      }
+
 
     useEffect(()=>{
         const handleReSize = () => {
@@ -118,11 +235,11 @@ export default function Login() {
             <div className="px-8 w-full">
                 <nav className="font-bold text-2xl">Log In</nav>
                 <p className="text-sm my-3 pb-2">By continuing, you agree to our <a href="https://www.redditinc.com/policies/user-agreement" target="_blank" className="text-blue-700">User Agreement</a> and acknowledge that you understand the <a className="text-blue-700" href="https://www.reddit.com/policies/privacy-policy" target="_blank">Privacy Policy</a>.</p>
-                <div onClick={() => {signInWithGoogle, dispatch(isLoggedIn()), dispatch(openLogin())}} className="cursor-pointer flex mt-2 gap-16 items-center justify-center border-r border-t border-l rounded-full p-2 mb-2 w-full">
+                <div onClick={handleGoogleSign} className="cursor-pointer flex mt-2 gap-16 items-center justify-center border-r border-t border-l rounded-full p-2 mb-2 w-full">
                     <GoogleIcon style={{ height: '18px', width: '18px' }}/>
                     <nav className="flex-1 text-sm font-semibold">Continue with Google</nav>
                 </div>
-                <div className="cursor-pointer flex gap-16 items-center justify-center border rounded-full p-2 w-full">
+                <div onClick={handleGitHubSign} className="cursor-pointer flex gap-16 items-center justify-center border rounded-full p-2 w-full">
                     <img className="w-5 h-5" src="https://logos-download.com/wp-content/uploads/2016/09/GitHub_logo.png"></img>
                     <nav className="flex-1 text-sm font-normal">Continue with GitHub</nav>
                 </div>

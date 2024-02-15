@@ -83,7 +83,7 @@ export const signInWithGoogle = async () => {
     }
   } catch (err) {
     console.error(err);
-    alert(err.message);
+    // alert(err.message);
   }
 };
 
@@ -104,7 +104,7 @@ export const signInWithGitHub = async () => {
     }
   } catch (err) {
     console.error(err);
-    alert(err.message);
+    // alert(err.message);
   }
 };
 

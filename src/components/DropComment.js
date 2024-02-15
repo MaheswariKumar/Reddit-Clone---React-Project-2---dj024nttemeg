@@ -201,7 +201,7 @@ export default function DropComment(){
             <div className="flex justify-center w-full mt-5">
                 <div className={`flex w-full max-w-[58rem] flex-col m-2`}>
                   {info && <div className={`cursor-pointer flex h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
-                                        <div className={`flex flex-col items-center pt-2 ${checkedTheme ? "bg-black text-white" : null } `}>
+                                        {/* <div className={`flex flex-col items-center pt-2 ${checkedTheme ? "bg-black text-white" : null } `}>
                                           <div className="hover:text-orange-500 text-gray-500 cursor-pointer">
                                             <UpvoteOutlineIcon height="20" width="20"/>
                                           </div>
@@ -209,7 +209,7 @@ export default function DropComment(){
                                           <div className="hover:text-blue-500 text-gray-500 cursor-pointer">
                                             <DownvoteOutlineIcon height="20" width="20" />
                                           </div>
-                                        </div>
+                                        </div> */}
                                         <div className={`flex w-full flex-col px-3 pt-2 pb-3 gap-3 ${checkedTheme ? "all" : null}`}>
                                           <div className="flex items-center gap-2">
                                           {info.channel ? <><img className="rounded-full w-6 h-6" src={info.channel.image} alt="Prof_Img"></img>

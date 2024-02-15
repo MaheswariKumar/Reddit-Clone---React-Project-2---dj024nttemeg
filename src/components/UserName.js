@@ -45,6 +45,8 @@ export default function UserName() {
           console.log("Registered through newton api")
           console.log(newtonSignUpData);       
         dispatch(setSignUp("", "", ""))
+        dispatch(showSetUsername())
+        dispatch(showSignUp())
         dispatch(openLogin())
       };
 

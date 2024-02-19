@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { changeTheme, setID, setShowMsg, setMsg } from "./Action";
+import { useLocation } from "react-router-dom";
+import { changeTheme, setID, setShowMsg, setMsg, setAuthorName, setUserId } from "./Action";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import ViewClassicFillIcon from "./icons/ViewClassicFillIcon";
 import ViewCardFillIcon from "./icons/ViewCardFillIcon";
@@ -24,6 +25,8 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
     const [newopt, setNewOpt] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
+
 
 
     async function getData() {
@@ -94,7 +97,8 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
 
     const handleAuthorPosts = (name, id) => {
       dispatch(setID(id))
-      navigate(`/user/${name}/${id}`);
+      dispatch(setAuthorName(name))
+      navigate(`/user/${id}`);
     }
 
     const handleChannelPosts = (name) => {
@@ -225,12 +229,23 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
 
     useEffect(()=> {
       console.log(logginUserName)
+      console.log(location)
     }, [])
 
+    useEffect(() => {
+      // Check if any post matches the condition
+      info.forEach(data => {
+        if (data.author.name === logginUserName) {
+          // Update the user ID in the Redux store
+          dispatch(setUserId(data.author._id));
+        }
+      });
+    }, [info, logginUserName]);
 
     return (
         <>
         <div className={`flex w-full ${state.showMax ? "max-w-[52rem]" : "max-w-[40rem]"} flex-col m-2`}>
+          {location.pathname === "/popular" && <h1 className={`font-bold mb-2 ${checkedTheme ? "text-[#d7dadc]" : null}`}>Popular Posts</h1>}
             <div className={`flex h-14 items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                 <div className="cursor-pointer">
                     <div className="w-12 h-12">
@@ -352,7 +367,7 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
                   <><img className="rounded-full w-10 h-10"></img></>}
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">
                     <nav >Posted by</nav>
-                    <nav onClick={(e) => {e.stopPropagation(); handleAuthorPosts(data.author.name, data.author._id)}} className={`${!data.channel ? "hover:underline cursor-pointer" : null}`}>u/{data.author.name}</nav>
+                    <nav onClick={(e) => {e.stopPropagation(); handleAuthorPosts(data.author.name, data.author._id)}} className={`hover:underline cursor-pointer`}>u/{data.author.name}</nav>
                   </div>
                   <nav className="text-gray-500 text-xs">{getTimeSincePostCreation(data.createdAt)}</nav>
                 </div>
@@ -375,7 +390,7 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
               </div>
               </div>
             </div> 
-            ))}
+          ))}
         </div>
         </>
     )

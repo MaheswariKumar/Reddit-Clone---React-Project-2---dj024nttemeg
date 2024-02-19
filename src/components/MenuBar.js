@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import {showStatus, changeTheme, isLoggedIn, showMenuBar} from "./Action"
+import {showStatus, changeTheme, isLoggedIn, showMenuBar, setAuthorName, setLoginUserName, setMsg, setShowMsg, setCommunity} from "./Action"
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   auth,
@@ -26,6 +26,8 @@ export default function MenuBar() {
     const dispatch = useDispatch()
     const checkedStatus = useSelector((state) => state.checkedStatus);
     const checkedTheme = useSelector((state) => state.checkedTheme);
+    const userId = useSelector((state) => state.userId);
+    const logginUserName = useSelector((state) => state.logginUserName);
     const theme = createTheme();
     const [openMore, setOpenMore] = useState(false);
     const [openTerms, setOpenTerms] = useState(false);
@@ -47,6 +49,13 @@ export default function MenuBar() {
         }
       });
 
+    const showMessageWithTimeout = (message, timeout = 1000) => {
+        dispatch(setMsg(message));
+        dispatch(setShowMsg(true));
+        setTimeout(() => {
+          dispatch(setShowMsg(false));
+        }, timeout);
+      };
 
     return (
         <ThemeProvider theme={theme}>
@@ -60,8 +69,8 @@ export default function MenuBar() {
                 <nav>Online Status</nav>
                 <IOSSwitch checked={checkedStatus} onChange={()=> dispatch(showStatus())} />
             </div>
-            <nav className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>Profile</nav>
-            <nav className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>Style Avatar</nav>
+            <nav onClick={()=> {navigate(`/user/${userId}`), dispatch(setAuthorName(logginUserName)), dispatch(showMenuBar(!isMenu))}} className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>Profile</nav>
+            <nav onClick={() => showMessageWithTimeout("Feature Coming Soon")} className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>Style Avatar</nav>
             <nav className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>User</nav>
             <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-3`}></nav>
             <div className="flex gap-3 pl-4">
@@ -74,20 +83,20 @@ export default function MenuBar() {
                 <IOSSwitch checked={checkedTheme} onChange={()=> dispatch(changeTheme())} />
             </div>
             <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-3`}></nav>
-            <div className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
+            <div onClick={()=> dispatch(setCommunity())} className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
                 <CommunityOutlineIcon />
                 <nav className="text-sm font-semibold">Create a Commmnunity</nav>
             </div>
-            <div className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
+            <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
                 <TopicActivismOutlineIcon />
                 <nav className="text-sm font-semibold">Advertise on Reddit</nav>
             </div>
-            <div className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
+            <div onClick={()=> {navigate("/premium"), dispatch(showMenuBar(!isMenu))}} className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
                 {checkedTheme ? <img width="23" height="23" src="https://img.icons8.com/ios/50/FFFFFF/shield.png" alt="shield"/>:
                 <img width="23" height="23" src="https://img.icons8.com/material-outlined/24/shield.png" alt="shield"/>}
                 <nav className="text-sm font-semibold">Premium</nav>
             </div>
-            <div className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
+            <div onClick={() => showMessageWithTimeout("Team Reddit will Contact You")} className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
                 <HelpOutlineIcon />
                 <nav className="text-sm font-semibold">Help Center</nav>
             </div>
@@ -101,33 +110,33 @@ export default function MenuBar() {
             </div>
             {openMore && <>
                 <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
-                <nav>Reddit iOS</nav>
+                <a href="https://apps.apple.com/in/app/reddit/id1064216828" target="_blank">Reddit iOS</a>
             </div>
             <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
-                <nav>Reddit Android</nav>
+                <a href="https://play.google.com/store/apps/details?id=com.reddit.frontpage" target="_blank">Reddit Android</a>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Rereddit</nav>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Best Communities</nav>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Communities</nav>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>About Reddit</nav>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Blog</nav>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Careers</nav>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Press</nav>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Visit Old Reddit</nav>
             </div>
             </> }
@@ -140,16 +149,16 @@ export default function MenuBar() {
                 {openTerms ? <CaretUpOutlineIcon /> : <CaretDownOutlineIcon />}
             </div>
             {openTerms && <>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>User Agreement</nav>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Privacy Policy</nav>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Content Policy</nav>
             </div>
-            <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
+            <div onClick={() => showMessageWithTimeout("We're currently working on building the page")} className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} cursor-pointer h-11 text-sm`}>
                 <nav>Moderator Code of Conduct</nav>
             </div>
             </>}

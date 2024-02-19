@@ -126,7 +126,18 @@ export const setLoginUserName = (logginUserName) => ({
   type: 'SET_LOGIN_USERNAME',
   logginUserName
 });
+
 export const setLoginUserToken = (logginUserToken) => ({
   type: 'SET_LOGIN_USERTOKEN',
   logginUserToken
+});
+
+export const setAuthorName = (authorName) => ({
+  type: 'SET_AUTHOR_NAME',
+  authorName
+});
+
+export const setUserId = (userId) => ({
+  type: 'SET_USERID',
+  userId
 });

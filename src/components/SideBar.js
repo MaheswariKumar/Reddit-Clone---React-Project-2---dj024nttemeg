@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setMsg, setShowMsg } from "./Action";
 import HomeFillIcon from "./icons/HomeFillIcon";
 import PopularOutlineIcon from "./icons/PopularOutlineIcon";
 import CaretUpOutlineIcon from "./icons/CaretUpOutlineIcon";
@@ -27,6 +29,8 @@ export default function SideBar({isMobile, isSideBarOpen}) {
   const checkedTheme = useSelector((state) => state.checkedTheme);
   const [seemore, setSeeMore] = useState(false);
   const [text, setText] = useState("See more");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleSeeMore(){
       setSeeMore(!seemore);
@@ -39,6 +43,14 @@ export default function SideBar({isMobile, isSideBarOpen}) {
 
   }
 
+  const showMessageWithTimeout = (message, timeout = 1000) => {
+    dispatch(setMsg(message));
+    dispatch(setShowMsg(true));
+    setTimeout(() => {
+      dispatch(setShowMsg(false));
+    }, timeout);
+  };
+
   // border-r side_bar1 side sticky top-14 left-10 z-20 w-56 max-w-lg
   // border-r side_bar1 top-14 left-0 z-20 w-60 pl-4 max-w-lg fixed bg-white
     return (
@@ -46,11 +58,11 @@ export default function SideBar({isMobile, isSideBarOpen}) {
             <div className={`${checkedTheme ? "all border-r border-[#343536]" : null} ${!isMobile && isSideBarOpen ? "border-r side_bar1 top-12 h-full left-0 w-60 pl-4 max-w-lg fixed bg-white" : "bg-white border-r side_bar1 side sticky top-14 left-0 w-72 pl-4 max-w-lg"} }`}>
               <div className="flex flex-col justify-center pt-8 pr-4">
                 <div className={`${checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-2`}>
-                <div className={`flex justify-start gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>
+                <div onClick={()=> navigate("/")} className={`flex justify-start gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>
               <HomeFillIcon />
               <nav className="text-sm">Home</nav>
             </div>
-            <div className={`flex gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>
+            <div onClick={()=> navigate("/popular")} className={`flex gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>
               <PopularOutlineIcon />
               <nav className="text-sm">Popular</nav>
             </div>
@@ -86,56 +98,56 @@ export default function SideBar({isMobile, isSideBarOpen}) {
             </div>
             {openResource &&               <div className="flex flex-col">
               <div className="flex flex-col p-3">
-              <div className="flex justify-start items-center gap-3 pb-4 cursor-pointer">
+              <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-4 cursor-pointer">
                 <CustomIcon />
                 <nav className="text-sm">About Reddit</nav>
                 </div>
-                <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <TopicActivismOutlineIcon />
                 <nav className="text-sm">Advertise</nav>
                 </div>
-                <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Team Reddit will Contact You")} className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <HelpOutlineIcon />
                 <nav className="text-sm">Help</nav>
                 </div>
-                <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <TopicReadingOutlineIcon />
                 <nav className="text-sm">Blog</nav>
                 </div>
-                <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <TopicCareersOutlineIcon />
                 <nav className="text-sm">Careers</nav>
                 </div>
-                <div className="flex justify-start items-center gap-3 pb-3 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-3 pl-1 cursor-pointer">
                 <AuthorOutlineIcon />
                 <nav className="text-sm">Press</nav>
                 </div>
                 </div>
                 {seemore && <>
                   <div className={`flex flex-col p-3 pt-4 ${checkedTheme ? "border-t border-[#343536]" : "border-t"}`}>
-                <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <CommunityOutlineIcon />
                 <nav className="text-sm">Communities</nav>
                 </div>
-                <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <TopicHistoryOutlineIcon />
                 <nav className="text-sm">Best of Reddit</nav>
                 </div>
-                <div className="flex justify-start items-center gap-3 pb-3 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-3 pl-1 cursor-pointer">
                 <TopicOutlineIcon />
                 <nav className="text-sm">Topics</nav>
                 </div>
                 </div>
                 <div className={`flex flex-col p-3 pt-4 ${checkedTheme ? "border-t border-[#343536]" : "border-t"}`}>
-                <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <TopicEthicsOutlineIcon />
                 <nav className="text-sm">Content Policy</nav>
                 </div>
-                <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <TopicLawOutlineIcon />
                 <nav className="text-sm">Privacy Policy</nav>
                 </div>
-                <div className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
+                <div onClick={() => showMessageWithTimeout("Feature Coming Soon")} className="flex justify-start items-center gap-3 pb-4 pl-1 cursor-pointer">
                 <RulesOutlineIcon />
                 <nav className="text-sm">User Agreement</nav>
                 </div>

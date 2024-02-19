@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setID, setTime } from "./Action";
+import { setID, setTime, setUserId } from "./Action";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
@@ -121,6 +121,7 @@ const handleCreatePost = async () => {
       if (data.data && data.data._id) {
         console.log(data.data._id)
         dispatch(setID(data.data._id));
+        dispatch(setUserId(data.data.author))
         const currentDate = new Date();
         const currentISOTime = currentDate.toISOString();
         const timeSinceCreation = getTimeSincePostCreation(currentISOTime);

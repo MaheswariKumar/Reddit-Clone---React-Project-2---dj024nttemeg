@@ -13,6 +13,7 @@ import UserPosts from "./UserPosts";
 import NewChannel from "./NewChannel";
 import ChannelPage from "./ChannelPage";
 import Premium from "./Premium";
+import AllPosts from "./AllPosts";
 
 function App() {
   const isMenu = useSelector((state) => state.isMenu);
@@ -45,12 +46,14 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/popular" element={<Home />} />
         <Route path={`/search`} element={<SearchItems />} />
         <Route path={`/r/:data/comments`} element={<DropComment />} />
         <Route path={`/submit`} element={<CreatePost />} />
         <Route path={`/user/:data/:id`} element={<UserPosts />} />
         <Route path={`/r/:post`} element={<NewChannel />} />
         <Route path={`/r/channel/:data`} element={<ChannelPage />} />
+        <Route path={`/user/:data`} element={<AllPosts />} />
         <Route path={`/premium`} element={<Premium />} />
       </Routes>
       {showMsg &&  <div className="w-full flex justify-center fixed bottom-3">

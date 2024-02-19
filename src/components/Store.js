@@ -33,6 +33,8 @@ const initialState = {
   showMsg: false,
   logginUserName: "",
   logginUserToken: "",
+  authorName: "",
+  userId: "",
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -208,6 +210,18 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
           logginUserToken: action.logginUserToken
+        };
+
+      case 'SET_AUTHOR_NAME':
+        return {
+          ...state,
+          authorName: action.authorName
+        };
+
+      case 'SET_USERID':
+        return {
+          ...state,
+          userId: action.userId
         };
 
     default:

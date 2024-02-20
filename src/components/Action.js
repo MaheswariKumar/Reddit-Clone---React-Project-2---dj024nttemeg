@@ -55,8 +55,9 @@ export const showStatus = () => ({
   type: 'SHOW_STATUS',
 });
 
-export const changeTheme = () => ({
+export const changeTheme = (checkedTheme) => ({
   type: 'CHANGE_THEME',
+  checkedTheme
 });
 
 export const setSearchTerm = (searchTerm) => ({
@@ -147,3 +148,8 @@ export const setNavOpt = (icon, val)=> ({
   icon, 
   val,
 })
+
+export const setShowNotifi = (openNotification) => ({
+  type: 'SET_SHOWNOTIFI',
+  openNotification
+});

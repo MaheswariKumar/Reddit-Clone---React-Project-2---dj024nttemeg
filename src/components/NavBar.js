@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm, setSearchVal, setPostResults, setComutyResults, setPplResults, setDropOption, setCommunity } from "./Action";
+import { setIsMobile, setIsMob, setSideBar, openQR, openLogin, showMenuBar, setSearchTerm, setSearchVal, setPostResults, setComutyResults, setPplResults, setDropOption, setCommunity, setNavOpt, setMsg, setShowMsg, setShowNotifi } from "./Action";
 import CustomLogo from "./icons/CustomLogo";
 import MenuIcon from "./icons/MenuIcon";
 import SearchIcon from "./icons/SearchIcon";
@@ -199,11 +199,39 @@ const handlePplSearch = async () => {
     dispatch(setSearchTerm(""))
   };
 
+  function handleSearchBox() {
+    if (!isUserLoggedin) {
+      dispatch(openLogin())
+    }
+    else {
+      dispatch(setDropOption(true))
+    }
+  }
+
+  function handlePopular() {
+    navigate("/popular")
+    dispatch(setNavOpt(<PopularOutlineIcon />, "Popular"))
+  }
+
+  const showMessageWithTimeout = (message, timeout = 1000) => {
+    dispatch(setMsg(message));
+    dispatch(setShowMsg(true));
+    setTimeout(() => {
+      dispatch(setShowMsg(false));
+    }, timeout);
+  };
+
+  function handlePost() {
+    navigate("/submit")
+    dispatch(setNavOpt(<CustomPlusIcon />, "Create Post"))
+  }
+
+
     // bg-[#272729, #343536] 
     // <HomeFillIcon />
     return (
       <>
-        <div className={`${!isUserLoggedin ? "bg-white" : checkedTheme ? "all" : null} p-1 pb-2 pl-4 pr-7 flex items-center justify-between ${checkedTheme ? "border-b border-[#343536]" : "border-b"} w-full bg-white fixed top-0 z-5 ${isMobile ? "gap-4" : "gap-6"}`}>
+        <div className={`${!isUserLoggedin ? "bg-white border-b" : checkedTheme ? "all border-b border-[#343536]" : "border-b"} p-1 pb-2 pl-4 pr-7 flex items-center justify-between w-full bg-white fixed top-0 z-5 ${isMobile ? "gap-4" : "gap-6"}`}>
           <div className="flex items-center gap-2 pr-4 mr-1">
             {!isUserLoggedin && <div className="cursor-pointer" onClick={()=> dispatch(setSideBar(!isSideBarOpen))}>
               <MenuIcon />
@@ -232,7 +260,7 @@ const handlePplSearch = async () => {
               className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} ${!isUserLoggedin ? "bg-gray-100" : ""} p-2 rounded-full w-3/6 font-sans placeholder-gray-500 outline-0`}
               onChange={(e)=> dispatch(setSearchTerm(e.target.value))}
               onKeyDown={handleKeyDown}
-              onClick={()=> dispatch(setDropOption(true))}
+              onClick={handleSearchBox}
               value={searchTerm}
             />
           </div>
@@ -263,19 +291,19 @@ const handlePplSearch = async () => {
               <OverflowHorizontalOutlineIcon />
             </div> </> :
             <>
-            {isTab && <> <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
+            {isTab && <> <div onClick={handlePopular} className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
             <PopularOutlineIcon />
             </div>
-            <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
+            <div onClick={()=> showMessageWithTimeout("Chat AI offline. Please try later")} className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
               <NavBarMoreIcon />
             </div>
-            <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
+            <div onClick={()=> dispatch(setShowNotifi(true))} className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
               <CustomSvgIcon />
             </div>
-            <div className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
+            <div onClick={handlePost} className={`cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-8 flex items-center justify-center`}>
               <CustomPlusIcon />
             </div>
-            <div className={`cursor-pointer flex gap-1 items-center justify-center text-sm font-semibold ${checkedTheme ? "bg-[#272729]" : "bg-gray-200 hover:bg-gray-300"}  max-w-xl rounded-full py-1 px-2`}>
+            <div onClick={()=> showMessageWithTimeout("Feature Coming Soon")} className={`cursor-pointer flex gap-1 items-center justify-center text-sm font-semibold ${checkedTheme ? "bg-[#272729]" : "bg-gray-200 hover:bg-gray-300"}  max-w-xl rounded-full py-1 px-2`}>
             <TopicActivismOutlineIcon />
             <nav>Advertise</nav>
             </div> </>}

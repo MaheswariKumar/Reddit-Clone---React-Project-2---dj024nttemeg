@@ -253,18 +253,26 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
       });
     }, [info, logginUserName]);
 
+    const showMessageWithTimeout = (message, timeout = 1000) => {
+      dispatch(setMsg(message));
+      dispatch(setShowMsg(true));
+      setTimeout(() => {
+        dispatch(setShowMsg(false));
+      }, timeout);
+    };
+
     return (
         <>
         <div className={`flex w-full ${state.showMax ? "max-w-[52rem]" : "max-w-[40rem]"} flex-col m-2`}>
           {location.pathname === "/popular" && <h1 className={`font-bold mb-2 ${checkedTheme ? "text-[#d7dadc]" : null}`}>Popular Posts</h1>}
-            <div className={`flex h-14 items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
+            <div onClick={handlePost} className={`flex h-14 items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                 <div className="cursor-pointer">
                     <div className="w-12 h-12">
                         <img src="https://i.redd.it/snoovatar/avatars/a23dbde1-4832-4cc6-b528-8e3637c03984-headshot.png" alt="Prof_Img"></img>
                     </div>
                     {/* {checkedStatus && <nav className="w-4 h-4 rounded-full bg-[#46d160] relative left-6 bottom-3 border-inherit border-2"></nav>} */}
                 </div>
-                <div onClick={handlePost} className={`w-full flex items-center ${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} max-w-2xl mt-0.5`}>
+                <div className={`w-full flex items-center ${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} max-w-2xl mt-0.5`}>
                     <input className={`${checkedTheme ? "bg-[#272729]" : "bg-gray-100"} outline-0 indent-4 p-2 rounded-full w-3/6 font-sans placeholder-gray-500`} type="text" placeholder="Create Post"></input>
                 </div>              
                 <div className={`${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-300"} h-8 w-10 rounded-lg flex items-center justify-center cursor-pointer`}>
@@ -390,11 +398,11 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
                   <p>{data.content}</p>
                 </div>
                 <div className="flex">
-                <div className={`flex text-gray-500 item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
+                <div className={`flex text-gray-500 items-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
                   <CommentOutlineIcon />
                   <nav className="text-xs font-bold">{data.commentCount} Comments</nav>
                 </div>
-                <div className={`flex item-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
+                <div onClick={(e)=> {e.stopPropagation(), showMessageWithTimeout("Link Copied")}} className={`flex items-center justify-center gap-2 p-2 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-200 "}`}>
                   <img width="20" height="20" src="https://img.icons8.com/small/16/737373/forward-arrow.png" alt="forward-arrow"/>
                   <nav className="text-xs text-gray-500 font-bold">Share</nav>
                 </div>

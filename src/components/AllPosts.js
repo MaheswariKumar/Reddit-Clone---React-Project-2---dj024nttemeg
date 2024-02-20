@@ -365,7 +365,7 @@ export default function AllPosts() {
             </div> 
             {Array.isArray(info) ? info.map((data, idx) => (
               <div key={idx} className={`cursor-pointer flex mt-4 h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
-              <div className={`flex flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
+              <div className={`flex flex-col w-full px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
                 <div className="flex items-center gap-2">
                   <img className="rounded-full w-10 h-10"></img>
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">

@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setID, setNavOpt, setTime, setUserId } from "./Action";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
     auth,
@@ -29,6 +29,14 @@ export default function CreatePost() {
     const [addedImg, setAddedImg] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+
+
+    useEffect(()=> {
+        if (location.pathname === "/submit"){
+            dispatch(setNavOpt(<CustomPlusIcon />, "Create Post"))
+        }
+    }, [])
 
     function handlePost() {
         setPost(true);

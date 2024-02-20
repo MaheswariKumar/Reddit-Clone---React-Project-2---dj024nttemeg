@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import {showStatus, changeTheme, isLoggedIn, showMenuBar, setAuthorName, setLoginUserName, setMsg, setShowMsg, setCommunity, setNavOpt} from "./Action"
+import {showStatus, changeTheme, isLoggedIn, showMenuBar, setAuthorName, setLoginUserName, setMsg, setShowMsg, setCommunity, setNavOpt, openLogin} from "./Action"
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   auth,
@@ -69,10 +69,17 @@ export default function MenuBar() {
         dispatch(showMenuBar(!isMenu))
         dispatch(setNavOpt(<img width="23" height="23" src="https://img.icons8.com/ios-filled/50/737373/us-dollar-circled--v1.png" alt="us-dollar-circled--v1"/>, "Premium"))
     }
+    
+    function handleLoginPage() {
+        if (!isUserLoggedin) {
+            dispatch(openLogin());
+        }
+    }
+
 
     return (
         <ThemeProvider theme={theme}>
-        <div className={`${checkedTheme ? "all" : null} side_bar2 fixed top-14 right-4 z-50 shadow sm w-64 py-4 bg-white overscroll-auto`}>
+        <div className={`${checkedTheme ? "all" : null} rounded side_bar2 fixed top-14 right-4 z-50 shadow sm w-64 py-4 bg-white overscroll-auto`}>
             {isUserLoggedin ? <>
             <div className="flex gap-3 pl-4">
                 <MyCustomIcon style={{color: "gray"}} />
@@ -93,7 +100,7 @@ export default function MenuBar() {
             </div>
             <div className={`pl-14 flex gap-12 items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm`}>
                 <nav>Dark Mode</nav>
-                <IOSSwitch checked={checkedTheme} onChange={()=> dispatch(changeTheme())} />
+                <IOSSwitch checked={checkedTheme} onChange={()=> {dispatch(changeTheme(!checkedTheme)), localStorage.setItem("theme", checkedTheme)}}/>
             </div>
             <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-3`}></nav>
             <div onClick={()=> dispatch(setCommunity())} className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
@@ -183,15 +190,15 @@ export default function MenuBar() {
             <p style={{color:"rgb(67, 67, 67)", fontSize:"0.825rem"}} className="pt-2 pl-4 text-sm">Reddit, Inc. © 2024. All rights reserved.</p>
             </> : 
             <>
-             <div className="pl-6 flex items-center justify-start gap-4 hover:bg-gray-100 cursor-pointer h-11 text-sm">
+             <div onClick={handleLoginPage} className="pl-6 flex items-center justify-start gap-4 hover:bg-gray-100 cursor-pointer h-11 text-sm">
                 <LogoutIcon style={{ height: '20px', width: '20px'}} />
                 <nav>Log In / Sign Up</nav>
             </div>
-            <div className="pl-6 flex items-center justify-start gap-4 hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div onClick={handleLoginPage} className="pl-6 flex items-center justify-start gap-4 hover:bg-gray-100 cursor-pointer h-11 text-sm">
                 <ConversionIcon style={{ height: '20px', width: '20px'}} />
                 <nav>Advertise on Reddit</nav>
             </div>
-            <div className="pl-6 flex items-center justify-start gap-4 hover:bg-gray-100 cursor-pointer h-11 text-sm">
+            <div onClick={handleLoginPage} className="pl-6 flex items-center justify-start gap-4 hover:bg-gray-100 cursor-pointer h-11 text-sm">
                 <MarketplaceOutlineIcon style={{ height: '20px', width: '20px'}} />
                 <nav>Shop Collectible Avatars</nav>
             </div>

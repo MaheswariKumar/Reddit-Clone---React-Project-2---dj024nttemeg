@@ -15,7 +15,7 @@ const initialState = {
     email: '',
     password:''
   },
-  isUserLoggedin: true,
+  isUserLoggedin: false,
   checkedStatus: true,
   checkedTheme: false,
   searchTerm: '',
@@ -39,6 +39,7 @@ const initialState = {
     icon:'', 
     val: '',
   },
+  openNotification: false
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -123,7 +124,7 @@ const rootReducer = (state = initialState, action) => {
     case 'CHANGE_THEME':
       return {
         ...state,
-        checkedTheme: !state.checkedTheme,
+        checkedTheme: action.checkedTheme,
       };
 
     case 'SET_SEARCH_TERM':
@@ -235,6 +236,12 @@ const rootReducer = (state = initialState, action) => {
             icon: action.icon,
             val: action.val, 
           }
+        };
+
+      case 'SET_SHOWNOTIFI':
+        return {
+          ...state,
+          openNotification: action.openNotification
         };
 
     default:

@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setMsg, setShowMsg, setNavOpt } from "./Action";
+import { setMsg, setShowMsg, setNavOpt, openLogin } from "./Action";
 import HomeFillIcon from "./icons/HomeFillIcon";
 import PopularOutlineIcon from "./icons/PopularOutlineIcon";
 import CaretUpOutlineIcon from "./icons/CaretUpOutlineIcon";
@@ -27,6 +27,7 @@ export default function SideBar({isMobile, isSideBarOpen}) {
   const [openTopic, setOpenTopic] = useState(false);
   const [openResource, SetOpenResource] = useState(false);
   const checkedTheme = useSelector((state) => state.checkedTheme);
+  const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
   const [seemore, setSeeMore] = useState(false);
   const [text, setText] = useState("See more");
   const dispatch = useDispatch();
@@ -51,24 +52,30 @@ export default function SideBar({isMobile, isSideBarOpen}) {
     }, timeout);
   };
 
+  function handleSideBar() {
+    if (!isUserLoggedin) {
+      dispatch(openLogin())
+    }
+  }
+
   // border-r side_bar1 side sticky top-14 left-10 z-20 w-56 max-w-lg
   // border-r side_bar1 top-14 left-0 z-20 w-60 pl-4 max-w-lg fixed bg-white
     return (
         <>
-            <div className={`${checkedTheme ? "all border-r border-[#343536]" : null} ${!isMobile && isSideBarOpen ? "border-r side_bar1 top-12 h-full left-0 w-60 pl-4 max-w-lg fixed bg-white" : "bg-white border-r side_bar1 side sticky top-14 left-0 w-72 pl-4 max-w-lg"} }`}>
+            <div onClick={handleSideBar} className={`${!isUserLoggedin ? "bg-white" : checkedTheme ? "all border-r border-[#343536]" : "bg-white"} ${!isMobile && isSideBarOpen ? "border-r side_bar1 top-12 h-full left-0 w-60 pl-4 max-w-lg fixed bg-white" : "bg-white mt-[5.5px] border-r side_bar1 side sticky top-14 left-0 w-72 pl-4 max-w-lg"} }`}>
               <div className="flex flex-col justify-center pt-8 pr-4">
-                <div className={`${checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-2`}>
-                <div onClick={()=> {navigate("/"), dispatch(setNavOpt(<HomeFillIcon />, "Home"))}} className={`flex justify-start gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>
+                <div className={`${!isUserLoggedin ? "border-b" : checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-2`}>
+                <div onClick={()=> {navigate("/"), dispatch(setNavOpt(<HomeFillIcon />, "Home"))}} className={`flex justify-start gap-4 ${!isUserLoggedin ? "hover:bg-gray-100" : checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>
               <HomeFillIcon />
               <nav className="text-sm">Home</nav>
             </div>
-            <div onClick={()=> {navigate("/popular"), dispatch(setNavOpt(<PopularOutlineIcon />, "Popular"))}} className={`flex gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>
+            <div onClick={()=> {navigate("/popular"), dispatch(setNavOpt(<PopularOutlineIcon />, "Popular"))}} className={`flex gap-4 ${!isUserLoggedin ? "hover:bg-gray-100" : checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100" } p-3 rounded-sm cursor-pointer w-full`}>
               <PopularOutlineIcon />
               <nav className="text-sm">Popular</nav>
             </div>
                 </div>
-                <div className={`${checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-3 pt-3`}>
-                <div className={`flex justify-between gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} p-3 rounded-sm cursor-pointer w-full`}>
+                <div className={`${!isUserLoggedin ? "border-b" : checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-3 pt-3`}>
+                <div className={`flex justify-between gap-4 ${!isUserLoggedin ? "hover:bg-gray-100" : checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} p-3 rounded-sm cursor-pointer w-full`}>
               <nav className="text-xs text-gray-600">RECENT</nav>
               <div onClick={()=> setOpenRecent(!openRecent)}>
               {openRecent ? <CaretUpOutlineIcon /> : <CaretDownBigOutlineIcon />}
@@ -78,8 +85,8 @@ export default function SideBar({isMobile, isSideBarOpen}) {
                 <nav className="text-sm">No Recents</nav>
               </div>}
                 </div>
-            <div className={`${checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-3 pt-3`}>
-            <div className={`flex justify-between gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} p-3 rounded-sm cursor-pointer w-full`}>
+            <div className={`${!isUserLoggedin ? "border-b" : checkedTheme ? "border-b border-[#343536]" : "border-b"} pb-3 pt-3`}>
+            <div className={`flex justify-between gap-4 ${!isUserLoggedin ? "hover:bg-gray-100" : checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} p-3 rounded-sm cursor-pointer w-full`}>
               <nav className="text-xs text-gray-600">TOPICS</nav>
               <div onClick={()=> setOpenTopic(!openTopic)}>
               {openTopic ? <CaretUpOutlineIcon /> : <CaretDownBigOutlineIcon />}  
@@ -90,7 +97,7 @@ export default function SideBar({isMobile, isSideBarOpen}) {
               </div>}
             </div>
             <div className="pb-3 pt-3 ">
-            <div className={`flex justify-between gap-4 ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} p-3 rounded-sm cursor-pointer w-full`}>
+            <div className={`flex justify-between gap-4 ${!isUserLoggedin ? "hover:bg-gray-100" : checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} p-3 rounded-sm cursor-pointer w-full`}>
               <nav className="text-xs text-gray-600">RESOURCES</nav>
               <div onClick={()=> SetOpenResource(!openResource)}>
               {openResource ? <CaretUpOutlineIcon /> : <CaretDownBigOutlineIcon />}
@@ -159,7 +166,7 @@ export default function SideBar({isMobile, isSideBarOpen}) {
               </div>}
             </div>
               </div>
-              <p style={{color:"rgb(67, 67, 67)", fontSize: ".65rem"}} className={`${checkedTheme ? "bg-[#1A1A1B]" : "bg-white"} fixed bottom-1 pt-8 text-center`}>Reddit, Inc. © 2023. All rights reserved.</p>
+              <p style={{color:"rgb(67, 67, 67)", fontSize: ".65rem"}} className={`${!isUserLoggedin ? "bg-white": checkedTheme ? "bg-[#1A1A1B]" : "bg-white"} fixed bottom-1 pt-8 text-center`}>Reddit, Inc. © 2023. All rights reserved.</p>
           </div>
         </>
     )

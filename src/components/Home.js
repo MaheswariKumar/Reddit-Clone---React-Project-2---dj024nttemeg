@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { changeTheme, setSideBar } from "./Action";
+import { changeTheme, openLogin, setSideBar } from "./Action";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import CaretDownOutlineIcon from "./icons/CaretDownOutlineIcon";
 import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
@@ -159,6 +159,12 @@ export default function Home() {
     };
   }, []);
 
+  function handleHome() {
+    if (!isUserLoggedin){
+      dispatch(openLogin())
+    }
+  }
+
 
   return (
     <>
@@ -178,13 +184,13 @@ export default function Home() {
                            </div>
         : (
           <div className={`flex justify-evenly`}>
-          <div 
+          <div
             className={`flex justify-center w-full flex-col m-2  ${
               state.showMax ? "max-w-4xl" : "max-w-[800px]"
             }`}
           >
             <div className="flex items-center pt-4 justify-between gap-15 pb-7 pl-7 pr-7">
-              <button className="border p-2 pr-3 pl-3 rounded-full border-black text-sm font-semibold cursor-pointer">
+              <button onClick={handleHome} className="border p-2 pr-3 pl-3 rounded-full border-black text-sm font-semibold cursor-pointer">
                 Create a Post
               </button>
               {isTab && (
@@ -245,12 +251,12 @@ export default function Home() {
               )}
             </div>
             {info.map((data, idx) => (
-              <div
+              <div onClick={handleHome} 
                 className="cursor-pointer m-2 border-b border-gray-300 pt-2 hover:bg-gray-200 p-2 rounded-lg"
                 key={idx}
               >
-                <div className="flex item-center justify-between pb-2 gap-15">
-                  <div className="flex item-center justify-center gap-1">
+                <div className="flex items-center justify-between pb-2 gap-15">
+                  <div className="flex items-center justify-center gap-1">
                     {data.author.profileImage ?                     <img
                       className="rounded-full w-6 h-6"
                       src={data.author.profileImage}
@@ -268,8 +274,8 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-sm pb-4">{data.content}</p>
-                <div className="flex item-center pb-5 gap-5">
-                  <div className="flex item-center justify-center gap-2 bg-gray-100 rounded-full p-2 cursor-pointer hover:bg-gray-200">
+                <div className="flex items-center pb-5 gap-5">
+                  <div className="flex items-center justify-center gap-2 bg-gray-100 rounded-full p-2 cursor-pointer hover:bg-gray-200">
                     <div className="hover:text-orange-500">
                       <UpvoteOutlineIcon height="16" width="16"/>
                     </div>
@@ -278,11 +284,11 @@ export default function Home() {
                       <DownvoteOutlineIcon height="16" width="16"/>
                     </div>
                   </div>
-                  <div className="flex item-center justify-center gap-2 bg-gray-100 rounded-full p-2 cursor-pointer hover:bg-gray-200">
+                  <div className="flex items-center justify-center gap-2 bg-gray-100 rounded-full p-2 cursor-pointer hover:bg-gray-200">
                     <CommentOutlineIcon />
                     <nav className="text-xs font-bold">{data.commentCount}</nav>
                   </div>
-                  <div className="flex item-center justify-center gap-2 bg-gray-100 rounded-full p-2 cursor-pointer hover:bg-gray-200">
+                  <div className="flex items-center justify-center gap-2 bg-gray-100 rounded-full p-2 cursor-pointer hover:bg-gray-200">
                     <ShareIOSOutlineIcon />
                     <nav className="text-xs font-bold">Share</nav>
                   </div>

@@ -50,7 +50,7 @@ export default function CommunityPage() {
                 <div className="px-2">
                     <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-3`}></nav>
                 </div>
-                <button className={`rounded-full mb-3 mx-3 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Create Post</button>
+                <button onClick={()=> navigate("/submit")} className={`rounded-full mb-3 mx-3 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Create Post</button>
                 <button onClick={()=> dispatch(setCommunity())} className={`rounded-full mb-3 mx-3 p-1 ${checkedTheme ? "border border-[#d7dadc] text-[#d7dadc]" : "border border-[#0079d3] text-[#0079d3]"} font-semibold`}>Create Community</button>
             </div>
             <div className={`mt-4 sticky top-16 flex p-2 pl-4 pr-3 flex-col rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>

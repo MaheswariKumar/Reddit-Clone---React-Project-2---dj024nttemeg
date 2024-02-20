@@ -35,6 +35,10 @@ const initialState = {
   logginUserToken: "",
   authorName: "",
   userId: "",
+  navOptions: { 
+    icon:'', 
+    val: '',
+  },
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -222,6 +226,15 @@ const rootReducer = (state = initialState, action) => {
         return {
           ...state,
           userId: action.userId
+        };
+
+      case 'SET_NAVOPT':
+        return {
+          ...state,
+          navOptions: { 
+            icon: action.icon,
+            val: action.val, 
+          }
         };
 
     default:

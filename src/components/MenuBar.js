@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import {showStatus, changeTheme, isLoggedIn, showMenuBar, setAuthorName, setLoginUserName, setMsg, setShowMsg, setCommunity} from "./Action"
+import {showStatus, changeTheme, isLoggedIn, showMenuBar, setAuthorName, setLoginUserName, setMsg, setShowMsg, setCommunity, setNavOpt} from "./Action"
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   auth,
@@ -57,6 +57,19 @@ export default function MenuBar() {
         }, timeout);
       };
 
+    function handleProfile() {
+        navigate(`/user/${userId}`)
+        dispatch(setAuthorName(logginUserName))
+        dispatch(showMenuBar(!isMenu))
+        dispatch(setNavOpt(<img className="h-8 w-8" src="https://i.redd.it/snoovatar/avatars/a23dbde1-4832-4cc6-b528-8e3637c03984-headshot.png"></img>, `u/${logginUserName}`))
+    }
+    
+    function handlePremium() {
+        navigate("/premium")
+        dispatch(showMenuBar(!isMenu))
+        dispatch(setNavOpt(<img width="23" height="23" src="https://img.icons8.com/ios-filled/50/737373/us-dollar-circled--v1.png" alt="us-dollar-circled--v1"/>, "Premium"))
+    }
+
     return (
         <ThemeProvider theme={theme}>
         <div className={`${checkedTheme ? "all" : null} side_bar2 fixed top-14 right-4 z-50 shadow sm w-64 py-4 bg-white overscroll-auto`}>
@@ -69,7 +82,7 @@ export default function MenuBar() {
                 <nav>Online Status</nav>
                 <IOSSwitch checked={checkedStatus} onChange={()=> dispatch(showStatus())} />
             </div>
-            <nav onClick={()=> {navigate(`/user/${userId}`), dispatch(setAuthorName(logginUserName)), dispatch(showMenuBar(!isMenu))}} className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>Profile</nav>
+            <nav onClick={handleProfile} className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>Profile</nav>
             <nav onClick={() => showMessageWithTimeout("Feature Coming Soon")} className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>Style Avatar</nav>
             <nav className={`pl-14 flex items-center justify-start font-semibold ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100 "} cursor-pointer h-11 text-sm"`}>User</nav>
             <nav className={`${checkedTheme ? "border-[#343536] border" : "border"} my-3`}></nav>
@@ -91,9 +104,9 @@ export default function MenuBar() {
                 <TopicActivismOutlineIcon />
                 <nav className="text-sm font-semibold">Advertise on Reddit</nav>
             </div>
-            <div onClick={()=> {navigate("/premium"), dispatch(showMenuBar(!isMenu))}} className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
-                {checkedTheme ? <img width="23" height="23" src="https://img.icons8.com/ios/50/FFFFFF/shield.png" alt="shield"/>:
-                <img width="23" height="23" src="https://img.icons8.com/material-outlined/24/shield.png" alt="shield"/>}
+            <div onClick={handlePremium} className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>
+                {checkedTheme ? <img width="23" height="23" src="https://img.icons8.com/ios-filled/50/FFFFFF/us-dollar-circled--v1.png" alt="us-dollar-circled--v1"/> :
+                <img width="23" height="23" src="https://img.icons8.com/ios-filled/50/737373/us-dollar-circled--v1.png" alt="us-dollar-circled--v1"/> }
                 <nav className="text-sm font-semibold">Premium</nav>
             </div>
             <div onClick={() => showMessageWithTimeout("Team Reddit will Contact You")} className={`flex justify-start items-center gap-5 pl-4 cursor-pointer ${checkedTheme ? "hover:bg-[#272729]" : "hover:bg-gray-100"} h-10`}>

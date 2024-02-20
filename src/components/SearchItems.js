@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import { setID } from "./Action";
+import { setID, setNavOpt } from "./Action";
 import { useSelector, useDispatch } from "react-redux";
 import { setShowMsg, setMsg } from "./Action";
 import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
@@ -10,6 +10,7 @@ import CommentOutlineIcon from "./icons/CommentOutlineIcon";
 import PostPpl from "./PostPpl";
 import Comments from "./Comments";
 import SideBar from "./SideBar";
+import SearchIcon from "./icons/SearchIcon";
 
 export default function SearchItems() {
     const isUserLoggedin = useSelector((state) => state.isUserLoggedin);
@@ -26,6 +27,13 @@ export default function SearchItems() {
     const [comuty, setComuty] = useState(false)
     const [ppl, setPpl] = useState(false)
     const dispatch = useDispatch()
+    const location = useLocation()
+
+
+    useEffect(()=> {
+      if (location.pathname === "/search")
+      dispatch(setNavOpt(<SearchIcon />, "Search"))
+    }, [])
 
 
     function handlePost() {

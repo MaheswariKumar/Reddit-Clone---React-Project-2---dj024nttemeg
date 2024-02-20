@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CloseIcon from "./icons/CloseIcon";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setCommunity, setID, setCreatedName, setDate } from "./Action";
+import { setCommunity, setID, setCreatedName, setDate, setNavOpt } from "./Action";
 import WorldFillIcon from "./icons/WorldFillIcon";
 import ViewsOutlineIcon from "./icons/ViewsOutlineIcon";
 import LockOutlineIcon from "./icons/LockOutlineIcon";
@@ -77,6 +77,7 @@ export default function CreateCommunity() {
           dispatch(setCommunity())
           dispatch(setDate(data.data.createdAt));
           navigate(`/r/${channelname}`);
+          dispatch(setNavOpt(<><img className="rounded-full w-10 h-10"></img></>, `/r/${channelname}`))
           console.log(data);
       } else {
           console.error('Data or _id property is missing in the response:', data);

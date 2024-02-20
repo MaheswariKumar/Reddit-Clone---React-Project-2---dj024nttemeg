@@ -141,3 +141,9 @@ export const setUserId = (userId) => ({
   type: 'SET_USERID',
   userId
 });
+
+export const setNavOpt = (icon, val)=> ({
+  type: 'SET_NAVOPT',
+  icon, 
+  val,
+})

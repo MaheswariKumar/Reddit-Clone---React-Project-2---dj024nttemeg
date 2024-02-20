@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { changeTheme, setID } from "./Action";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import ViewClassicFillIcon from "./icons/ViewClassicFillIcon";

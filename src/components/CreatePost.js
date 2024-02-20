@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setID, setTime, setUserId } from "./Action";
+import { setID, setNavOpt, setTime, setUserId } from "./Action";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
@@ -127,6 +127,7 @@ const handleCreatePost = async () => {
         const timeSinceCreation = getTimeSincePostCreation(currentISOTime);
         dispatch(setTime(timeSinceCreation))
         navigate(`/user/${inputTitle}/${data.data._id}`);
+        dispatch(setNavOpt(<><img className="rounded-full w-10 h-10"></img></>, `u/${inputTitle}`))
         console.log(data);
     } else {
         console.error('Data or _id property is missing in the response:', data);

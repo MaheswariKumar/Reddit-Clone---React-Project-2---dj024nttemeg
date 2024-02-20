@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setCommunity } from "./Action";
+import { setCommunity, setNavOpt } from "./Action";
 import { useNavigate } from "react-router-dom";
 
 export default function CommunityPage() {
@@ -12,6 +12,12 @@ export default function CommunityPage() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
       }
+
+    
+    function handlePremium() {
+        navigate("/premium")
+        dispatch(setNavOpt(<img width="23" height="23" src="https://img.icons8.com/ios-filled/50/737373/us-dollar-circled--v1.png" alt="us-dollar-circled--v1"/>, "Premium"))
+    }
 
     return (
         <>
@@ -26,7 +32,7 @@ export default function CommunityPage() {
                         <nav className="text-xs text-gray-500">The best Reddit experience</nav>
                     </div>
                 </div>
-                <button onClick={()=> navigate("/premium")} className="rounded-full p-1 bg-[#ff4500] text-white font-semibold">Try Now</button>
+                <button onClick={handlePremium} className="rounded-full p-1 bg-[#ff4500] text-white font-semibold">Try Now</button>
             </div>
             <div className={`mt-4 flex flex-col rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                 <img src="https://www.redditstatic.com/desktop2x/img/id-cards/home-banner@2x.png"></img>

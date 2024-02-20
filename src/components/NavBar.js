@@ -31,6 +31,7 @@ export default function NavBar({toggleRef}){
     const searchComutyResults = useSelector((state) => state.searchComutyResults);
     const showDropOption = useSelector((state) => state.showDropOption);
     const logginUserName = useSelector((state) => (state.logginUserName));
+    const navOptions = useSelector((state) => state.navOptions);
     const [searchBox, setSearchBox] = useState({
       top: "48px",
       left: "210px",
@@ -199,6 +200,7 @@ const handlePplSearch = async () => {
   };
 
     // bg-[#272729, #343536] 
+    // <HomeFillIcon />
     return (
       <>
         <div className={`${!isUserLoggedin ? "bg-white" : checkedTheme ? "all" : null} p-1 pb-2 pl-4 pr-7 flex items-center justify-between ${checkedTheme ? "border-b border-[#343536]" : "border-b"} w-full bg-white fixed top-0 z-5 ${isMobile ? "gap-4" : "gap-6"}`}>
@@ -212,9 +214,9 @@ const handlePplSearch = async () => {
             ></img>
             {isMobile && <CustomLogo />}
             {isUserLoggedin && <div onClick={()=> dispatch(setSideBar(!isSideBarOpen))} className={`flex justify-between items-center h-[45px] ${isMobile ? "w-[260px]" : null} hover:border cursor-pointer`}>
-            <div className={`flex justify-start gap-2 rounded-sm cursor-pointer w-ful ${isMobile ? "p-3" : null}`}>
-              <HomeFillIcon />
-              {isMobile && <nav className="text-sm">Home</nav>}
+            <div className={`flex justify-start items-center gap-2 rounded-sm cursor-pointer w-ful ${isMobile ? "p-3" : null}`}>
+              {navOptions.icon}
+              {isMobile && <nav className="text-sm">{navOptions.val}</nav>}
             </div>
             <div>
             <CaretDownBigOutlineIcon />

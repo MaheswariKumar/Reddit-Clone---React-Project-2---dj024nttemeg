@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { changeTheme, setID, setShowMsg, setMsg, setAuthorName, setUserId } from "./Action";
+import { changeTheme, setID, setShowMsg, setMsg, setAuthorName, setUserId, setNavOpt } from "./Action";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import ViewClassicFillIcon from "./icons/ViewClassicFillIcon";
 import ViewCardFillIcon from "./icons/ViewCardFillIcon";
@@ -12,6 +12,8 @@ import CaretDownOutlineIcon from "./icons/CaretDownOutlineIcon";
 import UpvoteOutlineIcon from "./icons/UpvoteOutlineIcon";
 import DownvoteOutlineIcon from "./icons/DownvoteOutlineIcon";
 import CommentOutlineIcon from "./icons/CommentOutlineIcon";
+import CustomPlusIcon from "./icons/CustomPlusIcon";
+import HomeFillIcon from "./icons/HomeFillIcon";
 
 export default function HomePage({state, StateDisptch, handleResize, dropdownMaxPosition, dropdownPosition}) {
     const [info, setInfo] = useState([]);
@@ -93,12 +95,14 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
 
     function handlePost() {
       navigate("/submit")
+      dispatch(setNavOpt(<CustomPlusIcon />, "Create Post"))
     }
 
     const handleAuthorPosts = (name, id) => {
       dispatch(setID(id))
       dispatch(setAuthorName(name))
       navigate(`/user/${id}`);
+      dispatch(setNavOpt(<><img className="rounded-full w-10 h-10"></img></>, `u/${name}`))
     }
 
     const handleChannelPosts = (name) => {
@@ -109,6 +113,7 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
     const handleComment = (data, id) => {
       dispatch(setID(id))
       navigate(`/r/${data}/comments`);
+      dispatch(setNavOpt(<><img className="rounded-full w-10 h-10"></img></>, `r/${data}`))
     };
 
     function getTimeSincePostCreation(creationTime) {
@@ -179,6 +184,12 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
 
       }
     };
+
+    useEffect(()=> {
+      if (location.pathname === "/") {
+        dispatch(setNavOpt(<HomeFillIcon />, "Home"))
+      }
+    }, [])
 
     const handleDownvote = async (id) => {
       try {

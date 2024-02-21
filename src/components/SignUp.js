@@ -46,6 +46,11 @@ export default function SignUp() {
                       appType: 'reddit'
                     })
                   });
+
+                  const newtonSignUpData = await newtonSignUpRes.json();
+                  dispatch(setLoginUserToken(newtonSignUpData.token))
+                  
+                  console.log("Academy Access Token:", newtonSignUpData);
             
                   if (newtonSignUpRes.status === 403) {
                     const newtonLoginRes = await fetch('https://academics.newtonschool.co/api/v1/user/login', {
@@ -64,15 +69,9 @@ export default function SignUp() {
                     dispatch(setLoginUserToken(newtonLoginData.token))
                     
                     console.log("Academy Access Token:", newtonLoginData);
-                    dispatch(isLoggedIn())
-                    dispatch(showSignUp())
                     return
                   }
             
-                  const newtonSignUpData = await newtonSignUpRes.json();
-                  dispatch(setLoginUserToken(newtonSignUpData.token))
-                  
-                  console.log("Academy Access Token:", newtonSignUpData);
                   dispatch(isLoggedIn())
                   dispatch(showSignUp())  
             }      
@@ -112,6 +111,11 @@ export default function SignUp() {
                     })
                   });
             
+                  const newtonSignUpData = await newtonSignUpRes.json();
+                  dispatch(setLoginUserToken(newtonSignUpData.token))
+                  
+                  console.log("Academy Access Token:", newtonSignUpData);
+
                   if (newtonSignUpRes.status === 403) {
                     const newtonLoginRes = await fetch('https://academics.newtonschool.co/api/v1/user/login', {
                       method: 'POST',
@@ -129,15 +133,9 @@ export default function SignUp() {
                     dispatch(setLoginUserToken(newtonLoginData.token))
                     
                     console.log("Academy Access Token:", newtonLoginData);
-                    dispatch(isLoggedIn())
-                    dispatch(showSignUp())
                     return
                   }
             
-                  const newtonSignUpData = await newtonSignUpRes.json();
-                  dispatch(setLoginUserToken(newtonSignUpData.token))
-                  
-                  console.log("Academy Access Token:", newtonSignUpData);
                   dispatch(isLoggedIn())
                   dispatch(showSignUp())  
             }      
@@ -168,9 +166,9 @@ export default function SignUp() {
         setIsEmailValid(emailRegex.test(e.target.value));
     }
 
-    useEffect(()=>{
-        console.log(signUpForm.email)
-    }, [signUpForm.email])
+    // useEffect(()=>{
+    //     console.log(signUpForm.email)
+    // }, [signUpForm.email])
 
     return (
         <div className={`flex flex-col gap-3 items-center justify-center rounded-[15px] bg-white mx-6 w-full max-w-[535px] h-auto ${isMob ? "px-12" : null} py-6`}>

@@ -130,7 +130,7 @@ export default function CreateCommunity() {
           <span className="pl-1">r/</span>
           <input
             type="text"
-            className={`h-7 rounded w-full outline-0`}
+            className={`${checkedTheme ? "all" : null} h-7 rounded w-full outline-0`}
             onChange={(e)=> handleChannelName(e)}
           ></input>
         </div>

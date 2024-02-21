@@ -176,7 +176,7 @@ export default function SearchItems() {
                     </div>
                     {/* <div className={`mt-4 flex justify-between items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}> */}
             {cmt && <Comments />}
-            {post && searchPostResults.length > 0 ? (searchPostResults.map((data, idx) => ( <div onClick={() => handleComment(data.channel.name, data._id)} key={idx} className={`cursor-pointer flex h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
+            {post && searchPostResults.length > 0 ? (searchPostResults.map((data, idx) => ( <div onClick={() => handleComment(data.channel ? data.channel.name : "newton", data._id)} key={idx} className={`cursor-pointer flex h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
               <div className={`flex flex-col items-center pt-2 ${checkedTheme ? "bg-black text-white" : null } `}>
                 <div onClick={(e)=> {e.stopPropagation(); handleUpvote(data._id)}} className="hover:text-orange-500 text-gray-500 cursor-pointer">
                   <UpvoteOutlineIcon height="20" width="20"/>

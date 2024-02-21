@@ -262,7 +262,7 @@ export default function UserPosts() {
               </div> : 
           <div className="flex justify-center w-full mt-16">
         <div className={`flex w-full ${state.showMax ? "max-w-[52rem]" : "max-w-[40rem]"} flex-col m-2`}>
-            <div className={`flex h-14 items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
+            <div onClick={()=> navigate("/submit")} className={`flex h-14 items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                 <div className="cursor-pointer">
                     <div className="w-12 h-12">
                         <img src="https://i.redd.it/snoovatar/avatars/a23dbde1-4832-4cc6-b528-8e3637c03984-headshot.png" alt="Prof_Img"></img>
@@ -367,7 +367,7 @@ export default function UserPosts() {
             </div> 
             {Array.isArray(info) ? info.map((data, idx) => (
               <div key={idx} className={`cursor-pointer flex mt-4 h-auto gap-3 pl-2 rounded ${checkedTheme ? "border border-[#343536]" : "border bg-white"}`}>
-              <div className={`flex flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
+              <div className={`w-full flex flex-col px-3 pt-2 pb-1 gap-3 ${checkedTheme ? "all" : null}`}>
                 <div className="flex items-center gap-2">
                   <img className="rounded-full w-10 h-10"></img>
                   <div className="text-gray-500 text-xs pl-2 flex gap-1">
@@ -464,7 +464,7 @@ export default function UserPosts() {
                         </div>
                     </div>
                 </div>
-                <button className="rounded-full p-1 bg-[#ff4500] text-white font-semibold mb-3">New Post</button>
+                <button onClick={()=> navigate("/submit")} className="rounded-full p-1 bg-[#ff4500] text-white font-semibold mb-3">New Post</button>
             </div>
             <button onClick={scrollToTop} className={`rounded-full mt-10 mx-24 fixed bottom-2 px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Back to Top</button>
         </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate} from "react-router-dom";
-import { changeTheme, setID } from "./Action";
+import { useNavigate, useLocation} from "react-router-dom";
+import { changeTheme, setID, setNavOpt } from "./Action";
 import ViewCardOutlineIcon from "./icons/ViewCardOutlineIcon";
 import ViewClassicFillIcon from "./icons/ViewClassicFillIcon";
 import ViewCardFillIcon from "./icons/ViewCardFillIcon";
@@ -29,6 +29,7 @@ export default function NewChannel() {
     const [isLoading, setIsLoading] = useState(true);
     const showDate = useSelector((state) => state.showDate);
     const date = new Date(showDate);
+    const location = useLocation();
     const formattedDate = date.toLocaleDateString('en-US', {
       month: 'short', 
       day: '2-digit', 
@@ -168,6 +169,10 @@ export default function NewChannel() {
       
       };
 
+      useEffect(()=> {
+        dispatch(setNavOpt(<><img className="rounded-full w-10 h-10"></img></>, location.pathname))
+      }, [])
+
       // 65c9991882c9aea523e1764e
 
     return (
@@ -191,7 +196,7 @@ export default function NewChannel() {
         </div>
           <div className="flex justify-center w-full mt-4">
         <div className={`flex w-full ${state.showMax ? "max-w-[52rem]" : "max-w-[40rem]"} flex-col m-2`}>
-            <div className={`flex h-14 items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
+            <div onClick={()=> navigate("/submit")} className={`flex h-14 items-center gap-3 px-2 rounded ${checkedTheme ? "border border-[#343536] all" : "border bg-white"}`}>
                 <div className="cursor-pointer">
                     <div className="w-12 h-12">
                         <img src="https://i.redd.it/snoovatar/avatars/a23dbde1-4832-4cc6-b528-8e3637c03984-headshot.png" alt="Prof_Img"></img>
@@ -345,7 +350,7 @@ export default function NewChannel() {
                         </div>
                     </div>
                 </div>
-                <button className="rounded-full p-1 bg-[#ff4500] text-white font-semibold mb-3">New Post</button>
+                <button onClick={()=> navigate("/submit")} className="rounded-full p-1 bg-[#ff4500] text-white font-semibold mb-3">New Post</button>
             </div>
             <button onClick={scrollToTop} className={`rounded-full mt-10 mx-24 fixed bottom-2 px-4 p-1 ${checkedTheme ? "text-[#1A1A1B] bg-[#d7dadc]" : "bg-[#0079d3] text-white"} font-semibold`}>Back to Top</button>
         </div>

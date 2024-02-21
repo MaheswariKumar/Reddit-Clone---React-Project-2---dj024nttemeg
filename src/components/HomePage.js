@@ -259,6 +259,8 @@ export default function HomePage({state, StateDisptch, handleResize, dropdownMax
       setTimeout(() => {
         dispatch(setShowMsg(false));
       }, timeout);
+      const currentURL = window.location.href;
+      navigator.clipboard.writeText(currentURL) 
     };
 
     return (

@@ -109,6 +109,8 @@ export default function Login() {
                     dispatch(setLoginUserToken(newtonLoginData.token))
                     
                     console.log("Academy Access Token:", newtonLoginData);
+                    dispatch(isLoggedIn())
+                    dispatch(openLogin())  
                     return
                   }
                   dispatch(isLoggedIn())
@@ -171,6 +173,8 @@ export default function Login() {
                     dispatch(setLoginUserToken(newtonLoginData.token))
                     
                     console.log("Academy Access Token:", newtonLoginData);
+                    dispatch(isLoggedIn())
+                    dispatch(openLogin())  
                     return
                   }
             

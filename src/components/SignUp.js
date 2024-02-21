@@ -69,6 +69,8 @@ export default function SignUp() {
                     dispatch(setLoginUserToken(newtonLoginData.token))
                     
                     console.log("Academy Access Token:", newtonLoginData);
+                    dispatch(isLoggedIn())
+                    dispatch(showSignUp())  
                     return
                   }
             
@@ -133,6 +135,8 @@ export default function SignUp() {
                     dispatch(setLoginUserToken(newtonLoginData.token))
                     
                     console.log("Academy Access Token:", newtonLoginData);
+                    dispatch(isLoggedIn())
+                    dispatch(showSignUp())  
                     return
                   }
             

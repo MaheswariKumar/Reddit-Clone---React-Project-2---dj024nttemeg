@@ -1,70 +1,25 @@
-# Getting Started with Create React App
+This project is organized into several key checkpoints or milestones. Each milestone represents a significant stage in the development process and contributes to the overall functionality and user experience of the application.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Set up the Project and UI Design
+Initialized the project structure and dependencies.
+Designed the user interface, including the layout and components of the Navbar.
 
-## Available Scripts
+2. Homepage and Search Functionality
+Developed the Homepage layout.
+Implemented search functionality to allow users to search for posts or communities.
 
-In the project directory, you can run:
+3. Login/Signup Page and Community Creation
+Created the login and signup pages for user authentication.
+Implemented functionality for users to create new subreddits or communities.
 
-### `npm start`
+4. Post Management
+Added the ability for users to create new posts within communities.
+Implemented functionality for upvoting and un-upvoting posts.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+5. Commenting System
+Implemented a commenting system to allow users to comment on posts.
+Provided functionality for users to upvote and downvote comments.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+6. Reddit Gold (Premium Features)
+Implemented premium features, such as Reddit Gold, to enhance the user experience for premium subscribers.
+These checkpoints represent the major features and functionalities of the project, showcasing the progress made in building a Reddit-like platform.

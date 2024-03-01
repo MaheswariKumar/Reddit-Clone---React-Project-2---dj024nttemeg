@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import store from "./components/Store.js";
+import store from "./components/state/Store";
 import App from "./components/App";
 import AuthApp from "./components/AuthApp.js";
 import { BrowserRouter } from "react-router-dom";
@@ -19,14 +19,3 @@ root.render(
     </React.StrictMode>
   </BrowserRouter>
 );
-
-
-// authroot.render(
-//   <BrowserRouter>
-//     <React.StrictMode>
-//       <Provider store={store}>
-//         <AuthApp />
-//       </Provider>
-//     </React.StrictMode>
-//   </BrowserRouter>
-// );

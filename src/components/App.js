@@ -21,16 +21,12 @@ function App() {
   const searchTerm = useSelector((state) => state.searchTerm);
   const checkedTheme = useSelector((state) => state.checkedTheme);
   const openNotification = useSelector((state) => state.openNotification);
+  const logginUserName = useSelector((state) => state.logginUserName);
   const msg = useSelector((state) => state.msg);
   const showMsg = useSelector((state) => state.showMsg);
   const dispatch = useDispatch();
   const menuRef = useRef(null);
   const notifyRef = useRef(null);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    dispatch(changeTheme(savedTheme));
-  }, []);
 
   const handleOutsideClick = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {

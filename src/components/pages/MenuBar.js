@@ -173,8 +173,7 @@ export default function MenuBar() {
               <IOSSwitch
                 checked={checkedTheme}
                 onChange={() => {
-                  dispatch(changeTheme(!checkedTheme)),
-                    localStorage.setItem("theme", checkedTheme);
+                  dispatch(changeTheme(!checkedTheme))
                 }}
               />
             </div>
